@@ -28,7 +28,7 @@ namespace TicketHive.Server.Data
 				Venue = "Malmö Arena",
 				Price = 800,
 				Capacity = 3000,
-				ImageUrl = "images/event/img1.avif"
+				ImageUrl = "/images/event/img1.avif"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -39,7 +39,7 @@ namespace TicketHive.Server.Data
 				Venue = "Eleda Stadion",
 				Price = 230,
 				Capacity = 22000,
-                ImageUrl = "images/event/img2.avif"
+                ImageUrl = "/images/event/img2.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -50,7 +50,7 @@ namespace TicketHive.Server.Data
 				Venue = "Palladium",
 				Price = 400,
 				Capacity = 550,
-                ImageUrl = "images/event/img3.avif"
+                ImageUrl = "/images/event/img3.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -61,7 +61,7 @@ namespace TicketHive.Server.Data
 				Venue = "Pildammsparken",
 				Price = 700,
 				Capacity = 13000,
-                ImageUrl = "images/event/img4.avif"
+                ImageUrl = "/images/event/img4.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -72,7 +72,7 @@ namespace TicketHive.Server.Data
 				Venue = "Stadsbiblioteket Malmö",
 				Price = 100,
 				Capacity = 60,
-                ImageUrl = "images/event/img5.avif"
+                ImageUrl = "/images/event/img5.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -83,7 +83,7 @@ namespace TicketHive.Server.Data
 				Venue = "Parken Copenhagen",
 				Price = 800,
 				Capacity = 26000,
-                ImageUrl = "images/event/img6.avif"
+                ImageUrl = "/images/event/img6.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -94,7 +94,7 @@ namespace TicketHive.Server.Data
 				Venue = "Helsingborg",
 				Price = 40,
 				Capacity = 34,
-                ImageUrl = "images/event/img7.avif"
+                ImageUrl = "/images/event/img7.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -105,7 +105,7 @@ namespace TicketHive.Server.Data
 				Venue = "Globen",
 				Price = 200,
 				Capacity = 26000,
-                ImageUrl = "images/event/img8.avif"
+                ImageUrl = "/images/event/img8.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -116,7 +116,7 @@ namespace TicketHive.Server.Data
 				Venue = "Malmö Live",
 				Price = 120,
 				Capacity = 300,
-                ImageUrl = "images/event/img9.avif"
+                ImageUrl = "/images/event/img9.avif"
             });
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
@@ -127,7 +127,7 @@ namespace TicketHive.Server.Data
 				Venue = "Norje",
 				Price = 500,
 				Capacity = 12000,
-                ImageUrl = "images/event/img10.avif"
+                ImageUrl = "/images/event/img10.avif"
             });
 		}
 	}

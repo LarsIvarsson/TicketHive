@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketHive.Server.Data;
 using TicketHive.Server.Models;
+using TicketHive.Server.Repo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var eventsDbString = builder.Configuration.GetConnectionString("EventsDbConnection") ?? throw new InvalidOperationException("Connection string 'EventsDbConnection' not found.");
 builder.Services.AddDbContext<EventsDbContext>(options =>
 	options.UseSqlServer(eventsDbString));
-
-
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -70,6 +69,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddScoped<IEventsRepo, EventsRepo>();
 
 var app = builder.Build();
 
