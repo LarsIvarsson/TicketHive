@@ -1,5 +1,128 @@
-﻿<h3>ShoppingCart</h3>
+﻿@page "/shopping-cart"
+
+<h1>Shopping Cart</h1>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><input type="number" min="1" value="1" /></td>
+                        <td></td>
+                        <td><button class="btn btn-danger">Remove</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><input type="number" min="1" value="1" /></td>
+                        <td></td>
+                        <td><button class="btn btn-danger">Remove</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Order Summary</h5>
+                    <hr />
+                    <p>Subtotal: </p>
+                    @*<p>Tax: $2.40</p>*@
+                    <hr />
+                    <h4>Total:</h4>
+                    <button class="btn btn-success btn-lg btn-block">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@page "/shopping-cart"
+
+
+@if (cartItems.Count == 0)
+{
+    <p>Your shopping cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in cartItems)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price</td>
+                    <td><input type="number" min="1" max="10" @bind="@item.Quantity" /></td>
+                    <td>@(item.Price * item.Quantity)</td>
+                    <td><button class="btn btn-danger" @onclick="@(() => RemoveFromCart(item))">Remove</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-success" @onclick="@(() => Checkout())">Checkout</button>
+        </div>
+        <div class="col-md-6 text-right">
+            <h3>Total: @GetTotal()</h3>
+        </div>
+    </div>
+}
 
 @code {
+    private List<CartItem> cartItems = new List<CartItem>();
 
+    protected override void OnInitialized()
+    {
+        // Populate cart items from database or other source
+        cartItems.Add(new CartItem { ProductName = "Product A", Price = 10.00m, Quantity = 1 });
+        cartItems.Add(new CartItem { ProductName = "Product B", Price = 15.00m, Quantity = 2 });
+    }
+
+    private void RemoveFromCart(CartItem item)
+    {
+        cartItems.Remove(item);
+    }
+
+    private decimal GetTotal()
+    {
+        return cartItems.Sum(x => x.Price * x.Quantity);
+    }
+
+    private void Checkout()
+    {
+        // Handle checkout logic
+    }
+
+    public class CartItem
+    {
+        public string ProductName { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+    }
 }
+*@
