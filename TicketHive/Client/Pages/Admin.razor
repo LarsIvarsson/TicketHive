@@ -5,77 +5,72 @@
 @attribute [Authorize(Roles = "Admin")]
 @inject IAppService appService;
 
-<h3 class="text-center text-danger">Admin Area</h3>
+<h1 class="text-center text-danger">Admin Area</h1>
 <hr />
 
 <div class="container">
     <div class="row">
-        <div class="col-6">
+        <div class="col-5">
 <EditForm Model="newEvent" OnValidSubmit="SubmitEvent" OnInvalidSubmit="HandleInvalidSubmit">
 <DataAnnotationsValidator/>
  <ValidationSummary/>
-    <tr>
+ <h2 class="text-center mb-3">New event</h2>
     <label for="name-input">Name</label>
-    <InputText id="name-input" @bind-Value="newEvent.Name"/>
-    </tr>
-    <br />
-    <tr>
+    <InputText class="form-control mb-2" id="name-input" @bind-Value="newEvent!.Name" />
     <label for="type-input">Category</label>
-    <InputSelect id="type-input" @bind-Value="newEvent.Type">
+    <InputSelect class="form-control mb-2" id="type-input" @bind-Value="newEvent.Type">
         @foreach (var type in categories)
         {
             <option value="@type.ToString()">@type.ToString()</option>
         }
     </InputSelect>
-    </tr>
-    <br />
-    <tr>
     <label for="date-input">Date</label>
-    <InputDate id="date-input" @bind-Value="newEvent.Date" />
-    </tr>
-    <br />
-    <tr>
+    <InputDate class="form-control mb-2" id="date-input" @bind-Value="newEvent.Date" />
     <label for="venue-input">Venue</label>
-    <InputText id="venue-input" @bind-Value="newEvent.Venue" />
-    </tr>
-    <br />
-    <tr>
+    <InputText class="form-control mb-2" id="venue-input" @bind-Value="newEvent.Venue" />
     <label for="price-input">Price</label>
-    <InputNumber id="price-input" @bind-Value="newEvent.Price" />
-    </tr>
-    <br />
-    <tr>
+    <InputNumber class="form-control mb-2" id="price-input" @bind-Value="newEvent.Price" />
     <label for="capacity-input">Capacity</label>
-    <InputNumber id="capacity-input" @bind-Value="newEvent.Capacity" />
-    </tr>
-    <br />
+    <InputNumber class="form-control mb-3" id="capacity-input" @bind-Value="newEvent.Capacity" />
     <input type="submit" value="Add" />
 </EditForm>
         </div>
-        <div class="col-6">
-            <ul>
+        <div class="col-2">
+
+        </div>
+        <div class="col-5">
+            <h2 class="text-center mb-3">Event list</h2>
                 @if(events == null)
                 {
                     <h3>Fetching data from database...</h3>
                 }
-            </ul>
-                @foreach (var happening in events)
+            <ul class="list-group">
+                @foreach (var happening in events!)
                 {
-                    <li>
-                        <h3>@happening.Name</h3>
-                        <em>@happening.Date.Year-@happening.Date.Month-@happening.Date.Day</em>
+                    <li class="list-group-item">
+                        <h5>@happening.Name</h5>
+                        <em>@happening.Date.ToString("yyyy-MM-dd")</em>
                         <input type="submit" value="Remove" @onclick="@(async e => await RemoveEvent(@happening.Id))" />
                         <br />
                     </li>
                 }
+            </ul>
         </div>
     </div>
 </div>
+@if(statusMessage != null)
+{
+    <div>
+        <h4>@statusMessage</h4>
+    </div>
+}
+<hr />
 
 @code {
     public EventModel? newEvent { get; set; } = new();
     public List<string> categories = new();
-    public List<EventModel>? events;
+    public List<EventModel>? events = new();
+    public string? statusMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,18 +87,29 @@
         events = await appService.GetEventsAsync();
     }
 
+    private void CreateEvent()
+    {
+        newEvent = new EventModel();
+    }
+
     private async void SubmitEvent()
     {
+        statusMessage = "Adding new event...";
+
         @if(newEvent != null)
         {
             await appService.PostEventAsync(newEvent);
             await GetEvents();
+            statusMessage = null!;
+
+            StateHasChanged();
+            CreateEvent();
         }
     }
 
     private void HandleInvalidSubmit()
     {
-
+        statusMessage = "Please fill in the correct info...";
     }
 
     private async Task RemoveEvent(int id)
