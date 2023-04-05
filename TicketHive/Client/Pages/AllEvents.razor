@@ -18,7 +18,7 @@ else
     @foreach (var e in Events)
     {
         <div>
-            <a href="EventDetails">
+            <a href="eventDetails/@e.Id" Event="@e">
                 <img src="@e.ImageUrl" style="max-width:250px;"/>
             </a>
             <p>@e.Name</p>
