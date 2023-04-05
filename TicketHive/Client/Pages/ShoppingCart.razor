@@ -1,9 +1,9 @@
 ﻿@page "/shopping-cart"
+@using Microsoft.AspNetCore.Authorization;
 @using TicketHive.Client.Services;
 @using TicketHive.Shared.Models;
-@inject IAppService service
-
-
+@inject IAppService services
+@attribute [Authorize]
 
 <h1>Shopping Cart</h1>
 <br />
@@ -21,20 +21,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><input type="number" min="1" value="1" /></td>
-                        <td></td>
-                        <td><button class="btn btn-danger">Remove</button></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><input type="number" min="1" value="1" /></td>
-                        <td></td>
-                        <td><button class="btn btn-danger">Remove</button></td>
-                    </tr>
+
+                    @if(eventsList != null)
+                    {
+                        @foreach(var e in eventsList)
+                        {
+                            <tr>
+                                <td>@e.Name</td>
+                                <td>@e.Price.ToString()</td>
+                                <td><input type="number" min="1" value="1" /></td>
+                                <td>@e.Capacity</td>
+                                <td><button class="btn btn-danger">Remove</button></td>
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
         </div>
@@ -44,7 +44,6 @@
                     <h5 class="card-title">Order Summary</h5>
                     <hr />
                     <p>Subtotal: </p>
-                    @*<p>Tax: $2.40</p>*@
                     <hr />
                     <h4>Total:</h4>
                     <button class="btn btn-success btn-lg btn-block">Checkout</button>
@@ -56,10 +55,20 @@
 
 @code
 {
-    private List<EventModel> eventsList = new();
+    private List<EventModel>? eventsList;
 
-    protected async Task OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-       
+        await GetEvents();
+
+        //@foreach()
+        //{
+            
+        //}
     }
+    private async Task GetEvents()
+    {
+        eventsList = await services.GetEventsAsync();
+    }
+
 }
