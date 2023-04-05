@@ -2,6 +2,7 @@
 @using TicketHive.Client.Services;
 @using TicketHive.Shared.Models;
 @inject IAppService service;
+@inject AuthenticationStateProvider authStateProvider;
 
 <PageTitle>Index</PageTitle>
 
@@ -32,6 +33,13 @@ Welcome to your new app.
 
     protected override async Task OnInitializedAsync()
     {
-        Events = await service.GetEventsAsync();
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if (user.Identity!.IsAuthenticated)
+        {
+            Events = await service.GetEventsAsync();
+        }
     }
 }
