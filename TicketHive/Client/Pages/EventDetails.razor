@@ -12,10 +12,16 @@
 }
 else
 {
-	<h3>Event Details for @_Event.Name</h3>
-	<img src="@_Event.ImageUrl" style="max-width:400px;" />
-	<p>Price: @_Event.Price</p>
-	<p>Venue: @_Event.Venue</p>
+	<div class="text-center">
+		<h3>Event Details for @_Event.Name</h3>
+		<img src="@_Event.ImageUrl" style="max-width:400px;" />
+		<p>Price: @_Event.Price</p>
+		<p>Venue: @_Event.Venue</p>
+
+		<label for="ticket-input">Tickets </label>
+		<input class="m-3" id="ticket-input" type="number" min="0" max="10" />
+		<input class="btn btn-primary" type="submit" value="Buy" />
+	</div>
 }
 
 
