@@ -8,6 +8,9 @@
 <h3 class="text-center text-danger">Admin Area</h3>
 <hr />
 
+<div class="container">
+    <div class="row">
+        <div class="col-6">
 <EditForm Model="newEvent" OnValidSubmit="SubmitEvent" OnInvalidSubmit="HandleInvalidSubmit">
 <DataAnnotationsValidator/>
  <ValidationSummary/>
@@ -48,6 +51,26 @@
     <br />
     <input type="submit" value="Add" />
 </EditForm>
+        </div>
+        <div class="col-6">
+            <ul>
+                @if(events == null)
+                {
+                    <h3>Fetching data from database...</h3>
+                }
+            </ul>
+                @foreach (var happening in events)
+                {
+                    <li>
+                        <h3>@happening.Name</h3>
+                        <em>@happening.Date.Year-@happening.Date.Month-@happening.Date.Day</em>
+                        <input type="submit" value="Remove" @onclick="@(async e => await RemoveEvent(@happening.Id))" />
+                        <br />
+                    </li>
+                }
+        </div>
+    </div>
+</div>
 
 @code {
     public EventModel? newEvent { get; set; } = new();
@@ -74,11 +97,22 @@
         @if(newEvent != null)
         {
             await appService.PostEventAsync(newEvent);
+            await GetEvents();
         }
     }
 
     private void HandleInvalidSubmit()
     {
-        
+
+    }
+
+    private async Task RemoveEvent(int id)
+    {
+        var eventToRemove = id;
+
+        await appService.DeleteEventAsync(eventToRemove);
+
+        // Uppdatera display-listan med events
+        events!.Remove(events.First(e => e.Id == id));
     }
 }
