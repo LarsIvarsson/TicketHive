@@ -2,17 +2,24 @@
 @model TicketHive.Server.Areas.Identity.Pages.Account.LoginModel
 @{
 }
-<h2>Sign in</h2>
 
-<form method="post">
-	<label for="input-username">Username: </label>
-	<input id="input-username" asp-for="Username" type="text" placeholder="Username" />
-	<label for="input-password">Password: </label>
-	<input id="input-password" asp-for="Password" type="password" placeholder="Password" />
-	<input type="submit" value="Sign up" />
-	<div>
-		<span class="text-danger" asp-validation-for="Username"></span>
-		<span class="text-danger" asp-validation-for="Password"></span>
-	</div>
-</form>
-
+<div class="card border-dark text-center">
+	<h2>Login</h2>
+	<form method="post">
+		<div class="m-3">
+			<label for="input-username">Username: </label>
+			<input id="input-username" asp-for="Username" type="text" placeholder="Username" />
+		</div>
+		<div class="m-3">
+			<label for="input-password">Password: </label>
+			<input id="input-password" asp-for="Password" type="password" placeholder="Password" />
+		</div>
+		<div class="m-3">
+			<input class="btn btn-primary" type="submit" value="Login" />
+		</div>
+		<div class="m-3">
+			<span class="text-danger" asp-validation-for="Username"></span>
+			<span class="text-danger" asp-validation-for="Password"></span>
+		</div>
+	</form>
+</div>
