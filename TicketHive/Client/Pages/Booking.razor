@@ -1,5 +1,43 @@
-﻿<h3>Booking</h3>
+﻿@page "/allEvents"
+@using Microsoft.AspNetCore.Authorization;
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
+@inject IAppService service;
+@inject AuthenticationStateProvider authStateProvider;
+@attribute [Authorize]
 
-@code {
 
+<h3>All Events</h3>
+
+@if (Events == null)
+{
+    <p>Loading events...</p>
+}
+else
+{
+    @foreach (var e in Events)
+    {
+        <div>
+            <a href="EventDetails">
+                <img src="@e.ImageUrl" style="max-width:250px;"/>
+            </a>
+            <p>@e.Name</p>
+            <hr/>
+        </div>
+    } 
+}
+
+
+@code{
+    private List<EventModel>? Events;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity!.IsAuthenticated)
+        {
+            Events = await service.GetEventsAsync();
+        }
+    }
 }
