@@ -1,5 +1,84 @@
-﻿<h3>Admin</h3>
+﻿@page "/admin"
+@using Microsoft.AspNetCore.Authorization;
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
+@attribute [Authorize(Roles = "Admin")]
+@inject IAppService appService;
+
+<h3 class="text-center text-danger">Admin Area</h3>
+<hr />
+
+<EditForm Model="newEvent" OnValidSubmit="SubmitEvent" OnInvalidSubmit="HandleInvalidSubmit">
+<DataAnnotationsValidator/>
+ <ValidationSummary/>
+    <tr>
+    <label for="name-input">Name</label>
+    <InputText id="name-input" @bind-Value="newEvent.Name"/>
+    </tr>
+    <br />
+    <tr>
+    <label for="type-input">Category</label>
+    <InputSelect id="type-input" @bind-Value="newEvent.Type">
+        @foreach (var type in categories)
+        {
+            <option value="@type.ToString()">@type.ToString()</option>
+        }
+    </InputSelect>
+    </tr>
+    <br />
+    <tr>
+    <label for="date-input">Date</label>
+    <InputDate id="date-input" @bind-Value="newEvent.Date" />
+    </tr>
+    <br />
+    <tr>
+    <label for="venue-input">Venue</label>
+    <InputText id="venue-input" @bind-Value="newEvent.Venue" />
+    </tr>
+    <br />
+    <tr>
+    <label for="price-input">Price</label>
+    <InputNumber id="price-input" @bind-Value="newEvent.Price" />
+    </tr>
+    <br />
+    <tr>
+    <label for="capacity-input">Capacity</label>
+    <InputNumber id="capacity-input" @bind-Value="newEvent.Capacity" />
+    </tr>
+    <br />
+    <input type="submit" value="Add" />
+</EditForm>
 
 @code {
+    public EventModel? newEvent { get; set; } = new();
+    public List<string> categories = new();
+    public List<EventModel>? events;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEvents();
+
+        @foreach(var type in Enum.GetNames(typeof(CategoryEnum)))
+        {
+            categories.Add(type);
+        }
+    }   
+
+    private async Task GetEvents()
+    {
+        events = await appService.GetEventsAsync();
+    }
+
+    private async void SubmitEvent()
+    {
+        @if(newEvent != null)
+        {
+            await appService.PostEventAsync(newEvent);
+        }
+    }
+
+    private void HandleInvalidSubmit()
+    {
+        
+    }
 }
