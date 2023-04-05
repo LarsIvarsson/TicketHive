@@ -1,0 +1,45 @@
+﻿@page "/"
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
+@inject IAppService service;
+@inject AuthenticationStateProvider authStateProvider;
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<h1>Hej världen</h1>
+<p>TicketHive</p>
+
+@if (Events != null)
+{
+    @foreach(var eventModel in Events)
+    {
+        <h1>@eventModel.Name</h1>
+@*        <picture>
+            <source srcSet="@eventModel.ImageUrl" type="image/avif" />
+            <img decoding="async" loading="lazy"/>
+        </picture>*@
+        <img src="@eventModel.ImageUrl" />
+    }
+}
+
+@code{
+    private List<EventModel>? Events;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+
+        var user = authState.User;
+
+        if (user.Identity!.IsAuthenticated)
+        {
+            Events = await service.GetEventsAsync();
+        }
+    }
+}
