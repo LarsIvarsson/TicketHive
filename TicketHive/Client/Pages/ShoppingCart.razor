@@ -1,4 +1,9 @@
 ﻿@page "/shopping-cart"
+@using Microsoft.AspNetCore.Authorization;
+@using TicketHive.Client.Services;
+@using TicketHive.Shared.Models;
+@inject IAppService services
+@attribute [Authorize]
 
 <h1>Shopping Cart</h1>
 <br />
@@ -16,20 +21,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><input type="number" min="1" value="1" /></td>
-                        <td></td>
-                        <td><button class="btn btn-danger">Remove</button></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><input type="number" min="1" value="1" /></td>
-                        <td></td>
-                        <td><button class="btn btn-danger">Remove</button></td>
-                    </tr>
+
+                    @if(eventsList != null)
+                    {
+                        @foreach(var e in eventsList)
+                        {
+                            <tr>
+                                <td>@e.Name</td>
+                                <td>@e.Price.ToString()</td>
+                                <td><input type="number" min="1" value="1" /></td>
+                                <td>@e.Capacity</td>
+                                <td><button class="btn btn-danger">Remove</button></td>
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
         </div>
@@ -39,7 +44,6 @@
                     <h5 class="card-title">Order Summary</h5>
                     <hr />
                     <p>Subtotal: </p>
-                    @*<p>Tax: $2.40</p>*@
                     <hr />
                     <h4>Total:</h4>
                     <button class="btn btn-success btn-lg btn-block">Checkout</button>
@@ -49,80 +53,22 @@
     </div>
 </div>
 
-
-@*@page "/shopping-cart"
-
-
-@if (cartItems.Count == 0)
+@code
 {
-    <p>Your shopping cart is empty.</p>
+    private List<EventModel>? eventsList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetEvents();
+
+        //@foreach()
+        //{
+            
+        //}
+    }
+    private async Task GetEvents()
+    {
+        eventsList = await services.GetEventsAsync();
+    }
+
 }
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in cartItems)
-            {
-                <tr>
-                    <td>@item.ProductName</td>
-                    <td>@item.Price</td>
-                    <td><input type="number" min="1" max="10" @bind="@item.Quantity" /></td>
-                    <td>@(item.Price * item.Quantity)</td>
-                    <td><button class="btn btn-danger" @onclick="@(() => RemoveFromCart(item))">Remove</button></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="row">
-        <div class="col-md-6">
-            <button class="btn btn-success" @onclick="@(() => Checkout())">Checkout</button>
-        </div>
-        <div class="col-md-6 text-right">
-            <h3>Total: @GetTotal()</h3>
-        </div>
-    </div>
-}
-
-@code {
-    private List<CartItem> cartItems = new List<CartItem>();
-
-    protected override void OnInitialized()
-    {
-        // Populate cart items from database or other source
-        cartItems.Add(new CartItem { ProductName = "Product A", Price = 10.00m, Quantity = 1 });
-        cartItems.Add(new CartItem { ProductName = "Product B", Price = 15.00m, Quantity = 2 });
-    }
-
-    private void RemoveFromCart(CartItem item)
-    {
-        cartItems.Remove(item);
-    }
-
-    private decimal GetTotal()
-    {
-        return cartItems.Sum(x => x.Price * x.Quantity);
-    }
-
-    private void Checkout()
-    {
-        // Handle checkout logic
-    }
-
-    public class CartItem
-    {
-        public string ProductName { get; set; }
-        public decimal Price { get; set; }
-        public int Quantity { get; set; }
-    }
-}
-*@
