@@ -6,12 +6,11 @@
 
 <PageTitle>Index</PageTitle>
 
-<h2>Ticket Hive Welcome Page!</h2>
-
 
 
 @code{
     private List<EventModel>? Events;
+    public List<string> Claims { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
