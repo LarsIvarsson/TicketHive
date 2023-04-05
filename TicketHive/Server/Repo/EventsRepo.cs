@@ -9,32 +9,16 @@ namespace TicketHive.Server.Repo
 		private readonly EventsDbContext context;
 		private List<string> images = new()
 		{
-			"/images/event/img1.avif",
-			"/images/event/img2.avif",
-			"/images/event/img3.avif",
-			"/images/event/img4.avif",
-			"/images/event/img5.avif",
-			"/images/event/img6.avif",
-			"/images/event/img7.avif",
-			"/images/event/img8.avif",
-			"/images/event/img9.avif",
-			"/images/event/img10.avif",
-			"/images/event/img11.avif",
-			"/images/event/img12.avif",
-			"/images/event/img13.avif",
-			"/images/event/img14.avif",
-			"/images/event/img15.avif",
-			"/images/event/img16.avif",
-			"/images/event/img17.avif",
-			"/images/event/img18.avif",
-			"/images/event/img19.avif",
-			"/images/event/img20.avif",
-			"/images/event/img21.avif",
-			"/images/event/img22.avif",
-			"/images/event/img23.avif",
-			"/images/event/img24.avif",
-			"/images/event/img25.avif",
-			"/images/event/img26.avif"
+			"/images/event/img1.jpg",
+			"/images/event/img2.jpg",
+			"/images/event/img3.jpg",
+			"/images/event/img4.jpg",
+			"/images/event/img5.jpg",
+			"/images/event/img6.jpg",
+			"/images/event/img7.jpg",
+			"/images/event/img8.jpg",
+			"/images/event/img9.jpg",
+			"/images/event/img10.jpg"
 		};
 
 		public EventsRepo(EventsDbContext context)
@@ -107,7 +91,7 @@ namespace TicketHive.Server.Repo
 
 		private string SetImageUrl()
 		{
-			int i = new Random().Next(0, 26);
+			int i = new Random().Next(0, 10);
 			return images[i];
 		}
 	}

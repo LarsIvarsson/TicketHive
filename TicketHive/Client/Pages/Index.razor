@@ -6,7 +6,7 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Ticket Hive Welcome Page!</h1>
+<h2>Ticket Hive Welcome Page!</h2>
 
 
 
@@ -16,9 +16,7 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await authStateProvider.GetAuthenticationStateAsync();
-
         var user = authState.User;
-
         if (user.Identity!.IsAuthenticated)
         {
             Events = await service.GetEventsAsync();
