@@ -4,24 +4,36 @@
 }
 
 
-
-<h2>Register new user</h2>
-
-<form method="post">
-	<label for="input-username">Username: </label>
-	<input id="input-username" asp-for="Username" type="text" placeholder="Username" />
-
-	<label for="input-password">Password: </label>
-	<input id="input-password" asp-for="Password" type="password" placeholder="Password" />
-
-	<label for="input-verify">Verify: </label>
-	<input id="input-verify" asp-for="PasswordVerify" type="password" placeholder="Verify" />
-
-	<input type="submit" value="Sign up" />
-
-	<div>
-		<span class="text-danger" asp-validation-for="Username"></span>
-		<span class="text-danger" asp-validation-for="Password"></span>
-		<span class="text-danger" asp-validation-for="PasswordVerify"></span>
-	</div>
-</form>
+<div class="card border-dark text-center">
+	<h2>Register new user</h2>
+	<form method="post">
+		<div class="m-3">
+			<label for="input-username">Username: </label>
+			<input id="input-username" asp-for="Username" type="text" placeholder="Username" />
+		</div>
+		<div class ="m-3">
+			<label for="input-password">Password: </label>
+			<input id="input-password" asp-for="Password" type="password" placeholder="Password" />
+		</div>
+		<div class="m-3">
+			<label for="input-verify">Verify: </label>
+			<input id="input-verify" asp-for="PasswordVerify" type="password" placeholder="Verify" />
+		</div>
+		<div class="m-3">
+		<label for="select-country">Country: </label>
+			<select id="select-country">
+				<option value="Sweden">Sweden</option>
+				<option value="Germany">Germany</option>
+				<option value="Great Britain">Great Britain</option>
+			</select>
+		</div>
+		<div class="m-3">
+			<input class="btn btn-primary" type="submit" value="Register" />
+		</div>
+		<div class="m-3">
+			<span class="text-danger" asp-validation-for="Username"></span>
+			<span class="text-danger" asp-validation-for="Password"></span>
+			<span class="text-danger" asp-validation-for="PasswordVerify"></span>
+		</div>
+	</form>
+</div>

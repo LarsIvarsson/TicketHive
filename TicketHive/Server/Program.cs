@@ -59,8 +59,8 @@ using (var serviceProvider = builder.Services.BuildServiceProvider())
 builder.Services.AddIdentityServer()
 	.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
 	{
-		options.IdentityResources["openid"].UserClaims.Add("Admin");
-		options.ApiResources.Single().UserClaims.Add("Admin");
+		options.IdentityResources["openid"].UserClaims.Add("role");
+		options.ApiResources.Single().UserClaims.Add("role");
 	});
 
 builder.Services.AddAuthentication()
