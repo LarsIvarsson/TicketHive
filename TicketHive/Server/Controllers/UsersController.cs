@@ -26,19 +26,6 @@ namespace TicketHive.Server.Controllers
 				return BadRequest();
 			}
 		}
-		[HttpGet("{id}")]
-		public async Task<ActionResult<UserModel?>> GetUserById(int id)
-		{
-			var result = await repo.GetUserByIdAsync(id);
-			if (result != null)
-			{
-				return Ok(result);
-			}
-			else
-			{
-				return NotFound();
-			}
-		}
 		[HttpGet("{UserName}")]
 		public async Task<ActionResult<UserModel?>> GetUserByUsernameAsync(string UserName)
 		{
