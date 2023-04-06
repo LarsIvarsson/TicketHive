@@ -29,13 +29,8 @@
                             <tr>
                                 <td>@e.Name</td>
                                 <td>@e.Price.ToString()</td>
-
-                                <td><input type="number" min="1" value="1" /></td>
-                                <td>@e.Capacity</td>
-
                                 <td><input type="number" min="0" value="0"/></td>
                                 <td>@(e.Price * e.Capacity)</td>
-
                                 <td><button class="btn btn-danger">Remove</button></td>
                             </tr>
                         }
