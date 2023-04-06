@@ -50,13 +50,23 @@ else
 
 	private async Task AddToShoppingCart()
 	{
-		for (int i = 0; i < Quantity; i++)
+		// Reads cookie in local storage (if there is any) with current username
+		UserModel? cookieUser = await localStorage
+			.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
+
+		// if cookie is found we use that object as our user
+		if (cookieUser != null)
 		{
-			_User!.UserEvents!.Add(_Event!);			
+			_User = cookieUser;
 		}
 
-		var jsonUser = JsonConvert.SerializeObject(_User);
+		// adds event to users event list "selected number of times"
+		for (int i = 0; i < Quantity; i++)
+		{
+			_User!.UserEvents!.Add(_Event!);
+		}
 
-		await localStorage.SetItemAsync(authState?.User.Identity?.Name, jsonUser);
+		// finally converts object with updated event list to cookie and saves to local storage
+		await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);
 	}
 }
