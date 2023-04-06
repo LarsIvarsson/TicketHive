@@ -59,17 +59,6 @@ namespace TicketHive.Client.Services
 
 			return null;
 		}
-		public async Task<UserModel?> GetUserByIdAsync(int id)
-		{
-			var result = await httpClient.GetFromJsonAsync<UserModel>($"api/users/{id}");
-
-			if (result != null)
-			{
-				return result;
-			}
-
-			return null;
-		}
 		public async Task<UserModel?> GetUserByUsernameAsync(string UserName)
 		{
 			var result = await httpClient.GetFromJsonAsync<UserModel>($"api/users/{UserName}");

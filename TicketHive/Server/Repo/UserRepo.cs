@@ -15,10 +15,6 @@ namespace TicketHive.Server.Repo
 		{
 			return await context.Users.Include(u => u.UserEvents).ToListAsync();
 		}
-		public async Task<UserModel?> GetUserByIdAsync(int id)
-		{
-			return await context.Users.Include(e => e.UserEvents).FirstOrDefaultAsync(u => u.Id == id);
-		}
 		public async Task<UserModel?> GetUserByUsernameAsync(string UserName)
 		{
 			return await context.Users.Include(e => e.UserEvents).FirstOrDefaultAsync(u => u.Username == UserName);
