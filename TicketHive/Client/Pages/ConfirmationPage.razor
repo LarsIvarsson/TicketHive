@@ -1,4 +1,10 @@
-﻿<h3>ConfirmationPage</h3>
+﻿@page "/confirmation"
+@inject IAppService services
+@attribute [Authorize]
+
+<h3>Confirmation Page</h3>
+<em>This page will display a summary/receipt when shopping cart has been checked out</em>
+
 
 @code {
 
