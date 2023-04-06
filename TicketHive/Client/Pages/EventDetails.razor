@@ -5,6 +5,7 @@
 @inject IAppService service;
 @inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
+@inject ILocalStorageService localStorage
 
 @if (_Event == null)
 {

@@ -31,16 +31,9 @@
                             <tr>
                                 <td>@e.Name</td>
                                 <td>@e.Price.ToString()</td>
-
-                                <td><input type="number" min="1" value="1" /></td>
-                                <td>@e.Capacity</td>
-
-                                <td><input type="number" min="0" value="0"/></td>
+                                <td><input type="number" min="0" value="0" /></td>
+               
                                 <td>@(e.Price * e.Capacity)</td>
-
-                                @*<td><input type="number" min="0" value="0" @bind-value="@e.Quantity"/></td>*@
-                                <td><input type="number" @bind-value="@e.Quantity" /></td>
-                                <td>@(e.Price * e.Quantity)</td>
                                 <td><button class="btn btn-danger">Remove</button></td>
                             </tr>
                         }
@@ -52,8 +45,6 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Order Summary</h5>
-                    <hr />
-                    <p>Subtotal: </p>
                     <hr />
                     <h4>Total:</h4>
                     <button class="btn btn-success btn-lg btn-block">Checkout</button>
@@ -82,12 +73,12 @@
         //{
 
         //}
-    }
+
     private async Task GetEvents()
     {
         eventsList = await services.GetEventsAsync();
     }
-    
+
     //private void RemoveFromCart(EventModel event)
     //{
     //    eventsList.Remove(event);
@@ -103,3 +94,4 @@
         // Handle checkout logic
     }
 }
+   
