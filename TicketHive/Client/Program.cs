@@ -9,8 +9,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddBlazoredLocalStorage();
-
 builder.Services.AddHttpClient("TicketHive.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
 	.AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
@@ -18,8 +16,9 @@ builder.Services.AddHttpClient("TicketHive.ServerAPI", client => client.BaseAddr
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TicketHive.ServerAPI"));
 builder.Services.AddScoped<IAppService, AppService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
-
-
 builder.Services.AddApiAuthorization();
+
+
+builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();
