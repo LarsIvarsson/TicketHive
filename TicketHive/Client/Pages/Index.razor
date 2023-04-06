@@ -1,9 +1,4 @@
-﻿@page "/"
-@using TicketHive.Client.Services;
-@using TicketHive.Shared.Models;
-@inject IAppService service;
-@inject AuthenticationStateProvider authStateProvider
-@inject ICurrencyService currencyService
+@page "/"
 
 <PageTitle>Index</PageTitle>
 
@@ -11,24 +6,13 @@
     <div class="card-body">
         <h3 class="card-title">Ticket Hive</h3>
         
-        <p class="card-text">Welcome to Ticket Hive. The best site to find tickets to your favourte events.</p>
-
+        <p class="card-text">
+            Welcome to Ticket Hive. 
+            The best site to find tickets 
+            to your favourte events.
+        </p>
     </div>
 </div>
 
 @code{
-    private List<EventModel>? Events;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await authStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity!.IsAuthenticated)
-        {
-            Events = await service.GetEventsAsync();
-        }
-
-        await currencyService.GetCurrenciesAsync();
-    }
 }
