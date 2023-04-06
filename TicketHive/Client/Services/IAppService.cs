@@ -7,8 +7,10 @@ namespace TicketHive.Client.Services
 		Task<List<EventModel>?> GetEventsAsync();
 		Task<EventModel?> GetEventByIdAsync(int id);
 		Task PostEventAsync(EventModel model);
-		//Task PostUserAsync(UserModel model);
 		Task PutEventAsync(int id, EventModel model);
 		Task DeleteEventAsync(int id);
+		Task<List<UserModel>?> GetUsersAsync();
+		Task<UserModel?> GetUserByIdAsync(int id);
+		Task<UserModel?> GetUserByUsernameAsync(string UserName);
 	}
 }
