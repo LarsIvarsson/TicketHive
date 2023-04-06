@@ -1,6 +1,9 @@
 ﻿@page "/home"
+@inject IAppService services
+@attribute [Authorize]
 
-<h3>Home</h3>
+<h3>Home screen</h3>
+<em>Will display current users booked events, as well as some previews of popular events?</em>
 
 @code {
 

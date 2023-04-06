@@ -1,7 +1,4 @@
 ﻿@page "/admin"
-@using Microsoft.AspNetCore.Authorization;
-@using TicketHive.Client.Services;
-@using TicketHive.Shared.Models;
 @attribute [Authorize(Roles = "Admin")]
 @inject IAppService appService;
 @inject IJSRuntime JSRuntime;
