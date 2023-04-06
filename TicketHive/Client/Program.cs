@@ -17,6 +17,8 @@ builder.Services.AddHttpClient("TicketHive.ServerAPI", client => client.BaseAddr
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TicketHive.ServerAPI"));
 builder.Services.AddScoped<IAppService, AppService>();
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
 
 builder.Services.AddApiAuthorization();
 
