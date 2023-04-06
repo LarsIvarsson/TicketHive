@@ -4,6 +4,8 @@
 @using TicketHive.Shared.Models;
 @inject IAppService services
 @attribute [Authorize]
+@*@inject IHttpContextAccessor HttpContextAccessor*@
+
 
 <h1>Shopping Cart</h1>
 <br />
@@ -29,8 +31,9 @@
                             <tr>
                                 <td>@e.Name</td>
                                 <td>@e.Price.ToString()</td>
-                                <td><input type="number" min="1" value="1" /></td>
-                                <td>@e.Capacity</td>
+                                @*<td><input type="number" min="0" value="0" @bind-value="@e.Quantity"/></td>*@
+                                <td><input type="number" @bind-value="@e.Quantity" /></td>
+                                <td>@(e.Price * e.Quantity)</td>
                                 <td><button class="btn btn-danger">Remove</button></td>
                             </tr>
                         }
@@ -56,6 +59,8 @@
 @code
 {
     private List<EventModel>? eventsList;
+    public int Quantity { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,12 +68,26 @@
 
         //@foreach()
         //{
-            
+
         //}
     }
     private async Task GetEvents()
     {
         eventsList = await services.GetEventsAsync();
     }
+    
+    //private void RemoveFromCart(EventModel event)
+    //{
+    //    eventsList.Remove(event);
+    //}
 
+    private decimal GetTotal()
+    {
+        return eventsList.Sum(e => e.Price * e.Capacity);
+    }
+
+    private void Checkout()
+    {
+        // Handle checkout logic
+    }
 }
