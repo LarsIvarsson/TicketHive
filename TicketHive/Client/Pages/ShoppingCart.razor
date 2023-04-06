@@ -31,6 +31,13 @@
                             <tr>
                                 <td>@e.Name</td>
                                 <td>@e.Price.ToString()</td>
+
+                                <td><input type="number" min="1" value="1" /></td>
+                                <td>@e.Capacity</td>
+
+                                <td><input type="number" min="0" value="0"/></td>
+                                <td>@(e.Price * e.Capacity)</td>
+
                                 @*<td><input type="number" min="0" value="0" @bind-value="@e.Quantity"/></td>*@
                                 <td><input type="number" @bind-value="@e.Quantity" /></td>
                                 <td>@(e.Price * e.Quantity)</td>
@@ -62,10 +69,15 @@
     public int Quantity { get; set; }
 
 
+
+
+
     protected override async Task OnInitializedAsync()
     {
         await GetEvents();
 
+
+   }
         //@foreach()
         //{
 

@@ -4,55 +4,68 @@
 @using TicketHive.Shared.Models;
 @attribute [Authorize(Roles = "Admin")]
 @inject IAppService appService;
+@inject IJSRuntime JSRuntime;
 
-<h3 class="text-center text-danger">Admin Area</h3>
+<h1 class="text-center text-danger">Admin Area</h1>
 <hr />
 
+<div class="container">
+    <div class="row">
+        <div class="col-5">
 <EditForm Model="newEvent" OnValidSubmit="SubmitEvent" OnInvalidSubmit="HandleInvalidSubmit">
-<DataAnnotationsValidator/>
- <ValidationSummary/>
-    <tr>
-    <label for="name-input">Name</label>
-    <InputText id="name-input" @bind-Value="newEvent.Name"/>
-    </tr>
-    <br />
-    <tr>
-    <label for="type-input">Category</label>
-    <InputSelect id="type-input" @bind-Value="newEvent.Type">
-        @foreach (var type in categories)
-        {
-            <option value="@type.ToString()">@type.ToString()</option>
-        }
-    </InputSelect>
-    </tr>
-    <br />
-    <tr>
-    <label for="date-input">Date</label>
-    <InputDate id="date-input" @bind-Value="newEvent.Date" />
-    </tr>
-    <br />
-    <tr>
-    <label for="venue-input">Venue</label>
-    <InputText id="venue-input" @bind-Value="newEvent.Venue" />
-    </tr>
-    <br />
-    <tr>
-    <label for="price-input">Price</label>
-    <InputNumber id="price-input" @bind-Value="newEvent.Price" />
-    </tr>
-    <br />
-    <tr>
-    <label for="capacity-input">Capacity</label>
-    <InputNumber id="capacity-input" @bind-Value="newEvent.Capacity" />
-    </tr>
-    <br />
-    <input type="submit" value="Add" />
+    <DataAnnotationsValidator/> 
+        <h2 class="text-center mb-3">New event</h2>
+            <label for="name-input">Name</label>
+            <InputText class="form-control mb-2" id="name-input" @bind-Value="newEvent!.Name" />
+            <label for="type-input">Category</label>
+            <InputSelect class="form-control mb-2" id="type-input" @bind-Value="newEvent.Type">
+                @foreach (var type in categories)
+                {
+                    <option value="@type.ToString()">@type.ToString()</option>
+                }
+            </InputSelect>
+            <label for="date-input">Date</label>
+            <InputDate class="form-control mb-2" id="date-input" @bind-Value="newEvent.Date" />
+            <label for="venue-input">Venue</label>
+            <InputText class="form-control mb-2" id="venue-input" @bind-Value="newEvent.Venue" />
+            <label for="price-input">Price</label>
+            <InputNumber class="form-control mb-2" id="price-input" @bind-Value="newEvent.Price" />
+            <label for="capacity-input">Capacity</label>
+            <InputNumber class="form-control mb-3" id="capacity-input" @bind-Value="newEvent.Capacity" />
+            <input type="submit" value="Add" />
+        <hr />
+    <ValidationSummary />
 </EditForm>
+        </div>
+        <div class="col-2">
+
+        </div>
+        <div class="col-5">
+            <h2 class="text-center mb-3">Event list</h2>
+                @if(events == null)
+                {
+                    <h3>Fetching data from database...</h3>
+                }
+            <ul class="list-group">
+                @foreach (var happening in events!)
+                {
+                    <li class="list-group-item">
+                        <h5>@happening.Name</h5>
+                        <span>@happening.Venue |</span>
+                        <em>@happening.Date.ToString("yyyy-MM-dd")</em>
+                        <input class="btn btn-danger float-end" type="submit" value="Remove" @onclick="@(async e => await RemoveEvent(@happening.Id))" />
+                        <br />
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
 
 @code {
     public EventModel? newEvent { get; set; } = new();
     public List<string> categories = new();
-    public List<EventModel>? events;
+    public List<EventModel>? events = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,16 +82,41 @@
         events = await appService.GetEventsAsync();
     }
 
+    private void CreateEvent()
+    {
+        newEvent = new EventModel();
+    }
+
     private async void SubmitEvent()
     {
         @if(newEvent != null)
         {
             await appService.PostEventAsync(newEvent);
+            await GetEvents();
+
+            StateHasChanged();
+            CreateEvent();
         }
     }
 
     private void HandleInvalidSubmit()
     {
         
+    }
+
+    private async Task RemoveEvent(int id)
+    {
+        var eventToRemove = id;
+
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+
+        if (confirmed)
+        {
+            // Delete!
+            await appService.DeleteEventAsync(eventToRemove);
+
+            // Uppdatera display-listan med events
+            events!.Remove(events.First(e => e.Id == id));
+        }
     }
 }
