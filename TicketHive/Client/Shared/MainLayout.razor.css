@@ -4,14 +4,17 @@
     flex-direction: column;
 }
 
+/* change background for pages here */
 main {
     flex: 1;
 }
 
+/* change background here for sidebar */
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(180deg, #305076 0%, rgb(251, 232, 156) 70%);
 }
 
+/* and top row bar color here */
 .top-row {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;

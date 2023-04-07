@@ -1,5 +1,5 @@
 ﻿@page "/shopping-cart"
-@inject IAppService services
+@inject IAppService service
 @attribute [Authorize]
 
 <h1>Shopping Cart</h1>
@@ -70,7 +70,7 @@
    }
     private async Task GetEvents()
     {
-        eventsList = await services.GetEventsAsync();
+        eventsList = await service.GetEventsAsync();
     }
 
 }
