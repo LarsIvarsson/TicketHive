@@ -12,6 +12,8 @@ namespace TicketHive.Shared.Models
     {
         [JsonProperty("EUR")]
         public double? Euro { get; set; }
+        [JsonProperty("GBP")]
+        public double? Pounds { get; set; }
     }
 
     public class Root

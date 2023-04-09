@@ -1,9 +1,6 @@
 ﻿@page "/shopping-cart"
-@inject IAppService services
+@inject IAppService service
 @attribute [Authorize]
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-
-
 
 <h1>Shopping Cart</h1>
 <br />
@@ -17,33 +14,23 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    @if (eventsList != null && eventsList.Any())
+                    @if(eventsList != null)
                     {
-                        @foreach (var e in eventsList)
+                        @foreach(var e in eventsList)
                         {
                             <tr>
                                 <td>@e.Name</td>
                                 <td>@e.Price.ToString()</td>
-                                <td>
-                                    <button class="btn btn-light" @onclick="(() => IncreaseQuantity(e))">+</button>
-                                    <span>@GetQuantity(e)</span>
-                                    <button class="btn btn-light" @onclick="(() => DecreaseQuantity(e))">-</button>
-                                </td>
-
-                                <td>@(GetTotal(e).ToString())</td>
-                                <td><button class="btn btn-danger" @onclick="(() => RemoveItem(e))">Remove</button></td>
+                                <td><input type="number" min="0" value="0"/></td>
+                                <td>@(e.Price * e.Capacity)</td>
+                                <td><button class="btn btn-danger">Remove</button></td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="4">Your shopping cart is empty</td>
-                        </tr>
                     }
                 </tbody>
             </table>
@@ -53,8 +40,9 @@
                 <div class="card-body">
                     <h5 class="card-title">Order Summary</h5>
                     <hr />
-                    <h4>Subtotal: @GetSubtotal().ToString()</h4>
-                    <h4>Total: @GetTotal()</h4>
+                    <p>Subtotal: </p>
+                    <hr />
+                    <h4>Total:</h4>
                     <button class="btn btn-success btn-lg btn-block">Checkout</button>
                 </div>
             </div>
@@ -64,76 +52,20 @@
 
 @code
 {
-    private List<EventModel> eventsList;
+    private List<EventModel>? eventsList;
+
+
+
 
     protected override async Task OnInitializedAsync()
     {
+        await GetEvents();
 
-        try
-        {
-            eventsList = await services.GetEventsAsync();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error getting events: {ex.Message}");
-            eventsList = new List<EventModel>();
-        }
 
-    }
-    private async Task <int> GetQuantity(EventModel item)
+   }
+    private async Task GetEvents()
     {
-        return await localStorage.GetItemAsync<int>($"event-{item.Id}-quantity");
-
-    }
-    private async Task IncreaseQuantity(EventModel item)
-    {
-        var quantity = await GetQuantity(item);
-        quantity ++;
-        await localStorage.SetItemAsync($"event-{item.Id}-quantity", quantity);
-        
+        eventsList = await service.GetEventsAsync();
     }
 
-    private async Task DecreaseQuantity(EventModel item)
-    {
-        var quantity = await GetQuantity(item);
-        if (quantity > 1)
-        {
-            quantity--;
-            await localStorage.SetItemAsync($"event-{item.Id}-quantity", quantity);
-        }
-        else
-        {
-            await RemoveItem(item);
-        }
-        
-    }
-    private async Task RemoveItem(EventModel item)
-    {
-        await localStorage.RemoveItemAsync($"event-{item.Id}-quantity");
-        eventsList.Remove(item);
-    }
-
-    private async Task <decimal> GetTotal(EventModel item)
-    {
-        var quantity = await GetQuantity(item);
-        return item.Price * quantity;
-    }
-
-    private async Task <decimal> GetSubtotal()
-    {
-        decimal subtotal = 0;
-
-        foreach (var item in eventsList)
-        {
-            subtotal += await GetTotal(item);
-        }
-
-        return subtotal;
-
-    }
-
-    private async Task <decimal> GetTotal()
-    {
-        return await GetSubtotal();
-    }
 }

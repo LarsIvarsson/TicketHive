@@ -8,25 +8,27 @@ namespace TicketHive.Client.Services
     {
         public async Task<Root?> GetCurrenciesAsync()
         {
-            //var result = await new HttpClient().GetFromJsonAsync<List<CurrencyModel>>("api/currencies");
-
-            //if (result != null)
-            //{
-            //    return result;
-            //}
-
-            //return null!;
-
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://api.apilayer.com/exchangerates_data/latest?symbols=EUR&base=SEK");
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://api.apilayer.com/exchangerates_data/latest?symbols=EUR,GBP&base=SEK");
             requestMessage.Headers.Add("apikey", "w7ocDhWDa9ekbz4TbMH26wraRGSYHVGo");
             
             HttpResponseMessage response = await new HttpClient().SendAsync(requestMessage);
 
-            var responseString = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
 
-            var result = JsonConvert.DeserializeObject<Root?>(responseString);
+                if (responseString != null)
+                {
+                    var result = JsonConvert.DeserializeObject<Root?>(responseString);
 
-            return result;
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

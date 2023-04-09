@@ -1,10 +1,91 @@
 ﻿@page "/home"
-@inject IAppService services
+@inject IAppService service
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
 
-<h3>Home screen</h3>
-<em>Will display current users booked events, as well as some previews of popular events?</em>
+<div class="text-center">
+	<h2>Home</h2> <hr />
+
+	<div class="row">
+		<div class="col-6">
+			<h3>Your booked events</h3>
+			@if (UserEvents is null)
+			{
+				<p>No events booked yet...</p>
+				<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> 
+					to get tickets for your next event</p>
+			}
+			else
+			{
+				@foreach (var e in UserEvents)
+				{
+					// sort and display only one of each booked event
+					<div>
+						<a href="eventDetails/@e.Id" Event="@e">
+							<img src="@e.ImageUrl" style="max-width:250px;" />
+						</a>
+						<p>@e.Name</p>
+						<hr />
+					</div>
+				}
+			}
+		</div>
+		<div class="col-6">
+			<h3>Popular events</h3>
+			@if (PopularEvents is null)
+			{
+				<p>Loading popular events...</p>
+			}
+			else
+			{
+				@foreach (var e in PopularEvents)
+				{
+					// from popular events do not show already booked events
+					<div>
+						<a href="eventDetails/@e.Id" Event="@e">
+							<img src="@e.ImageUrl" style="max-width:250px;" />
+						</a>
+						<p>@e.Name</p>
+						<hr />
+					</div>										
+				}
+			}
+		</div>
+	</div>
+</div>
+
 
 @code {
 
+	private List<EventModel>? UserEvents;
+	private List<EventModel>? PopularEvents;
+	private UserModel? _User { get; set; }
+	private AuthenticationState? authState;
+
+	protected override async Task OnInitializedAsync()
+	{
+		authState = await authStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		if (user.Identity!.IsAuthenticated)
+		{
+			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+			await GetUserEvents();
+			PopularEvents = await service.GetEventsAsync();
+
+		}
+	}
+
+	private async Task GetUserEvents()
+	{
+		var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
+		if (cookie is null)
+		{
+			UserEvents = null;
+		}
+		else
+		{
+			UserEvents = cookie.UserEvents;
+		}
+	}
 }
