@@ -1,12 +1,16 @@
 ﻿@page "/shopping-cart"
-@inject IAppService service
+@inject IAppService services
 @attribute [Authorize]
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager navigationManager
+
+
 
 <h1>Shopping Cart</h1>
 <br />
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8" >
             <table class="table">
                 <thead>
                     <tr>
@@ -14,23 +18,33 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    @if(eventsList != null)
+                    @if (eventsList != null && eventsList.Any())
                     {
-                        @foreach(var e in eventsList)
+                        @foreach (var e in eventsList)
                         {
                             <tr>
                                 <td>@e.Name</td>
                                 <td>@e.Price.ToString()</td>
-                                <td><input type="number" min="0" value="0"/></td>
-                                <td>@(e.Price * e.Capacity)</td>
-                                <td><button class="btn btn-danger">Remove</button></td>
+                                <td>
+                                    <button class="btn btn-light" @onclick="(() => IncreaseQuantity(e))">+</button>
+                                    <span>@GetQuantity(e)</span>
+                                    <button class="btn btn-light" @onclick="(() => DecreaseQuantity(e))">-</button>
+                                </td>
+
+                                <td>@(GetTotal(e).ToString())</td>
+                                <td><button class="btn btn-danger" @onclick="(() => RemoveItem(e))">Remove</button></td>
                             </tr>
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Your shopping cart is empty</td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -40,32 +54,104 @@
                 <div class="card-body">
                     <h5 class="card-title">Order Summary</h5>
                     <hr />
-                    <p>Subtotal: </p>
-                    <hr />
-                    <h4>Total:</h4>
-                    <button class="btn btn-success btn-lg btn-block">Checkout</button>
+                    <h4>Subtotal: @GetSubtotal().ToString()</h4>
+                    @*<h4>Total: @GetTotal()</h4>*@
+                    <button class="btn btn-success btn-lg btn-block" @*@onclick="ConfirmationPage"*@>Checkout</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@code
-{
-    private List<EventModel>? eventsList;
+@code {
+    // List of events in cart
+    private List<EventModel> eventsList;
 
-
-
-
+    // fetch the list of events from the server
     protected override async Task OnInitializedAsync()
     {
-        await GetEvents();
+        try
+        {
+            // Injected IAppService instance to fetch the events
+            eventsList = await services.GetEventsAsync();
+        }
+        catch (Exception ex)
+        {
+            // Log errors that occur while fetching the events
+            Console.WriteLine($"Error getting events: {ex.Message}");
+            
+            eventsList = new List<EventModel>();
+        }
+    }
 
-
-   }
-    private async Task GetEvents()
+    // Get the quantity of a item in cart
+    private async Task <int> GetQuantity(EventModel item)
     {
-        eventsList = await service.GetEventsAsync();
+        // Use the Blazored.LocalStorage to fetch the quantity of the item
+        return await localStorage.GetItemAsync<int>($"event-{item.Id}-quantity");
+    }
+
+    //Increase the quantity of a item in the cart
+    private async Task IncreaseQuantity(EventModel item)
+    {
+        // Fetch the current quantity of the item
+        var quantity = await GetQuantity(item);
+        // Increment the quantity
+        quantity++;
+        // Save the new quantity in local storage
+        await localStorage.SetItemAsync($"event-{item.Id}-quantity", quantity);
+    }
+
+    // Decrease the quantity of a item in the cart
+    private async Task DecreaseQuantity(EventModel item)
+    {
+        // Fetch the current quantity of the item
+        var quantity = await GetQuantity(item);
+        if (quantity > 1)
+        {
+            // Decrement the quantity if it's greater than 1
+            quantity--;
+            // Save the new quantity in local storage
+            await localStorage.SetItemAsync($"event-{item.Id}-quantity", quantity);
+        }
+        else
+        {
+            // If the quantity is 1 or less, remove the item from the cart
+            await RemoveItem(item);
+        }
+    }
+
+    // Define a method to remove a particular item from the shopping cart
+    private async Task RemoveItem(EventModel item)
+    {
+        // Remove the item quantity from local storage
+        await localStorage.RemoveItemAsync($"event-{item.Id}-quantity");
+        // Remove the item from the eventsList
+        eventsList.Remove(item);
+    }
+
+    // Define a method to get the total cost of a particular item in the shopping cart
+    private async Task<decimal> GetTotal(EventModel item)
+    {
+        // Fetch the quantity of the item
+        var quantity = await GetQuantity(item);
+        // Calculate the total cost of the item
+        return item.Price * quantity;
+    }
+
+    // Define a method to get the subtotal cost of all items in the shopping cart
+    private async Task<decimal> GetSubtotal()
+    {
+        // Initialize the subtotal to zero
+        decimal subtotal = 0;
+        // Iterate through each item in the eventsList
+        foreach (var item in eventsList)
+        {
+            // Add the total cost of the item to the subtotal
+            subtotal += await GetTotal(item);
+        }
+        // Return the subtotal
+        return subtotal;
     }
 
 }
