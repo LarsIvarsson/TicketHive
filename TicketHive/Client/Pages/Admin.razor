@@ -2,6 +2,7 @@
 @attribute [Authorize(Roles = "Admin")]
 @inject IAppService appService;
 @inject IJSRuntime JSRuntime;
+@inject AuthenticationStateProvider authStateProvider;
 
 <h1 class="text-center text-danger">Admin Area</h1>
 <hr />
@@ -63,10 +64,26 @@
     public EventModel? newEvent { get; set; } = new();
     public List<string> categories = new();
     public List<EventModel>? events = new();
+    private AuthenticationState? authState;
+    private UserModel? _User { get; set; }
+    private string? userCountry { get; set; }
+    private string? userCurrency { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-        await GetEvents();
+        // TO-DO: Hitta inloggad användares Country för att kunna visa rätt valuta
+        authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity!.IsAuthenticated)
+        {
+            _User = await appService.GetUserByUsernameAsync(user.Identity.Name!);
+            userCountry = await appService.GetUserCountryByUsernameAsync(_User!.Username);
+
+            await GetEvents();
+        }
+        
 
         @foreach(var type in Enum.GetNames(typeof(CategoryEnum)))
         {
