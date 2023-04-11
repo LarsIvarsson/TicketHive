@@ -27,7 +27,7 @@
 			{
 				@foreach (var group in groupedList)
 				{
-					<p>@group.Count() ticket(s) for event: @group.ElementAt(0).Name</p>
+					<p>@group.Count() ticket(s) for event: @group.First().Name</p>
 					<hr />			
 				}
 			}
