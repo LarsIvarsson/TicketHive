@@ -1,16 +1,70 @@
-﻿@page "/shopping-cart"
+﻿
+@page "/shopping-cart"
 @inject IAppService services
 @attribute [Authorize]
+@inject AuthenticationStateProvider authStateProvider
+@inject ICartService cartService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject NavigationManager navigationManager
 
 
+@if (shoppingCart != null)
+{
+    if (shoppingCart.Count > 0)
+    {
+        <h1>Checkout</h1>
 
-<h1>Shopping Cart</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Ticket Price</th>
+                    <th>Quantity</th>
+                    <th>Event Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in shoppingCart)
+                {
+                    <tr>
+                        <td>
+                            <h4>@item.Event.Name</h4>
+                            @*<br><p>Tickets remaining: @(@item.Event.MaxCapacity - @item.Event.SoldTickets)</p>*@
+                        </td>
+                        <td>@item.Event.Price</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="(() => cartService.DecreaceQuantity(item))">-</button>
+                            @item.Quantity
+                            <button class="btn btn-primary" @onclick="(() => cartService.IncreaceQuantity(item))">+</button>
+                        </td>
+                        <td>@(item.Event.Price * item.Quantity)</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right"><strong>Order Total:</strong></td>
+                    <td>@shoppingCart.Sum(item => item.Event.Price * item.Quantity)</td>
+                </tr>
+                @*<button class="btn btn-primary" @onclick="(() => ValidatePurchase(shoppingCart))">Purchase</button>*@
+            </tfoot>
+        </table>
+
+    }
+    else
+    {
+        <p>You have emptied your cart dawg.</p>
+    }
+}
+else
+{
+    <p>You seem new here... Go add some events!</p>
+}
+
+@*<h1>Shopping Cart</h1>
 <br />
 <div class="container">
     <div class="row">
-        <div class="col-md-8" >
+        <div class="col-md-8">
             <table class="table">
                 <thead>
                     <tr>
@@ -18,32 +72,41 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-
-                    @if (eventsList != null && eventsList.Any())
+                    @if (shoppingCart != null && shoppingCart.Any())
                     {
-                        @foreach (var e in eventsList)
+                        @foreach (var c in shoppingCart)
                         {
                             <tr>
-                                <td>@e.Name</td>
-                                <td>@e.Price.ToString()</td>
+                                <td>@c.Event.Name</td>
+                                <td>@c.Event.Price.ToString()</td>
                                 <td>
-                                    <button class="btn btn-light" @onclick="(() => IncreaseQuantity(e))">+</button>
-                                    <span>@GetQuantity(e)</span>
-                                    <button class="btn btn-light" @onclick="(() => DecreaseQuantity(e))">-</button>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.DecreaceQuantity(c))">
+                                                <span class="fa fa-minus">-</span>
+                                            </button>
+                                        </span>
+                                        <input class="form-control" type="number" value="@c.Quantity" disabled />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.IncreaceQuantity(c))">
+                                                <span class="fa fa-plus">+</span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </td>
-
                                 <td>@(GetTotal(e).ToString())</td>
-                                <td><button class="btn btn-danger" @onclick="(() => RemoveItem(e))">Remove</button></td>
+                                <td><button class="btn btn-danger" @onclick="(() => RemoveItem(c))">Remove</button></td>
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="4">Your shopping cart is empty</td>
+                            <td colspan="5">Your shopping cart is empty</td>
                         </tr>
                     }
                 </tbody>
@@ -55,103 +118,41 @@
                     <h5 class="card-title">Order Summary</h5>
                     <hr />
                     <h4>Subtotal: @GetSubtotal().ToString()</h4>
-                    @*<h4>Total: @GetTotal()</h4>*@
-                    <button class="btn btn-success btn-lg btn-block" @*@onclick="ConfirmationPage"*@>Checkout</button>
+                    <h4>Total: @GetTotal().ToString()</h4>
+                    <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
-@code {
-    // List of events in cart
-    private List<EventModel> eventsList;
 
-    // fetch the list of events from the server
+@code
+{
+    private List<CartItemsModel>? shoppingCart;
+
+    private string signedInUser;
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            // Injected IAppService instance to fetch the events
-            eventsList = await services.GetEventsAsync();
-        }
-        catch (Exception ex)
-        {
-            // Log errors that occur while fetching the events
-            Console.WriteLine($"Error getting events: {ex.Message}");
-            
-            eventsList = new List<EventModel>();
-        }
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        signedInUser = authState.User.Identity.Name;
+
+
+        shoppingCart = cartService.GetShoppingCartItem();
     }
 
-    // Get the quantity of a item in cart
-    private async Task <int> GetQuantity(EventModel item)
-    {
-        // Use the Blazored.LocalStorage to fetch the quantity of the item
-        return await localStorage.GetItemAsync<int>($"event-{item.Id}-quantity");
-    }
+    //private async Task ValidatePurchase(List<CartItemsModel> shoppingCart)
+    //{
+    //    bool isValidated = true;
 
-    //Increase the quantity of a item in the cart
-    private async Task IncreaseQuantity(EventModel item)
-    {
-        // Fetch the current quantity of the item
-        var quantity = await GetQuantity(item);
-        // Increment the quantity
-        quantity++;
-        // Save the new quantity in local storage
-        await localStorage.SetItemAsync($"event-{item.Id}-quantity", quantity);
-    }
+    //    foreach(var item in shoppingCart)
+    //    {
+    //        if(item.Event.Capacity - item.Event.)
+    //    }
+    //}
 
-    // Decrease the quantity of a item in the cart
-    private async Task DecreaseQuantity(EventModel item)
-    {
-        // Fetch the current quantity of the item
-        var quantity = await GetQuantity(item);
-        if (quantity > 1)
-        {
-            // Decrement the quantity if it's greater than 1
-            quantity--;
-            // Save the new quantity in local storage
-            await localStorage.SetItemAsync($"event-{item.Id}-quantity", quantity);
-        }
-        else
-        {
-            // If the quantity is 1 or less, remove the item from the cart
-            await RemoveItem(item);
-        }
-    }
-
-    // Define a method to remove a particular item from the shopping cart
-    private async Task RemoveItem(EventModel item)
-    {
-        // Remove the item quantity from local storage
-        await localStorage.RemoveItemAsync($"event-{item.Id}-quantity");
-        // Remove the item from the eventsList
-        eventsList.Remove(item);
-    }
-
-    // Define a method to get the total cost of a particular item in the shopping cart
-    private async Task<decimal> GetTotal(EventModel item)
-    {
-        // Fetch the quantity of the item
-        var quantity = await GetQuantity(item);
-        // Calculate the total cost of the item
-        return item.Price * quantity;
-    }
-
-    // Define a method to get the subtotal cost of all items in the shopping cart
-    private async Task<decimal> GetSubtotal()
-    {
-        // Initialize the subtotal to zero
-        decimal subtotal = 0;
-        // Iterate through each item in the eventsList
-        foreach (var item in eventsList)
-        {
-            // Add the total cost of the item to the subtotal
-            subtotal += await GetTotal(item);
-        }
-        // Return the subtotal
-        return subtotal;
-    }
-
+    //private async Task AddEventToUser(int id)
+    //{
+    //    await cartService.AddEventToUserAsync(signedInUser, id);
+    //}
 }
