@@ -4,13 +4,16 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="user">Hello, @context.User.Identity?.Name!</a>
-        <a href="allEvents" class="oi oi-menu"></a>
-        <a href="home" class="oi oi-home"></a>
-        <a href="shopping-cart" class="oi oi-cart"></a>
+        <img src="images/logos/black only logo.png" style="max-width:65px;" />
+        <a href="home">Hello, @context.User.Identity?.Name!</a>
+        <a href="user" class="oi oi-cog" data-toggle="tooltip" data-placement="bottom" title="Settings page"></a>
+        <a href="allEvents" class="oi oi-grid-three-up" data-toggle="tooltip" data-placement="bottom" title="All Events"></a>
+        <a href="home" class="oi oi-home" data-toggle="tooltip" data-placement="bottom" title="Go to Home page"></a>
+        <a href="shopping-cart" class="oi oi-cart" data-toggle="tooltip" data-placement="bottom" title="See Shopping cart"></a>
         <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
+        <img src="images/logos/black only logo.png" style="max-width:65px;" />
         <a href="authentication/register">Register</a>
         <a href="authentication/login">Log in</a>
     </NotAuthorized>
