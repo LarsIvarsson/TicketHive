@@ -5,8 +5,9 @@
 <AuthorizeView>
     <Authorized>
         <a href="user">Hello, @context.User.Identity?.Name!</a>
-        <a href="shopping-cart" class="oi oi-cart"></a>
         <a href="allEvents" class="oi oi-menu"></a>
+        <a href="home" class="oi oi-home"></a>
+        <a href="shopping-cart" class="oi oi-cart"></a>
         <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>

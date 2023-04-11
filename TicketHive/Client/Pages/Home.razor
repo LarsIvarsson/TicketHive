@@ -10,7 +10,9 @@
 	<div class="row">
 		<div class="col-6">
 			<h3>Your booked events</h3>
-			@if (UserEvents is null)
+
+
+			@if (groupedList is null || groupedList.Count == 0)
 			{
 				<p>No events booked yet...</p>
 				<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> 
@@ -18,16 +20,10 @@
 			}
 			else
 			{
-				@foreach (var e in UserEvents)
+				@foreach (var group in groupedList)
 				{
-					// sort and display only one of each booked event
-					<div>
-						<a href="eventDetails/@e.Id" Event="@e">
-							<img src="@e.ImageUrl" style="max-width:250px;" />
-						</a>
-						<p>@e.Name</p>
-						<hr />
-					</div>
+					<p>@group.Count() ticket(s) for event: @group.ElementAt(0).Name</p>
+					<hr />			
 				}
 			}
 		</div>
@@ -58,8 +54,9 @@
 
 @code {
 
-	private List<EventModel>? UserEvents;
+	//private List<EventModel>? UserEvents;
 	private List<EventModel>? PopularEvents;
+	private List<IGrouping<int, EventModel>>? groupedList;
 	private UserModel? _User { get; set; }
 	private AuthenticationState? authState;
 
@@ -67,25 +64,36 @@
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
+
 		if (user.Identity!.IsAuthenticated)
 		{
 			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
 			await GetUserEvents();
 			PopularEvents = await service.GetEventsAsync();
-
 		}
 	}
 
 	private async Task GetUserEvents()
 	{
+		// this is to get and sort events from cookie
 		var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
 		if (cookie is null)
 		{
-			UserEvents = null;
+			groupedList = null;
 		}
-		else
+		else /*if (cookie.UserEvents != null)*/
 		{
-			UserEvents = cookie.UserEvents;
+			groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
 		}
 	}
+
+	//protected override void OnParametersSet()
+	//{
+	//	GetUserEvents();
+	//}
+
+	//private void GetUserEvents()
+	//{
+	//	UserEvents = _User!.UserEvents;
+	//}
 }
