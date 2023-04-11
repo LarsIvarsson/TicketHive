@@ -7,7 +7,7 @@ namespace TicketHive.Client.Managers
     {
         private readonly ICurrencyService currencyService;
 
-        public string Currency { get; set; }
+        public string? Currency { get; set; }
 
         public CurrencyManager(ICurrencyService currencyService)
         {
@@ -16,7 +16,7 @@ namespace TicketHive.Client.Managers
 
         public async Task<Root?> GetCurrencies()
         {
-            Root currency = await currencyService.GetCurrenciesAsync();
+            Root? currency = await currencyService.GetCurrenciesAsync();
 
             return currency;
         }

@@ -70,5 +70,17 @@ namespace TicketHive.Client.Services
 
 			return null;
 		}
+
+		public async Task<string?> GetUserCountryByUsernameAsync(string AppUsername)
+		{
+			var result = await httpClient.GetFromJsonAsync<string>($"api/appusers/{AppUsername}");
+
+			if (result != null)
+			{
+				return result;
+			}
+
+			return null;
+		}
 	}
 }

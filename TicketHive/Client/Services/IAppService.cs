@@ -11,5 +11,6 @@ namespace TicketHive.Client.Services
 		Task DeleteEventAsync(int id);
 		Task<List<UserModel>?> GetUsersAsync();
 		Task<UserModel?> GetUserByUsernameAsync(string UserName);
-	}
+		Task<string?> GetUserCountryByUsernameAsync(string AppUsername);
+    }
 }
