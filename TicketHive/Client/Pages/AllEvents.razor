@@ -1,4 +1,5 @@
 @page "/allEvents"
+@using TicketHive.Client.Managers;
 @inject IAppService service;
 @inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
@@ -16,6 +17,10 @@
 </head>
 
 <h3 class="card-title">All Events</h3>
+@if(userCountry != null)
+{
+    <em>@userCountry</em>
+}
 
 <div class="search-Items">
     <input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEventsDynamic" />
@@ -61,7 +66,8 @@
                             <p class="title">@e.Name</p>
                             <div class="seperator"></div>
                             <p class="place">@e.Venue</p>
-                            <p class="price">@e.Price</p>
+                            <!-- TO-DO: Fixa så att det går att hämta andra valutor än SEK (async await verkar inte funka här) -->
+                            <p class="price">@(CurrencyManager.ConvertAmount(userCountry!, e.Price).GetAwaiter().GetResult()) @CurrencyManager.Currency</p>
 
                             <div class="additional-info">
 
@@ -324,14 +330,19 @@
     public EventModel? _Event { get; set; }
     //searchbox
     private List<EventModel>? fEvents;
+    private string? userCountry { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
+        
         if (user.Identity!.IsAuthenticated)
         {
             Events = await service.GetEventsAsync();
+            userCountry = await service.GetUserCountryByUsernameAsync(user.Identity.Name!);
+
+
         }
 
         //search

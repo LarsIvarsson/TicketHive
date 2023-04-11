@@ -14,7 +14,7 @@ namespace TicketHive.Server.Repo
             this.context = context;
         }
 
-        public async Task<ApplicationUser?> GetUserCountryByUsernameAsync(string AppUsername)
+        public async Task<ApplicationUser?> GetUserByUsernameAsync(string AppUsername)
         {
             return await context.Users.FirstOrDefaultAsync(u => u.UserName == AppUsername);
         }

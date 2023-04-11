@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using Newtonsoft.Json;
+using System.Net.Http.Json;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Services
@@ -73,11 +74,12 @@ namespace TicketHive.Client.Services
 
 		public async Task<string?> GetUserCountryByUsernameAsync(string AppUsername)
 		{
-			var result = await httpClient.GetFromJsonAsync<string>($"api/appusers/{AppUsername}");
+			var response = await httpClient.GetAsync($"api/appusers/{AppUsername}");
+			var json = await response.Content.ReadAsStringAsync();
 
-			if (result != null)
+			if (json != null)
 			{
-				return result;
+				return json;
 			}
 
 			return null;
