@@ -27,7 +27,7 @@ namespace TicketHive.Server.Controllers
         [HttpGet("{AppUsername}")]
         public async Task<ActionResult<string?>> GetUserCountryByUsernameAsync(string AppUsername)
         {
-            var result = await repo.GetUserCountryByUsernameAsync(AppUsername);
+            var result = await repo.GetUserByUsernameAsync(AppUsername);
 
             if (result != null)
             {

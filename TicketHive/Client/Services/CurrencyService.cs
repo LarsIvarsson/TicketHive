@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http.Json;
+using TicketHive.Client.Managers;
 using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Services
@@ -23,6 +24,9 @@ namespace TicketHive.Client.Services
                     
                     if (result != null)
                     {
+                        CurrencyManager.RatesRecieved = DateTime.Now;
+                        CurrencyManager.Rates = result.Rates;
+
                         return result;
                     }
                 }

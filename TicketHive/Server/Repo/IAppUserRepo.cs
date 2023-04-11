@@ -4,6 +4,6 @@ namespace TicketHive.Server.Repo
 {
     public interface IAppUserRepo
     {
-        Task<ApplicationUser?> GetUserCountryByUsernameAsync(string AppUsername);
+        Task<ApplicationUser?> GetUserByUsernameAsync(string AppUsername);
     }
 }
