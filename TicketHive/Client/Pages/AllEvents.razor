@@ -1,32 +1,329 @@
-﻿@page "/allEvents"
+@page "/allEvents"
 @inject IAppService service;
 @inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
 
 
-<h3>All Events</h3>
 
-@if (Events == null)
-{
-    <p>Loading events...</p>
-}
-else
-{
-    @foreach (var e in Events)
-    {
-        <div>
-            <a href="eventDetails/@e.Id" Event="@e">
-                <img src="@e.ImageUrl" style="max-width:250px;"/>
-            </a>
-            <p>@e.Name</p>
-            <hr/>
-        </div>
-    } 
-}
+
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+</head>
+
+<h3 class="card-title">All Events</h3>
+
+<div class="search-Items">
+    <input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEventsDynamic" />
+    <hr />
+@*    EJ KLAR*@
+    <select class="filter-Input" name="filtrera">
+        <option value="">Filtrera Event</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+    </select>
+</div>
+
+
+<body>
+
+   
+
+    <div class="container">
+        
+        @if(Events == null)
+        {
+            <p>Loading events...</p>
+        }
+        else
+        {
+            @foreach (var e in Events)
+            {
+                <div class="item-container">
+              
+                
+
+                    <div class="img-container">
+                        <img src="@e.ImageUrl" alt="Event Image" style="height: 300px"/>
+                    </div>
+
+                    <div class="body-container">
+                    
+                        <div class="overlay"></div>
+
+                        <div class="event-info">
+                        
+                            <p class="title">@e.Name</p>
+                            <div class="seperator"></div>
+                            <p class="place">@e.Venue</p>
+                            <p class="price">@e.Price</p>
+
+                            <div class="additional-info">
+
+                                <p class="info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Norra Bulltofta 6C
+                                </p>
+                                <p class="info">
+                                    <i class="far fa-calendar-alt"></i>
+                                    @e.Date
+                                </p>
+                         
+                            </div>
+
+                        </div>
+
+                        @*Lös kopplngen till nästa sida*@
+                        
+                            <button class="action"><a style="text-decoration: none; color: #fff" href="eventDetails/@e.Id" Event="@e">Book Now</a></button>
+                        
+                    
+                    </div>
+
+                
+
+                
+       
+                </div>
+            }
+        }
+ 
+    </div>
+</body>
+
+
+
+
+<style>
+   
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    body{
+        min-height: 100vh;
+        width: 100%;
+        font-size: 16px;
+        color: #777;
+        justify-content:center;
+    }
+
+    .card-title {
+        font-size: 3.5rem;
+        color: #fbe89c;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+ /*   SEARCH*/
+
+    .search-Items {
+        margin-bottom: 1rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 24px;
+       
+    }
+
+    .search-Input {
+        background-color: transparent;
+        border-radius: 10px;
+        color: #fbe89c;
+        height: 35px;
+        margin: 24px;
+        width: 225px;
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
+        border: 1px solid #000;
+        position: relative;
+        color: lightgray;
+        padding-left: 10px;
+        
+    }
+
+    .filter-Input {
+        background-color: transparent;
+        border-radius: 10px;
+        color: #fbe89c;
+        padding-left: 10px;
+        height: 35px;
+        margin: 20px;
+        width: 225px;
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
+        border: 1px solid #000;
+        position: relative;
+        
+    }
+
+  /*  CARDS */
+
+    .container{
+        width: 100%;
+        display: flex;
+        justify-content:center;
+        align-items:center;
+        flex-wrap: wrap;
+    }
+
+    .item-container {
+        position: relative;
+        margin: 24px;
+        width: 360px;
+        height: 480px;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0 0 30px 5px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+    }
+
+    .img-container,
+    .body-container{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .img-container img{
+        width: 100%;
+    }
+    
+    .body-container {
+        position:relative;
+    }
+
+    .overlay {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        background-color: rgba(24, 83, 122, 0.6);
+        opacity: 0;
+        transition: height linear 0.4s, opacity linear 0.2s;
+    }
+
+    .item-container:hover .overlay{
+        opacity: 1;
+        height:150px;
+    }
+
+    .event-info{
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .title {
+        color: #18537a;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin: 12px;
+    }
+
+    .price{
+        color: #18537a;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 17px;
+        margin-left: 6px;
+        margin-right: 6px;
+        margin-top: 6px;
+        
+       
+       
+    }
+
+    .info{
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .seperator{
+        width: 20%;
+        height: 6px;
+        background: #17537a;
+        margin-bottom: 16px;
+    }
+
+    .additional-info {
+        border-top: 1px solid #bbb;
+        margin-top: 3px;
+        padding:28px;
+        padding-bottom: 0;
+    }
+
+    .additional-info .info {
+        font-size: 0.9em;
+        margin-top: 10px;
+        text-align: center;
+    }
+ 
+    .info i {
+        color: #18537a;
+        font-size: 1.1em;
+        margin-right: 4px;
+    }
+
+    .alert-info description{
+        background-color: #fff !important;
+    }
+    .alert-info .description span {
+        color: #18537a;
+        font-weight: bolder;
+        background: #fff;
+    }
+
+    .action {
+        color: #fff;
+        border: 3px solid #fff;
+        background-color: transparent;
+        position: absolute;
+        top: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        outline: none;
+        cursor: pointer;
+        padding: 12px;
+        text-transform: uppercase;
+        font-size: 1.3em;
+        font-weight: bold;
+        letter-spacing: 2px;
+        transition: background-color 0.4s, top 0.4s;
+    }
+
+    .item-container:hover .action {
+        top: 50px;
+    }
+
+    action:hover{
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+</style>
+
+
 
 
 @code{
     private List<EventModel>? Events;
+    public EventModel? _Event { get; set; }
+    //searchbox
+    private List<EventModel>? fEvents;
 
     protected override async Task OnInitializedAsync()
     {
@@ -36,5 +333,17 @@ else
         {
             Events = await service.GetEventsAsync();
         }
+
+        //search
+        //fEvents = await EventsRepo.GetEventsAsync;
+
+        fEvents = Events; 
+       
     }
+    private void SerarchEventsDynamic(ChangeEventArgs e)
+        {
+        //SerarchEventsDynamic = Events!.Where(p => p.Name!.ToLower().Contains(e.Value!.ToString()!.ToLower())).ToList();
+        fEvents = Events.Where(ev => ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())).ToList();
+        }
+
 }
