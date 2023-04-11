@@ -6,20 +6,21 @@
 @inject ICartService cartService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
+<h1>Shopping cart</h1>
 
 @if (shoppingCart != null)
 {
     if (shoppingCart.Count > 0)
     {
-        <h1>Checkout</h1>
+
 
         <table class="table">
             <thead>
                 <tr>
                     <th>Event</th>
-                    <th>Ticket Price</th>
+                    <th>Price</th>
                     <th>Quantity</th>
-                    <th>Event Total</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +29,7 @@
                     <tr>
                         <td>
                             <h4>@item.Event.Name</h4>
-                            @*<br><p>Tickets remaining: @(@item.Event.MaxCapacity - @item.Event.SoldTickets)</p>*@
+                            
                         </td>
                         <td>@item.Event.Price</td>
                         <td>
@@ -45,86 +46,20 @@
                     <td colspan="3" style="text-align: right"><strong>Order Total:</strong></td>
                     <td>@shoppingCart.Sum(item => item.Event.Price * item.Quantity)</td>
                 </tr>
-                @*<button class="btn btn-primary" @onclick="(() => ValidatePurchase(shoppingCart))">Purchase</button>*@
+       
             </tfoot>
         </table>
 
     }
     else
     {
-        <p>You have emptied your cart dawg.</p>
+        <p>You have emptied your cart.</p>
     }
 }
 else
 {
-    <p>You seem new here... Go add some events!</p>
+    <p>Add some events!</p>
 }
-
-@*<h1>Shopping Cart</h1>
-<br />
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Event</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (shoppingCart != null && shoppingCart.Any())
-                    {
-                        @foreach (var c in shoppingCart)
-                        {
-                            <tr>
-                                <td>@c.Event.Name</td>
-                                <td>@c.Event.Price.ToString()</td>
-                                <td>
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.DecreaceQuantity(c))">
-                                                <span class="fa fa-minus">-</span>
-                                            </button>
-                                        </span>
-                                        <input class="form-control" type="number" value="@c.Quantity" disabled />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.IncreaceQuantity(c))">
-                                                <span class="fa fa-plus">+</span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>@(GetTotal(e).ToString())</td>
-                                <td><button class="btn btn-danger" @onclick="(() => RemoveItem(c))">Remove</button></td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5">Your shopping cart is empty</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Order Summary</h5>
-                    <hr />
-                    <h4>Subtotal: @GetSubtotal().ToString()</h4>
-                    <h4>Total: @GetTotal().ToString()</h4>
-                    <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 
 @code
@@ -140,19 +75,4 @@ else
 
         shoppingCart = cartService.GetShoppingCartItem();
     }
-
-    //private async Task ValidatePurchase(List<CartItemsModel> shoppingCart)
-    //{
-    //    bool isValidated = true;
-
-    //    foreach(var item in shoppingCart)
-    //    {
-    //        if(item.Event.Capacity - item.Event.)
-    //    }
-    //}
-
-    //private async Task AddEventToUser(int id)
-    //{
-    //    await cartService.AddEventToUserAsync(signedInUser, id);
-    //}
 }
