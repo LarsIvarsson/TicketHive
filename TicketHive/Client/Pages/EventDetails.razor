@@ -1,8 +1,7 @@
 ﻿@page "/eventDetails/{id:int}"
-@using Microsoft.AspNetCore.Authorization;
-@using TicketHive.Client.Services;
-@using TicketHive.Shared.Models;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IAppService service;
+@inject NavigationManager navigation
 @inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
 
@@ -19,8 +18,8 @@ else
 		<p>Venue: @_Event.Venue</p>
 
 		<label for="ticket-input">Tickets </label>
-		<input class="m-3" id="ticket-input" type="number" min="0" max="10" />
-		<input class="btn btn-primary" type="submit" value="Buy" />
+		<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity"/>
+		<input class="btn btn-primary" type="submit" value="Add to cart" @onclick=AddToShoppingCart/>
 	</div>
 }
 
@@ -29,10 +28,45 @@ else
 @code {
 	[Parameter]
 	public int id { get; set; }
+	public int Quantity { get; set; }
 	public EventModel? _Event { get; set; }
+	public UserModel? _User { get; set; }
+	private AuthenticationState? authState;
+
+	protected override async Task OnInitializedAsync()
+	{
+		authState = await authStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		if (user.Identity!.IsAuthenticated)
+		{
+			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+		}
+	}
 
 	protected override async Task OnParametersSetAsync()
 	{
 		_Event = await service.GetEventByIdAsync(id);		
+	}
+
+	private async Task AddToShoppingCart()
+	{
+		// Reads cookie in local storage (if there is any) with current username
+		UserModel? cookieUser = await localStorage
+			.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
+
+		// if cookie is found we use that object as our user
+		if (cookieUser != null)
+		{
+			_User = cookieUser;
+		}
+
+		// adds event to users event list "selected number of times"
+		for (int i = 0; i < Quantity; i++)
+		{
+			_User!.UserEvents!.Add(_Event!);
+		}
+
+		// finally converts object with updated event list to cookie and saves to local storage
+		await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);
 	}
 }

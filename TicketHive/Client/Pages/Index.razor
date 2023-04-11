@@ -1,32 +1,30 @@
-﻿@page "/"
-@using TicketHive.Client.Services;
-@using TicketHive.Shared.Models;
-@inject IAppService service;
-@inject AuthenticationStateProvider authStateProvider;
+@page "/"
 
-<PageTitle>Index</PageTitle>
-
-
-<div class="card" style="width: 1000px;">
-    <div class="card-body">
-        <h3 class="card-title">Ticket Hive</h3>
-        
-        <p class="card-text">Welcome to Ticket Hive. The best site to find tickets to your favourte events.</p>
-
+<div class="row justify-content-center g-0 mt-5">
+    <div class="card border-dark col-6">
+        <div class="card-header text-center">
+            <h2 style="display: inline-block;">
+                Welcome to Ticket Hive
+            </h2>
+            <img src="images/logos/black only logo.png" style="max-width: 80px; display: inline-block;" alt="">
+        </div>
+        <div class="card-body text-center">
+            <p>
+                The best place in the world to get awesome tickets
+                to your favorite artists end events! 
+                Lorem ipsum dolor sit amet consectetur,
+                adipisicing elit. Accusantium qui possimus
+                quod quas laborum natus quia beatae, placeat
+                sunt alias, molestiae aliquam eum atque.
+                Assumenda tenetur aliquam dignissimos beatae
+                mollitia libero. Vero a necessitatibus tenetur
+                sapiente rerum odio, harum aliquid vel.
+                Have a great day shopping!
+            </p>
+        </div>
     </div>
 </div>
 
-@code{
-    private List<EventModel>? Events;
-    public List<string> Claims { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await authStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        if (user.Identity!.IsAuthenticated)
-        {
-            Events = await service.GetEventsAsync();
-        }
-    }
+@code{
 }

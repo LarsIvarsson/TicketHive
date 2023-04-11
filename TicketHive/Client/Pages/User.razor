@@ -1,4 +1,9 @@
-﻿<h3>User</h3>
+﻿@page "/user"
+@inject IAppService service
+@attribute [Authorize]
+
+<h3>User settings</h3>
+<p>Here we can change our country and password</p>
 
 
 @code {
