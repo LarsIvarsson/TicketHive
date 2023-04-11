@@ -1,4 +1,4 @@
-﻿using TicketHive.Shared.Models;
+using TicketHive.Shared.Models;
 
 namespace TicketHive.Client.Services
 {
@@ -11,6 +11,7 @@ namespace TicketHive.Client.Services
 		Task DeleteEventAsync(int id);
 		Task<List<UserModel>?> GetUsersAsync();
 		Task<UserModel?> GetUserByUsernameAsync(string UserName);
+		Task PutUserAsync(int id, UserModel model);
 		Task<string?> GetUserCountryByUsernameAsync(string AppUsername);
     }
 }
