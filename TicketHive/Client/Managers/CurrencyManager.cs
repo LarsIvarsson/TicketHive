@@ -23,15 +23,15 @@ namespace TicketHive.Client.Managers
             return currency;
         }
 
-        public static async Task<decimal> ConvertAmount(string country, decimal amount)
+        public static async Task<decimal> GetRate(string country)
         {
             if(country == "Sweden")
             {
                 Currency = "SEK";
-                return amount;
+                return 1;
             }
 
-            else if(country == "Great_Britain")
+            else if(country == "Great Britain")
             {
                 Currency = "£";
                 if (Rates == null || RatesRecieved.Date.AddDays(1) < DateTime.Now)
@@ -40,7 +40,7 @@ namespace TicketHive.Client.Managers
                 }
 
                 // Convert from SEK to GBP
-                return amount * (decimal)Rates!.Pounds!;
+                return (decimal)Rates!.Pounds!;
             }
 
             else
@@ -52,7 +52,7 @@ namespace TicketHive.Client.Managers
                 }
 
                 // Convert from SEK to EUR
-                return amount * (decimal)Rates!.Euro!;
+                return (decimal)Rates!.Euro!;
             }
         }
     }

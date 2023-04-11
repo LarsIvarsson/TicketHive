@@ -99,7 +99,7 @@ namespace TicketHive.Server.Data
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
 				Id = 8,
-				Name = "Flashback Forever Live Pod",
+				Name = "Flashback Forever Live",
 				Type = CategoryEnum.Entertainment,
 				Date = DateTime.Parse("2023-04-30"),
 				Venue = "Globen",
