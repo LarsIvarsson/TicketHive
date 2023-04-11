@@ -6,7 +6,12 @@
 
 <div class="text-center">
 	<h2>Home</h2> <hr />
-
+	
+	<div class="search">
+	<input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEvents" />
+	<button class="searchButton">Sök</button>
+	<hr />
+    </div>
 	<div class="row">
 		<div class="col-6">
 			<h3>Your booked events</h3>
@@ -22,7 +27,7 @@
 			{
 				@foreach (var group in groupedList)
 				{
-					<p>@group.Count() ticket(s) for event: @group.ElementAt(0).Name</p>
+					<p>@group.Count() ticket(s) for event: @group.First().Name</p>
 					<hr />			
 				}
 			}
@@ -51,6 +56,36 @@
 	</div>
 </div>
 
+<style>
+
+	.search-Input {
+		background-color: transparent;
+		border-radius: 10px;
+		color: #fbe89c;
+		height: 35px;
+		margin: 5px;
+		width: 225px;
+		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
+		border: 1px solid #000;
+		position: relative;
+		color: lightgray;
+		padding-left: 10px;
+	}
+
+	.searchButton{
+		background-color: transparent;
+		border-radius: 10px;
+		color: #fbe89c;
+		height: 35px;
+		margin: 5px;
+		width: 50px;
+		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
+		border: 1px solid #000;
+		position: relative;
+		color: #fff;
+		padding-left: 10px;
+	}
+</style>
 
 
 
@@ -98,4 +133,9 @@
 	//{
 	//	UserEvents = _User!.UserEvents;
 	//}
+
+	private void SerarchEvents(ChangeEventArgs e)
+	{
+		
+	}
 }

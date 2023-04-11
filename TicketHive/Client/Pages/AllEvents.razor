@@ -36,11 +36,7 @@
 
 
 <body>
-
-   
-
     <div class="container">
-        
         @if(Events == null)
         {
             <p>Loading events...</p>
@@ -49,28 +45,21 @@
         {
             @foreach (var e in Events)
             {
-                <div class="item-container">
-              
-                
-
+                <div class="item-container">          
                     <div class="img-container">
                         <img src="@e.ImageUrl" alt="Event Image" style="height: 300px"/>
                     </div>
-
-                    <div class="body-container">
-                    
+                    <div class="body-container">                   
                         <div class="overlay"></div>
-
-                        <div class="event-info">
-                        
+                        <div class="event-info">                       
                             <p class="title">@e.Name</p>
                             <div class="seperator"></div>
                             <p class="place">@e.Venue</p>
+                           
                             <!-- TO-DO: Fixa så att det går att hämta andra valutor än SEK (async await verkar inte funka här) -->
                             <p class="price">@(CurrencyManager.ConvertAmount(userCountry!, e.Price).GetAwaiter().GetResult()) @CurrencyManager.Currency</p>
 
                             <div class="additional-info">
-
                                 <p class="info">
                                     <i class="fas fa-map-marker-alt"></i>
                                     Norra Bulltofta 6C
@@ -79,26 +68,15 @@
                                     <i class="far fa-calendar-alt"></i>
                                     @e.Date
                                 </p>
-                         
                             </div>
-
-                        </div>
-
-                        @*Lös kopplngen till nästa sida*@
-                        
-                            <button class="action"><a style="text-decoration: none; color: #fff" href="eventDetails/@e.Id" Event="@e">Book Now</a></button>
-                        
-                    
-                    </div>
-
-                
-
-                
-       
+                        </div>                           
+                            <button class="action">
+                                <a style="text-decoration: none; color: #fff" href="eventDetails/@e.Id" Event="@e">Book Now</a>
+                            </button>                                         
+                    </div>   
                 </div>
             }
         }
- 
     </div>
 </body>
 
