@@ -20,7 +20,7 @@ namespace TicketHive.Client.Services
                 if (responseString != null)
                 {
                     var result = JsonConvert.DeserializeObject<Root?>(responseString);
-
+                    
                     if (result != null)
                     {
                         return result;

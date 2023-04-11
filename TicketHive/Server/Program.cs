@@ -71,6 +71,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IEventsRepo, EventsRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IAppUserRepo, AppUserRepo>();
 
 var app = builder.Build();
 
