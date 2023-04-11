@@ -2,6 +2,7 @@
 @attribute [Authorize(Roles = "Admin")]
 @inject IAppService appService;
 @inject IJSRuntime JSRuntime;
+@inject AuthenticationStateProvider authStateProvider;
 
 <h1 class="text-center text-danger">Admin Area</h1>
 <hr />
@@ -28,14 +29,19 @@
             <label for="price-input">Price</label>
             <InputNumber class="form-control mb-2" id="price-input" @bind-Value="newEvent.Price" />
             <label for="capacity-input">Capacity</label>
-            <InputNumber class="form-control mb-3" id="capacity-input" @bind-Value="newEvent.Capacity" />
+            <InputNumber class="form-control mb-2" id="capacity-input" @bind-Value="newEvent.Capacity" />
+            <label for="image-input">Image (Url)</label>
+            <InputText class="form-control mb-3" id="image-input" @bind-Value="newEvent.ImageUrl" />
             <input type="submit" value="Add" />
         <hr />
     <ValidationSummary />
 </EditForm>
         </div>
         <div class="col-2">
-
+            @if(userCountry != null)
+            {
+                <em>@userCountry</em>
+            }
         </div>
         <div class="col-5">
             <h2 class="text-center mb-3">Event list</h2>
@@ -63,10 +69,26 @@
     public EventModel? newEvent { get; set; } = new();
     public List<string> categories = new();
     public List<EventModel>? events = new();
+    private AuthenticationState? authState;
+    private UserModel? _User { get; set; }
+    private string? userCountry { get; set; }
+    private string? userCurrency { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
         await GetEvents();
+
+        // TO-DO: Hitta inloggad användares Country för att kunna visa rätt valuta
+        authState = await authStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        //if (user.Identity!.IsAuthenticated)
+        //{
+        //    //userCountry = await appService.GetUserCountryByUsernameAsync(user.Identity.Name!);
+
+        //}
+        
 
         @foreach(var type in Enum.GetNames(typeof(CategoryEnum)))
         {

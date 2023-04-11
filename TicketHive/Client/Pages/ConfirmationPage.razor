@@ -1,11 +1,49 @@
 ﻿@page "/confirmation"
 @inject IAppService service
+@inject AuthenticationStateProvider authStateProvider
 @attribute [Authorize]
 
 <h3>Confirmation Page</h3>
 <em>This page will display a summary/receipt when shopping cart has been checked out</em>
 
+@if (BookedEvents is null)
+{
+	<p>Confirmation is loading...</p>
+}
+else
+{
+	<h3>Your booked events</h3><hr />
+	@foreach (var group in BookedEvents)
+	{
+		<p>Event: @group.First().Name</p>
+		<p>Qty: @group.Count()</p>
+	}
+}
 
 @code {
+	private UserModel? _User { get; set; }
+	private List<IGrouping<int, EventModel>>? BookedEvents;
+	private AuthenticationState? authState;
 
+	protected override async Task OnInitializedAsync()
+	{
+		authState = await authStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+
+		if (user.Identity!.IsAuthenticated)
+		{
+			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+		}
+	}
+
+	protected override void OnParametersSet()
+	{
+		if (_User != null)
+		{
+			if (_User.UserEvents != null)
+			{
+				BookedEvents = _User.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
+			}
+		}
+	}
 }

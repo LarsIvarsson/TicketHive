@@ -1,7 +1,9 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: rgb(251, 232, 156);
 }
 
 h1:focus {
@@ -24,6 +26,7 @@ a, .btn-link {
 
 .content {
     padding-top: 1.1rem;
+    
 }
 
 .valid.modified:not([type=checkbox]) {

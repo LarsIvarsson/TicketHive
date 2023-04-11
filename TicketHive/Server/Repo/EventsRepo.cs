@@ -40,7 +40,10 @@ namespace TicketHive.Server.Repo
 		{
 			try
 			{
-				model.ImageUrl = SetImageUrl();
+				if(model.ImageUrl == null)
+				{
+                    model.ImageUrl = SetImageUrl();
+                }
 
 				await context.Events.AddAsync(model);
 				await context.SaveChangesAsync();

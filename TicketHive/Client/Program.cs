@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TicketHive.Client;
+using TicketHive.Client.Managers;
 using TicketHive.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -18,6 +19,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TicketHive.ServerAPI"));
 builder.Services.AddScoped<IAppService, AppService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+builder.Services.AddScoped<CurrencyManager>();
 builder.Services.AddApiAuthorization();
 
 

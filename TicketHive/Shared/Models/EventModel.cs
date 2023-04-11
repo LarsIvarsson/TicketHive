@@ -10,7 +10,7 @@ namespace TicketHive.Shared.Models
         [Required]
         public CategoryEnum Type { get; set; }
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
         [Required]
         public string Venue { get; set; } = null!;
         [Required]
