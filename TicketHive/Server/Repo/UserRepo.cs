@@ -32,9 +32,19 @@ namespace TicketHive.Server.Repo
 				return false;
 			}
 		}
-		public Task<bool> PutUserAsync(int id, UserModel model)
+		public async Task<bool> PutUserAsync(int id, UserModel model)
 		{
-			throw new NotImplementedException();
+			UserModel? userToUpdate = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+			if (userToUpdate != null)
+			{
+				userToUpdate.UserEvents = model.UserEvents;
+				await context.SaveChangesAsync();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }

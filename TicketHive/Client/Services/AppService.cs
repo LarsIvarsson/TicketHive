@@ -70,5 +70,9 @@ namespace TicketHive.Client.Services
 
 			return null;
 		}
+		public async Task PutUserAsync(int id, UserModel model)
+		{
+			await httpClient.PutAsJsonAsync($"api/users/{id}", model);
+		}
 	}
 }
