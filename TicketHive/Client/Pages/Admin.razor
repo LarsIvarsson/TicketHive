@@ -29,7 +29,9 @@
             <label for="price-input">Price</label>
             <InputNumber class="form-control mb-2" id="price-input" @bind-Value="newEvent.Price" />
             <label for="capacity-input">Capacity</label>
-            <InputNumber class="form-control mb-3" id="capacity-input" @bind-Value="newEvent.Capacity" />
+            <InputNumber class="form-control mb-2" id="capacity-input" @bind-Value="newEvent.Capacity" />
+            <label for="image-input">Image (Url)</label>
+            <InputText class="form-control mb-3" id="image-input" @bind-Value="newEvent.ImageUrl" />
             <input type="submit" value="Add" />
         <hr />
     <ValidationSummary />
