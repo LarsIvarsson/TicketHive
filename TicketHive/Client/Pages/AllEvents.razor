@@ -17,10 +17,6 @@
 </head>
 
 <h3 class="card-title">All Events</h3>
-@if(userCountry != null)
-{
-    <em>@userCountry</em>
-}
 
 <div class="search-Items">
     <input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEventsDynamic" />
@@ -57,7 +53,7 @@
                             <p class="place">@e.Venue</p>
                            
                             <!-- TO-DO: Fixa så att det går att hämta andra valutor än SEK (async await verkar inte funka här) -->
-                            <p class="price">@(CurrencyManager.ConvertAmount(userCountry!, e.Price).GetAwaiter().GetResult()) @CurrencyManager.Currency</p>
+                            <p class="price">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
 
                             <div class="additional-info">
                                 <p class="info">
@@ -309,18 +305,22 @@
     //searchbox
     private List<EventModel>? fEvents;
     private string? userCountry { get; set; }
+    private decimal userRate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-        
+
         if (user.Identity!.IsAuthenticated)
         {
             Events = await service.GetEventsAsync();
             userCountry = await service.GetUserCountryByUsernameAsync(user.Identity.Name!);
 
-
+            if (userCountry != null)
+            {
+                userRate = await CurrencyManager.GetRate(userCountry);
+            }
         }
 
         //search
