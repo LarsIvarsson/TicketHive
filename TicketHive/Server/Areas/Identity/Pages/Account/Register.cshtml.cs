@@ -27,6 +27,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 		[Required(ErrorMessage = "Please choose country")]
 		public string? Country { get; set; }
 		public List<string>? Errors { get; set; }
+		public List<string> Countries { get; set; } = new();
 
 		public RegisterModel(SignInManager<ApplicationUser> signInManager, IUserRepo repo)
 		{
@@ -36,8 +37,11 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 		public void OnGet()
 		{
-
-		}
+			foreach(var type in Enum.GetNames(typeof(CountryEnum)))
+			{
+                Countries.Add(type);
+            }
+        }
 
 		public async Task<IActionResult> OnPost()
 		{

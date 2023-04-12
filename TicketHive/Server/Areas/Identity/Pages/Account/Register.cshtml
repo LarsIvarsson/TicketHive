@@ -36,9 +36,10 @@
 		<div class="m-3">
 		<label for="select-country">Country: </label>
 			<select id="select-country" asp-for="Country">
-				<option value="Sweden">Sweden</option>
-				<option value="Germany">Germany</option>
-				<option value="Great Britain">Great Britain</option>				
+				@foreach(var type in Model.Countries)
+				{
+					<option value="@type.ToString()">@type.ToString()</option>
+				}				
 			</select>
 			<span class="text-danger" asp-validation-for="Country"></span>
 		</div>
