@@ -1,4 +1,5 @@
-@page "/allEvents"
+@page "/allevents"
+@page "/allevents/{searchWord}"
 @using TicketHive.Client.Managers;
 @inject IAppService service;
 @inject AuthenticationStateProvider authStateProvider;
@@ -26,7 +27,7 @@
     @oninput="SearchEventsDynamic" />
     <hr />
 @*    EJ KLAR*@
-    <select class="filter-Input" @onchange="SorteraEvents">
+    <select class="filter-Input" @onchange="SortEvents">
         <option style="background: #E0F2FF" value="Filtrera Event: ">Filtrera Event: </option>
         <option style="background: #E0F2FF" value="Price: Low to high">Price: Low to high</option>
         <option style="background: #E0F2FF" value="Price: High to low">Price: High to low</option>
@@ -309,6 +310,8 @@
     private string? userCountry { get; set; }
     private decimal userRate { get; set; }
     private string sort = string.Empty;
+    [Parameter]
+    public string? searchWord { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -329,9 +332,30 @@
         //search
         fEvents = await service.GetEventsAsync();
 
-        fEvents = Events; 
+        fEvents = Events;
+
 
     }
+
+    protected override void OnParametersSet()
+    {
+        if(searchWord != null)
+        {
+            string? filterWord = searchWord;
+            SearchEventsByHomePage(filterWord!);
+            StateHasChanged();
+        }
+    }
+
+    private void SearchEventsByHomePage(string filterWord)
+    {
+        fEvents = Events.Where(ev =>
+            ev.Name!.ToLower().Contains(filterWord.ToLower())
+            || ev.Type!.ToString().ToLower().Contains(filterWord.ToLower())
+            || ev.Venue!.ToLower().Contains(filterWord.ToLower())
+        ).ToList();
+    }
+
     private void SearchEventsDynamic(ChangeEventArgs e)
     {
 
@@ -342,7 +366,7 @@
         ).ToList();
     }
 
-    private void SorteraEvents(ChangeEventArgs e)
+    private void SortEvents(ChangeEventArgs e)
     {
         sort = e.Value.ToString();
 
