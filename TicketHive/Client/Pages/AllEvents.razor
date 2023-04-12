@@ -19,7 +19,11 @@
 <h3 class="card-title">All Events</h3>
 
 <div class="search-Items">
-    <input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEventsDynamic" />
+    <input class="search-Input" 
+    placeholder="Search event..." 
+    style="text-align:center;" 
+    type="text" 
+    @oninput="SearchEventsDynamic" />
     <hr />
 @*    EJ KLAR*@
     <select id="filter-Input" @onchange="SorteraEvents">
@@ -99,7 +103,7 @@
 
     .card-title {
         font-size: 3.5rem;
-        color: #fbe89c;
+        color: #305076;
         margin-bottom: 1rem;
         text-transform: uppercase;
         text-align: center;
@@ -114,20 +118,18 @@
         justify-content: center;
         align-items: center;
         margin: 24px;
-       
     }
 
     .search-Input {
         background-color: transparent;
         border-radius: 10px;
-        color: #fbe89c;
         height: 35px;
-        margin: 24px;
+        margin: 25px;
         width: 225px;
         box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
         border: 1px solid #000;
         position: relative;
-        color: lightgray;
+        color: #305076;
         padding-left: 10px;
         
     }
@@ -135,7 +137,7 @@
     .filter-Input {
         background-color: transparent;
         border-radius: 10px;
-        color: #fbe89c;
+        color: #305076;
         padding-left: 10px;
         height: 35px;
         margin: 20px;
@@ -331,8 +333,9 @@
         fEvents = Events; 
        
     }
-    private void SerarchEventsDynamic(ChangeEventArgs e)
+    private void SearchEventsDynamic(ChangeEventArgs e)
         {
+
         fEvents = Events.Where(ev =>
             ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())
             //|| ev.Type!.ToLower().Contains(e.Value.ToString().ToLower())
@@ -356,12 +359,9 @@
         else if (sort == "Date: As soon as possible")
         {
             fEvents = Events?.OrderBy(e => e.Date).ToList();
+        }
 
-        }
-        else if (sort == "Date: As far away as possible")
-        {
-            fEvents = Events?.OrderByDescending(e => e.Date).ToList();
-        }
+
     }
 
 }
