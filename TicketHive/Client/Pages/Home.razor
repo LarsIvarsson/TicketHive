@@ -6,7 +6,7 @@
 @attribute [Authorize]
 
 <AuthorizeView Roles="Admin">
-	<button type="button" class="btn btn-danger btn-rounded" @onclick='() => navManager.NavigateTo("/Admin")'>Go to Admin view</button>
+	<button type="button" class="btn btn-danger btn-rounded" @onclick='() => navManager.NavigateTo("/admin")'>Go to Admin view</button>
 </AuthorizeView>
 
 <div class="text-center">
@@ -17,9 +17,15 @@
 		<input class="search-Input" 
 			placeholder="Search event..." 
 			style="text-align:center;" 
-			type="text" @oninput="SearchEvents" />
-		<button class="searchButton text-center">Search</button>
-		<hr />
+			type="text" @bind-value="searchWord" />
+		<button class="searchButton text-center" @onclick="HandleSearchWord">Search</button>
+	<div>
+		@if (searchWord == null && errorMessage != null)
+		{
+			<em class="text-danger">@errorMessage</em>
+		}
+	</div>
+	<hr />
     </div>
 	<div class="row">
 		<div class="col-6">
@@ -110,6 +116,8 @@
 	private List<IGrouping<int, EventModel>>? groupedList;
 	private UserModel? _User { get; set; }
 	private AuthenticationState? authState;
+	private string? searchWord { get; set; }
+	private string? errorMessage { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -148,8 +156,18 @@
 	//	UserEvents = _User!.UserEvents;
 	//}
 
-	private void SearchEvents(ChangeEventArgs e)
+	private void HandleSearchWord()
 	{
-		
+		errorMessage = null!;
+
+		if(searchWord != null)
+		{
+			navManager.NavigateTo($"/allevents/{searchWord}");
+		}
+
+		else
+		{
+			errorMessage = "Please enter a search word before pressing the button...";
+		}
 	}
 }

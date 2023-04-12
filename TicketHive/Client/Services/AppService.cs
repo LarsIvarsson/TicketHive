@@ -1,6 +1,4 @@
-
 using Newtonsoft.Json;
-
 using System.Net.Http.Json;
 using TicketHive.Shared.Models;
 
@@ -73,12 +71,12 @@ namespace TicketHive.Client.Services
 
 			return null;
 		}
-
 		public async Task PutUserAsync(int id, UserModel model)
 		{
 			await httpClient.PutAsJsonAsync($"api/users/{id}", model);
-    }  
+		}
 
+		// ========== ApplicationUser Calls ============
 		public async Task<string?> GetUserCountryByUsernameAsync(string AppUsername)
 		{
 			var response = await httpClient.GetAsync($"api/appusers/{AppUsername}");
@@ -88,8 +86,20 @@ namespace TicketHive.Client.Services
 			{
 				return json;
 			}
-
 			return null;
+		}
+		public async Task PutAppUserAsync(string AppUsername, string Country)
+		{
+			await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", Country);
+		}
+		public async Task ChangePasswordAsync(string AppUsername, string currentPassword, string newPassword)
+		{
+			List<string> passwords = new();
+			passwords.Add(currentPassword);
+			passwords.Add(newPassword);
+			var jsonList = JsonConvert.SerializeObject(passwords);
+
+			await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", jsonList);
 		}
 	}
 }
