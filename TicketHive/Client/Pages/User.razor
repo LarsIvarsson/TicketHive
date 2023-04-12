@@ -1,11 +1,44 @@
 ﻿@page "/user"
 @inject IAppService service
+@inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
 
-<h3>User settings</h3>
-<p>Here we can change our country and password</p>
+<h1>User settings</h1>
+<hr />
+<div class="row">
+	<div class="col-6">
+		<h2>Change password</h2>
+		<EditForm Model="_User" OnSubmit="ChangePassword">
+		</EditForm>
+	</div>
+	<div class="col-6">
+		<h2>Change country</h2>
+		<EditForm Model="_User" OnSubmit="ChangeCountry">
+		</EditForm>
+	</div>
+</div>
 
 
 @code {
+	private UserModel? _User { get; set; }
+	private AuthenticationState? authState;
 
+	protected override async Task OnInitializedAsync()
+	{
+		authState = await authStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+
+		if (user.Identity!.IsAuthenticated)
+		{
+			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+		}
+	}
+	private void ChangePassword()
+	{
+		
+	}
+	private void ChangeCountry()
+	{
+		
+	}
 }
