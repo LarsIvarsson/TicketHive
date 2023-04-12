@@ -2,11 +2,13 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    background-color: #E0F2FF;
 }
 
 /* change background for pages here */
 main {
     flex: 1;
+    background-color: #E0F2FF;
 }
 
 /* change background here for sidebar */
@@ -58,6 +60,7 @@ main {
 @media (min-width: 641px) {
     .page {
         flex-direction: row;
+       
     }
 
     .sidebar {
