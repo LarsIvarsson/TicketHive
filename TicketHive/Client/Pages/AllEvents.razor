@@ -17,14 +17,14 @@
 </head>
 
 <h3 class="card-title">All Events</h3>
-<hr />
+
 <div class="search-Items">
     <input class="search-Input" 
     placeholder="Search event..." 
     style="text-align:center;" 
     type="text" 
     @oninput="SearchEventsDynamic" />
-    <hr />
+    <hr style="margin-bottom: 40px;" />
 
     <select class="filter-Input" @onchange="SorteraEvents">
         <option style="background: #E0F2FF" value="Filtrera Event: ">Filtrera Event: </option>
@@ -34,7 +34,7 @@
         <option style="background: #E0F2FF" value="Furthest date">Furthest date</option>
     </select>
 </div>
-
+<hr  />
 
 <body>
     <div class="container">
@@ -44,35 +44,75 @@
         }
         else
         {
+            
             @foreach (var e in fEvents!)
             {
-                <div class="item-container">          
-                    <div class="img-container">
-                        <img src="@e.ImageUrl" alt="Event Image" style="height: 300px"/>
-                    </div>
-                    <div class="body-container">                   
-                        <div class="overlay"></div>
-                        <div class="event-info">                       
-                            <p class="title">@e.Name</p>
-                            <div class="seperator"></div>
-                            <p class="place">@e.Venue</p>         
-                            <p class="price">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
-                            <div class="additional-info">
-                                <p class="info">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Norra Bulltofta 6C
-                                </p>
-                                <p class="info">
-                                    <i class="far fa-calendar-alt"></i>
-                                    @e.Date
-                                </p>
+                @*if (e.IsSoldOut == false)*@
+                @if(e.Price == 800)
+                {
+                    <div class="item-container" >
+                        <div class="img-container" style="opacity: 0.5;">
+                            <img src="@e.ImageUrl" alt="Event Image" style="height: 300px" />
+                        </div>
+                        <div class="body-container">
+                            <div class="overlay" style="opacity: 0.5;"></div>
+                            <div class="event-info" >
+                                <p class="title" style="opacity: 0.5;">@e.Name</p>
+                                <div class="seperator"></div>
+                                <p class="place" style="opacity: 0.5;">@e.Venue</p>
+                                <p class="price" style="opacity: 0.5;">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
+                                <div class="additional-info" style="opacity: 0.5;">
+                                    <p class="info">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Norra Bulltofta 6C
+                                    </p>
+                                    <p class="info">
+                                        <i class="far fa-calendar-alt"></i>
+                                        @e.Date
+                                    </p>
+                                </div>
                             </div>
-                        </div>                           
+                            <button class="action" style="width: 80%;  opacity: 1.0;">
+                                <a style="text-decoration: none; color: red; font-weight: bold; opacity: 1.0;" href="eventDetails/@e.Id" Event="@e">FULLY BOOKED</a>
+                            </button>
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+
+
+                    <div class="item-container">          
+                        <div class="img-container">
+                            <img src="@e.ImageUrl" alt="Event Image" style="height: 300px"/>
+                        </div>
+                        <div class="body-container">                   
+                            <div class="overlay"></div>
+                            <div class="event-info">                       
+                                <p class="title">@e.Name</p>
+                                <div class="seperator"></div>
+                                <p class="place">@e.Venue</p>         
+                                <p class="price">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
+                                <div class="additional-info">
+                                    <p class="info">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Norra Bulltofta 6C
+                                    </p>
+                                    <p class="info">
+                                        <i class="far fa-calendar-alt"></i>
+                                        @e.Date
+                                    </p>
+                                </div>
+                            </div>                           
                             <button class="action">
                                 <a style="text-decoration: none; color: #fff" href="eventDetails/@e.Id" Event="@e">Book Now</a>
                             </button>                                         
-                    </div>   
-                </div>
+                        </div>  
+
+                    </div>
+                }
+
             }
         }
     </div>
@@ -97,12 +137,13 @@
         color: #777;
         justify-content:center;
         
+        
     }
 
     .card-title {
         font-size: 3.5rem;
         color: #305076;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
         text-transform: uppercase;
         text-align: center;
     }
@@ -115,17 +156,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 24px;
+        margin: 5px;
+        
     }
 
     .search-Input {
         background-color: transparent;
         border-radius: 10px;
-        height: 35px;
+        height: 30px;
         margin: 20px;
-        width: 225px;
-        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
-        border: 1px solid #000;
+        width: 200px;
+        /*box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
+        border: 1px solid #18537a;
         position: relative;
         color: #305076;
         padding-left: 10px;
@@ -137,11 +179,11 @@
         border-radius: 10px;
         color: #305076;
         padding-left: 10px;
-        height: 35px;
+        height: 30px;
         margin: 20px;
-        width: 225px;
-        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
-        border: 1px solid #000;
+        width: 200px;
+       /* box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
+        border: 1px solid #18537a;
         position: relative;
     }
 

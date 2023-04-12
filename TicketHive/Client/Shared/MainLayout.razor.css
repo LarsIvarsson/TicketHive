@@ -74,9 +74,10 @@ main {
         position: sticky;
         top: 0;
         z-index: 1;
+        /*justify-content: flex-start;*/
     }
     .top-row.auth {
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     .top-row.auth ::deep a:first-child {
@@ -89,4 +90,18 @@ main {
         padding-left: 2rem !important;
         padding-right: 2.5rem !important;
     }
+
+    #start {
+        justify-content: center!important;
+    }
+
+    #center {
+        justify-content: center!important;
+    }
+
+    .top-row.oi oi-home {
+        justify-content: flex-end !important;
+    }
+
+  
 }
