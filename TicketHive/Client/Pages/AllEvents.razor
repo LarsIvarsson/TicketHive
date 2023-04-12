@@ -17,7 +17,7 @@
 </head>
 
 <h3 class="card-title">All Events</h3>
-
+<hr />
 <div class="search-Items">
     <input class="search-Input" 
     placeholder="Search event..." 
@@ -26,12 +26,12 @@
     @oninput="SearchEventsDynamic" />
     <hr />
 @*    EJ KLAR*@
-    <select id="filter-Input" @onchange="SorteraEvents">
-        <option value="">Filtrera Event: </option>
-        <option value="Price: Low to high">Price: Low to high</option>
-        <option value="Price: High to low">Price: High to low</option>
-        <option value="Date: As soon as possible">Date: As soon as possible</option>
-        <option value="Date: As far away as possible">Date: As far away as possible</option>
+    <select class="filter-Input" @onchange="SorteraEvents">
+        <option style="background: #E0F2FF" value="Filtrera Event: ">Filtrera Event: </option>
+        <option style="background: #E0F2FF" value="Price: Low to high">Price: Low to high</option>
+        <option style="background: #E0F2FF" value="Price: High to low">Price: High to low</option>
+        <option style="background: #E0F2FF" value="Date: As soon as possible">Date: As soon as possible</option>
+        <option style="background: #E0F2FF" value="Date: As far away as possible">Date: As far away as possible</option>
     </select>
 </div>
 
@@ -99,6 +99,7 @@
         font-size: 16px;
         color: #777;
         justify-content:center;
+        
     }
 
     .card-title {
@@ -109,7 +110,7 @@
         text-align: center;
     }
 
- /*   SEARCH*/
+ /*   SEARCH/FILTER*/
 
     .search-Items {
         margin-bottom: 1rem;
@@ -124,7 +125,7 @@
         background-color: transparent;
         border-radius: 10px;
         height: 35px;
-        margin: 25px;
+        margin: 20px;
         width: 225px;
         box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
         border: 1px solid #000;
@@ -145,7 +146,6 @@
         box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
         border: 1px solid #000;
         position: relative;
-        
     }
 
   /*  CARDS */
@@ -167,6 +167,7 @@
         background-color: #fff;
         box-shadow: 0 0 30px 5px rgba(0, 0, 0, 0.15);
         cursor: pointer;
+        border: 0.5px solid lightgrey;
     }
 
     .img-container,
@@ -176,6 +177,7 @@
         left: 0;
         width: 100%;
         height: 100%;
+        
     }
 
     .img-container img{
@@ -331,10 +333,10 @@
         fEvents = await service.GetEventsAsync();
 
         fEvents = Events; 
-       
+
     }
     private void SearchEventsDynamic(ChangeEventArgs e)
-        {
+    {
 
         fEvents = Events.Where(ev =>
             ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())
@@ -350,7 +352,6 @@
         if (sort == "Price: Low to high")
         {
             fEvents = Events?.OrderBy(e => e.Price).ToList();
-
         }
         else if (sort == "Price: High to low")
         {
@@ -359,6 +360,10 @@
         else if (sort == "Date: As soon as possible")
         {
             fEvents = Events?.OrderBy(e => e.Date).ToList();
+        }
+        else if (sort == "Filtrera Event: ")
+        {
+            fEvents = Events?.ToList();
         }
 
 
