@@ -28,7 +28,7 @@
 
     <hr style="margin-bottom: 40px;" />
 
-    <select class="filter-Input" @onchange="SorteraEvents">
+    <select class="filter-Input" @onchange="SortEvents">
 
         <option style="background: #E0F2FF" value="Filtrera Event: ">Filtrera Event: </option>
         <option style="background: #E0F2FF" value="Low to high price">Low to high price</option>
@@ -43,7 +43,7 @@
     <div class="container">
         @if(Events == null)
         {
-            <p>Loading events...</p>
+            <div class="spinner-border"></div>
         }
         else
         {
