@@ -1,44 +1,64 @@
 ﻿@page "/user"
 @inject IAppService service
-@inject AuthenticationStateProvider authStateProvider;
+@inject AuthenticationStateProvider authStateProvider
 @attribute [Authorize]
 
 <h1>User settings</h1>
 <hr />
 <div class="row">
 	<div class="col-6">
-		<h2>Change password</h2>
-		<EditForm Model="_User" OnSubmit="ChangePassword">
+		<h2>Change password</h2>	
+	
+		<EditForm OnSubmit="ChangePassword">
+			<InputText typeof="password" @bind-Value="CurrentPassword"></InputText>
+			<InputText typeof="password" @bind-Value="NewPassword"></InputText>			
+			<button type="submit">Change password</button>
 		</EditForm>
 	</div>
+
 	<div class="col-6">
 		<h2>Change country</h2>
-		<EditForm Model="_User" OnSubmit="ChangeCountry">
+		<EditForm OnSubmit="ChangeCountry">
+			<InputSelect @bind-Value="Country">
+				@foreach (var c in Countries)
+				{
+					<option value="@c.ToString()">@c.ToString()</option>
+				}
+			</InputSelect>
 		</EditForm>
 	</div>
 </div>
 
 
 @code {
-	private UserModel? _User { get; set; }
+
+	// create some kind of Model Container for passwords
+		// or do regular form
 	private AuthenticationState? authState;
+	private List<string> Countries { get; set; } = new();
+	private string? Username;
+	private string? CurrentPassword;
+	private string? NewPassword;
+	private string? Country;
 
 	protected override async Task OnInitializedAsync()
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();
-		var user = authState.User;
+		var user = authState.User.Identity;
+		Username = user!.Name;
 
-		if (user.Identity!.IsAuthenticated)
+
+		foreach (var type in Enum.GetNames(typeof(CountryEnum)))
 		{
-			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+			Countries.Add(type);
 		}
 	}
 	private void ChangePassword()
 	{
-		
+		service.ChangePasswordAsync(Username!, CurrentPassword!, NewPassword!);
 	}
 	private void ChangeCountry()
 	{
-		
+		service.PutAppUserAsync(Username!, Country!);
 	}
 }
