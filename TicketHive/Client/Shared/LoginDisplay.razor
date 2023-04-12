@@ -4,13 +4,13 @@
 
 <AuthorizeView>
     <Authorized>
-        <img src="images/logos/black only logo.png" style="max-width:65px;" />
-        <a href="home">Hello, @context.User.Identity?.Name!</a>
-        <a href="user" class="oi oi-cog" data-toggle="tooltip" data-placement="bottom" title="Settings page"></a>
-        <a href="allEvents" class="oi oi-grid-three-up" data-toggle="tooltip" data-placement="bottom" title="All Events"></a>
-        <a href="home" class="oi oi-home" data-toggle="tooltip" data-placement="bottom" title="Go to Home page"></a>
-        <a href="shopping-cart" class="oi oi-cart" data-toggle="tooltip" data-placement="bottom" title="See Shopping cart"></a>
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+        <img id="start" src="images/logos/black only logo.png" style="max-width:65px;" />
+        <a id="start" href="home">Hello, @context.User.Identity?.Name!</a>
+        <a id="center" href="user" class="oi oi-cog" data-toggle="tooltip" data-placement="bottom" title="Settings page"></a>
+        <a id="center" href="allEvents" class="oi oi-grid-three-up" data-toggle="tooltip" data-placement="bottom" title="All Events"></a>
+        <a id="center" href="home" class="oi oi-home" data-toggle="tooltip" data-placement="bottom" title="Go to Home page"></a>
+        <a id="center" href="shopping-cart" class="oi oi-cart" data-toggle="tooltip" data-placement="bottom" title="See Shopping cart"></a>
+        <button id="end" class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
         <img src="images/logos/black only logo.png" style="max-width:65px;" />
