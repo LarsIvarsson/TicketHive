@@ -25,13 +25,13 @@
     type="text" 
     @oninput="SearchEventsDynamic" />
     <hr />
-@*    EJ KLAR*@
+
     <select class="filter-Input" @onchange="SorteraEvents">
         <option style="background: #E0F2FF" value="Filtrera Event: ">Filtrera Event: </option>
-        <option style="background: #E0F2FF" value="Price: Low to high">Price: Low to high</option>
-        <option style="background: #E0F2FF" value="Price: High to low">Price: High to low</option>
-        <option style="background: #E0F2FF" value="Date: As soon as possible">Date: As soon as possible</option>
-        <option style="background: #E0F2FF" value="Date: As far away as possible">Date: As far away as possible</option>
+        <option style="background: #E0F2FF" value="Low to high price">Low to high price</option>
+        <option style="background: #E0F2FF" value="High to low price">High to low price</option>
+        <option style="background: #E0F2FF" value="Closest date">Closest date</option>
+        <option style="background: #E0F2FF" value="Furthest date">Furthest date</option>
     </select>
 </div>
 
@@ -349,17 +349,21 @@
     {
         sort = e.Value.ToString();
 
-        if (sort == "Price: Low to high")
+        if (sort == "Low to high price")
         {
             fEvents = Events?.OrderBy(e => e.Price).ToList();
         }
-        else if (sort == "Price: High to low")
+        else if (sort == "High to low price")
         {
             fEvents = Events?.OrderByDescending(e => e.Price).ToList();
         }
-        else if (sort == "Date: As soon as possible")
+        else if (sort == "Closest date")
         {
             fEvents = Events?.OrderBy(e => e.Date).ToList();
+        }
+        else if (sort == "Furthest date")
+        {
+            fEvents = Events?.OrderByDescending(e => e.Date).ToList();
         }
         else if (sort == "Filtrera Event: ")
         {
