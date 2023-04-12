@@ -55,11 +55,8 @@
                         <div class="event-info">                       
                             <p class="title">@e.Name</p>
                             <div class="seperator"></div>
-                            <p class="place">@e.Venue</p>
-                           
-                            <!-- TO-DO: Fixa så att det går att hämta andra valutor än SEK (async await verkar inte funka här) -->
+                            <p class="place">@e.Venue</p>         
                             <p class="price">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
-
                             <div class="additional-info">
                                 <p class="info">
                                     <i class="fas fa-map-marker-alt"></i>
@@ -338,7 +335,7 @@
 
         fEvents = Events.Where(ev =>
             ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())
-            //|| ev.Type!.ToLower().Contains(e.Value.ToString().ToLower())
+            || ev.Type!.ToString().ToLower().Contains(e.Value.ToString().ToLower())
             || ev.Venue!.ToLower().Contains(e.Value.ToString().ToLower())
         ).ToList();
     }
