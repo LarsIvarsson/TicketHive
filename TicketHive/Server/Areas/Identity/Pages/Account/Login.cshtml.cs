@@ -17,6 +17,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 		public string? Username { get; set; }
 		[Required(ErrorMessage = "Password is required")]
 		public string? Password { get; set; }
+		public string? Error { get; set; }
 
 		public LoginModel(SignInManager<ApplicationUser> signInManager)
 		{
@@ -36,6 +37,10 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 				if (signInResult.Succeeded)
 				{
 					return Redirect("~/home");
+				}
+				else
+				{
+					Error = "Something went wrong. Please try again!";
 				}
 			}
 			return Page();
