@@ -2,7 +2,12 @@
 @inject IAppService service
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider authStateProvider;
+@inject NavigationManager navManager;
 @attribute [Authorize]
+
+<AuthorizeView Roles="Admin">
+	<button type="button" class="btn btn-danger btn-rounded" @onclick='() => navManager.NavigateTo("/Admin")'>Go to Admin view</button>
+</AuthorizeView>
 
 <div class="text-center">
 	<h3 class="card-title">Home</h3>
