@@ -22,11 +22,12 @@
     <input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEventsDynamic" />
     <hr />
 @*    EJ KLAR*@
-    <select class="filter-Input" name="filtrera">
-        <option value="">Filtrera Event</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+    <select id="filter-Input" @onchange="SorteraEvents">
+        <option value="">Filtrera Event: </option>
+        <option value="Price: Low to high">Price: Low to high</option>
+        <option value="Price: High to low">Price: High to low</option>
+        <option value="Date: As soon as possible">Date: As soon as possible</option>
+        <option value="Date: As far away as possible">Date: As far away as possible</option>
     </select>
 </div>
 
@@ -39,7 +40,7 @@
         }
         else
         {
-            @foreach (var e in Events)
+            @foreach (var e in fEvents!)
             {
                 <div class="item-container">          
                     <div class="img-container">
@@ -306,6 +307,7 @@
     private List<EventModel>? fEvents;
     private string? userCountry { get; set; }
     private decimal userRate { get; set; }
+    private string sort = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -324,15 +326,42 @@
         }
 
         //search
-        //fEvents = await EventsRepo.GetEventsAsync;
+        fEvents = await service.GetEventsAsync();
 
         fEvents = Events; 
        
     }
     private void SerarchEventsDynamic(ChangeEventArgs e)
         {
-        //SerarchEventsDynamic = Events!.Where(p => p.Name!.ToLower().Contains(e.Value!.ToString()!.ToLower())).ToList();
-        fEvents = Events.Where(ev => ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())).ToList();
+        fEvents = Events.Where(ev =>
+            ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())
+            //|| ev.Type!.ToLower().Contains(e.Value.ToString().ToLower())
+            || ev.Venue!.ToLower().Contains(e.Value.ToString().ToLower())
+        ).ToList();
+    }
+
+    private void SorteraEvents(ChangeEventArgs e)
+    {
+        sort = e.Value.ToString();
+
+        if (sort == "Price: Low to high")
+        {
+            fEvents = Events?.OrderBy(e => e.Price).ToList();
+
         }
+        else if (sort == "Price: High to low")
+        {
+            fEvents = Events?.OrderByDescending(e => e.Price).ToList();
+        }
+        else if (sort == "Date: As soon as possible")
+        {
+            fEvents = Events?.OrderBy(e => e.Date).ToList();
+
+        }
+        else if (sort == "Date: As far away as possible")
+        {
+            fEvents = Events?.OrderByDescending(e => e.Date).ToList();
+        }
+    }
 
 }
