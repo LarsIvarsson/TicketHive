@@ -79,16 +79,8 @@
     {
         await GetEvents();
 
-        // TO-DO: Hitta inloggad användares Country för att kunna visa rätt valuta
         authState = await authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-
-        //if (user.Identity!.IsAuthenticated)
-        //{
-        //    //userCountry = await appService.GetUserCountryByUsernameAsync(user.Identity.Name!);
-
-        //}
-        
 
         @foreach(var type in Enum.GetNames(typeof(CategoryEnum)))
         {
