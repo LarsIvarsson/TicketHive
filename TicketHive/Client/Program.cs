@@ -18,6 +18,7 @@ builder.Services.AddBlazoredLocalStorage();
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("TicketHive.ServerAPI"));
 builder.Services.AddScoped<IAppService, AppService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<CurrencyManager>();
 builder.Services.AddApiAuthorization();
