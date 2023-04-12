@@ -1,4 +1,5 @@
 ﻿@page "/eventDetails/{id:int}"
+@using TicketHive.Client.Managers;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IAppService service;
 @inject NavigationManager navigation
@@ -15,7 +16,7 @@ else
 	<div class="text-center">
 		<h3>Event Details for @_Event.Name</h3>
 		<img src="@_Event.ImageUrl" style="max-width:400px;" />
-		<p>Price: @_Event.Price</p>
+		<p>Price: @Math.Round((_Event.Price*userRate), 2) @CurrencyManager.Currency</p>
 		<p>Venue: @_Event.Venue</p>
 
 		<label for="ticket-input">Tickets </label>
@@ -33,6 +34,8 @@ else
 	public EventModel? _Event { get; set; }
 	public UserModel? _User { get; set; }
 	private AuthenticationState? authState;
+	private string? userCountry { get; set; }
+	private decimal userRate { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -41,6 +44,13 @@ else
 		if (user.Identity!.IsAuthenticated)
 		{
 			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+
+			userCountry = await service.GetUserCountryByUsernameAsync(user.Identity.Name!);
+
+			if (userCountry != null)
+			{
+				userRate = await CurrencyManager.GetRate(userCountry);
+			}
 		}
 	}
 
