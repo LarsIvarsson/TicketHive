@@ -32,13 +32,13 @@
                                 <td>@c.Event.Price.ToString()</td>
                                 <td>
                                     <div class="quantity-container">
-                                        <button class="btn-quantity btn-quantity-hover-minus" @onclick="(() => cartService.DecreaceQuantity(c))">-</button>
+                                        <button class="btn-quantity btn-quantity-hover-minus" @onclick="(async () => await cartService.DecreaceQuantity(signedInUser, c))">-</button>
                                         <input type="text" value="@c.Quantity" readonly>
-                                        <button class="btn-quantity btn-quantity-hover-plus" @onclick="(() => cartService.IncreaceQuantity(signedInUser, c))">+</button>
+                                        <button class="btn-quantity btn-quantity-hover-plus" @onclick="(async () => await cartService.IncreaceQuantity(signedInUser, c))">+</button>
                                     </div>
                                 </td>
                                  @*<td>@c.Event.Price * @c.Quantity</td>*@
-                                <td><button class="btn btn-danger" @onclick="(() => cartService.RemoveFromCartAsync(c))">Remove</button></td>
+                                <td><button class="btn btn-danger" @onclick="(async () => await cartService.RemoveFromCartAsync(signedInUser, c))">Remove</button></td>
                             </tr>
                         }
                     }
@@ -89,15 +89,4 @@
     {
         navigation.NavigateTo("/confirmation");
     }
-
-    //private async Task Increace(CartItemsModel c)
-    //{
-    @*@onclick="() => Increace(c)"*@
-    //    await cartService.IncreaceQuantity(c);
-    //}
-    //private async Task Decreace(CartItemsModel c)
-    //{
-    @*@onclick="() => Decreace(c)"*@
-    //    await cartService.DecreaceQuantity(c);
-    //}
 }
