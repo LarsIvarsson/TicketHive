@@ -1,6 +1,5 @@
-﻿namespace TicketHive.Shared.Models
+namespace TicketHive.Shared.Models
 {
-
 	public class CartItemsModel
 	{
 		public int EventId { get; set; }

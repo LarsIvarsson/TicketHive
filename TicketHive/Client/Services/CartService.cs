@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Blazored.Toast.Services;
 using TicketHive.Client.Services;
 using TicketHive.Shared.Models;
 
@@ -6,70 +7,79 @@ namespace TicketHive.Client.Services
 {
     public class CartService : ICartService
     {
-        private readonly ILocalStorageService localStorageService;
-        private List<CartItemsModel> shoppingCart;
+        private readonly ILocalStorageService localStorage;
 
         public CartService(ILocalStorageService localStorage)
         {
-            //this.localStorage = localStorage;
-            //this.shoppingCart = shoppingCart;
-            this.localStorageService = localStorage;
+            this.localStorage = localStorage;
+            //shoppingCart = new List<CartItemsModel>();//
+
         }
 
-
-
-        public async Task Cookie()
+        public async Task<List<CartItemsModel>> GetShoppingCartAsync(string userName)
         {
-            shoppingCart = await localStorageService.GetItemAsync<List<CartItemsModel>>("shoppingCartCookies");
+			List<CartItemsModel> shoppingCart = await localStorage.GetItemAsync<List<CartItemsModel>>(userName);
 
-            if (shoppingCart == null)
+            if(shoppingCart == null)
             {
-                await localStorageService.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", new List<CartItemsModel>());
-
-                shoppingCart = await localStorageService.GetItemAsync<List<CartItemsModel>>("shoppingCartCookies");
+                shoppingCart = new();
             }
-        }
 
-        public List<CartItemsModel> GetShoppingCartItem()
-        {
             return shoppingCart;
         }
 
-        public async Task AddToCartAsync(EventModel addEvent)
+        public async Task AddToCartAsync(string userName, EventModel addEvent)
         {
-            CartItemsModel newCartItem = new()
-            {
-                Event = addEvent,
-                Quantity = 1,
-            };
+			List<CartItemsModel> shoppingCart = await localStorage.GetItemAsync<List<CartItemsModel>>(userName);
 
-            shoppingCart.Add(newCartItem);
-            await localStorageService.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+            if(shoppingCart == null)
+            {
+                shoppingCart = new();
+            }
+
+            if(shoppingCart.Any(i  => i.Event.Id == addEvent.Id))
+            {
+                shoppingCart.First(i => i.Event.Id == addEvent.Id).Quantity++;
+            }
+            else
+            {
+				CartItemsModel newCartItem = new()
+				{
+					Event = addEvent,
+					Quantity = 1,
+				};
+
+				shoppingCart.Add(newCartItem);
+			}
+
+			await localStorage.SetItemAsync<List<CartItemsModel>>(userName, shoppingCart);
         }
 
         public async Task IncreaceQuantity(CartItemsModel item)
         {
-            item.Quantity++;
-            await localStorageService.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+            //item.Quantity++;
+            //await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
         }
 
         public async Task DecreaceQuantity(CartItemsModel item)
         {
-            if (item.Quantity > 1)
-            {
-                item.Quantity--;
-                await localStorageService.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
-            }
-            else
-            {
-                await RemoveFromCartAsync(item);
-            }
+            //if (item.Quantity > 1)
+            //{
+            //    item.Quantity--;
+            //    await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+            //}
+            //else
+            //{
+            //    await RemoveFromCartAsync(item);
+            //}
         }
         public async Task RemoveFromCartAsync(CartItemsModel removeEvent)
         {
-            shoppingCart.Remove(removeEvent);
-            await localStorageService.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+            //shoppingCart.Remove(removeEvent);
+            //await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
         }
 
     }
+
 }
+

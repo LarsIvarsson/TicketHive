@@ -1,4 +1,3 @@
-﻿
 @page "/shopping-cart"
 @inject IAppService services
 @attribute [Authorize]
@@ -8,73 +7,69 @@
 
 <h1>Shopping Cart</h1>
 <br />
-<div class="container"> 
-    <div class="row"> 
-        <div class="col-md-8"> 
-            <table class="table"> 
-                <thead> 
-                    <tr> 
-                        <th>Event</th> 
-                        <th>Price</th> 
-                        <th>Quantity</th> 
-                        <th>Total</th> 
-                        <th>
 
-                        </th> 
-                    </tr> 
-                </thead> 
-                <tbody> 
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        @*<th>Total</th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
                     @if (shoppingCart != null && shoppingCart.Any())
-                    { 
+                    {
                         @foreach (var c in shoppingCart)
                         {
-                            <tr> 
-                                <td>@c.EventName</td> 
-                                <td>@c.Price.ToString()</td> 
-                                <td> 
-                                    <div class="input-group"> 
-                                        <span class="input-group-btn"> 
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.DecreaceQuantity(c))"> 
-                                                <span class="fa fa-minus">-</span> 
-                                            </button> 
-                                        </span> 
-                                        <input class="form-control" type="number" value="@c.Quantity" /> 
-                                        <span class="input-group-btn"> 
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.IncreaceQuantity(c))"> 
-                                                <span class="fa fa-plus">+</span> 
-                                            </button> 
-                                        </span> 
-                                    </div> 
-                                </td> 
-                                <td>@c.Price * @c.Quantity</td> 
+                            <tr>
+                                <td>@c.Event.Name</td>
+                                <td>@c.Event.Price.ToString()</td>
                                 <td>
-                                    <button class="btn btn-danger" @onclick="(() => cartService.RemoveFromCartAsync(c))">Remove</button>
-                                </td> 
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.DecreaceQuantity(c))">
+                                                <span class="fa fa-minus">-</span>
+                                            </button>
+                                        </span>
+                                        <input class="form-control" type="number" value="@c.Quantity"  />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.IncreaceQuantity(c))">
+                                                <span class="fa fa-plus">+</span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </td>
+                                 @*<td>@c.Event.Price * @c.Quantity</td>*@
+                                <td><button class="btn btn-danger" @onclick="(() => cartService.RemoveFromCartAsync(c))">Remove</button></td>
                             </tr>
-                        }          
+                        }
                     }
                     else
                     {
-                        <tr> 
-                            <td colspan="5">Your shopping cart is empty</td> 
+                        <tr>
+                            <td colspan="5">Your shopping cart is empty</td>
                         </tr>
-                    } 
-                    </tbody> 
-                </table> 
-        </div> 
-        <div class="col-md-4"> 
-            <div class="card"> 
-                <div class="card-body"> 
-                    <h5 class="card-title">Order Summary</h5> 
-                    <hr /> 
-                    @*<h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4> *@
-                    @*<button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>*@ 
-                </div> 
-            </div> 
-        </div> 
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Order Summary</h5>
+                    <hr />
+                    <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
+                    @*<button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>*@
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 
 
 @code
@@ -84,46 +79,13 @@
     private AuthenticationState? authState;
     private string signedInUser;
 
-
     protected override async Task OnInitializedAsync()
     {
+        //await cartService.Cookie();
+
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         signedInUser = authState.User.Identity.Name;
 
-        shoppingCart = cartService.GetShoppingCartItem();
-        await GetUserEvents();
-        PopulateShoppingCart();
-    }
-
-
-    private async Task GetUserEvents()
-    {
-        // this is to get and sort events from cookie
-        var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
-        if (cookie is null)
-        {
-            groupedList = null;
-        }
-        else if (cookie.UserEvents != null)
-        {
-            groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
-        }
-    }
-
-    private void PopulateShoppingCart()
-    {
-        if (groupedList != null && groupedList.Count() > 0)
-        {
-            foreach (var group in groupedList)
-            {
-                shoppingCart.Add(new CartItemsModel()
-                    {
-                        EventId = group.First().Id,
-                        EventName = group.First().Name,
-                        Price = group.First().Price,
-                        Quantity = group.Count()
-                    });
-            }
-        }        
     }
 }
+
