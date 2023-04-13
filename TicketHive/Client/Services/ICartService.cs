@@ -10,7 +10,7 @@ namespace TicketHive.Client.Services
 
         Task RemoveFromCartAsync(CartItemsModel removeEvent);
 
-        Task IncreaceQuantity(CartItemsModel item);
+        Task IncreaceQuantity(string userName, CartItemsModel item);
 
         Task DecreaceQuantity(CartItemsModel item);
 
