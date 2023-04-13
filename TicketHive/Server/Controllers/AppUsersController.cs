@@ -6,82 +6,68 @@ using TicketHive.Server.Repo;
 
 namespace TicketHive.Server.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class AppUsersController : ControllerBase
-	{
-		private readonly IAppUserRepo repo;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AppUsersController : ControllerBase
+    {
+        private readonly IAppUserRepo repo;
+        public AppUsersController(IAppUserRepo repo)
+        {
+            this.repo = repo;
+        }
+        [HttpGet("{AppUsername}")]
+        public async Task<ActionResult<string?>> GetUserCountryByUsernameAsync(string AppUsername)
+        {
+            var result = await repo.GetUserByUsernameAsync(AppUsername);
 
-		public AppUsersController(IAppUserRepo repo)
-		{
-			this.repo = repo;
-		}
+            if (result != null)
+            {
+                string country = result.Country;
 
-		// GET api/<AppUsersController>/5
-		[HttpGet("{AppUsername}")]
-		public async Task<ActionResult<string?>> GetUserCountryByUsernameAsync(string AppUsername)
-		{
-			var result = await repo.GetUserByUsernameAsync(AppUsername);
+                if (country != null)
+                {
+                    return Ok(country);
+                }
+            }
+            return NotFound();
+        }
+        [HttpPut("{AppUsername}")]
+        public async Task<IActionResult> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
+        {
+            bool result;
+            List<string>? words = JsonConvert.DeserializeObject<List<string>>(jsonList);
+            if (words != null)
+            {
+                if (words.Count() > 1)
+                {
+                    result = await repo.ChangePasswordAsync(AppUsername, words[0], words[1]);
+                    if (result)
+                    {
+                        return Ok();
+                    }
+                }
+                result = await repo.PutAppUserAsync(AppUsername, words[0]);
+                if (result)
+                {
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
 
-			if (result != null)
-			{
-				string country = result.Country;
-
-				if (country != null)
-				{
-					return Ok(country);
-				}
-			}
-			return NotFound();
-		}
-		// PUT api/<AppUsersController>/5
-		[HttpPut("{AppUsername}")]
-		public async Task<IActionResult> PutAppUserAsync(string AppUsername, [FromBody] string Country)
-		{
-			var result = await repo.PutAppUserAsync(AppUsername, Country);
-			if (result)
-			{
-				return Ok();
-			}
-			return BadRequest();
-		}
-
-		[HttpPut("{AppUsername}")]
-		public async Task<IActionResult> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
-		{
-			List<string>? passwords = JsonConvert.DeserializeObject<List<string>>(jsonList);
-
-			if (passwords != null)
-			{
-				var result = await repo.ChangePasswordAsync(AppUsername, passwords[0], passwords[1]);
-				if (result)
-				{
-					return Ok();
-				}
-			}
-
-			return BadRequest();
-		}
-
-
-
-
-
-		// GET: api/<AppUsersController>
-		[HttpGet]
-		public IEnumerable<string> Get()
-		{
-			return new string[] { "value1", "value2" };
-		}
-		// POST api/<AppUsersController>
-		[HttpPost]
-		public void Post([FromBody] string value)
-		{
-		}
-		// DELETE api/<AppUsersController>/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
-		}
-	}
+        // ==== not implemented (yet) ====
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "value1", "value2" };
+        }
+        [HttpPost]
+        public void Post([FromBody] string value)
+        {
+        }
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+    }
 }

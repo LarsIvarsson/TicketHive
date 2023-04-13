@@ -3,62 +3,66 @@
 @inject AuthenticationStateProvider authStateProvider
 @attribute [Authorize]
 
-<h1>User settings</h1>
+<h1 class="ms-5">User settings</h1>
 <hr />
 <div class="row">
-	<div class="col-6">
+	<div class="col-3 text-center m-5">
 		<h2>Change password</h2>	
-	
-		<EditForm OnSubmit="ChangePassword">
-			<InputText typeof="password" @bind-Value="CurrentPassword"></InputText>
-			<InputText typeof="password" @bind-Value="NewPassword"></InputText>			
-			<button type="submit">Change password</button>
+		<EditForm Model="Passwords" OnValidSubmit="ChangePassword">
+			<DataAnnotationsValidator/>
+			<ValidationSummary/>			
+			<InputText class="mt-3" type="password" @bind-Value="Passwords.CurrentPassword"></InputText><br />
+			<InputText class="mt-3" type="password" @bind-Value="Passwords.NewPassword"></InputText><br />
+			<button class="mt-3" type="submit">Change password</button>
 		</EditForm>
+	</div>	
+	<div class="col-3 text-center m-5">
+		<h2>Change country</h2>		
+			<EditForm Model="Country" OnValidSubmit="ChangeCountry">
+				<DataAnnotationsValidator/>
+				<ValidationSummary/>
+				<InputSelect class="mt-3" @bind-Value="Country.NewCountry">
+					@foreach (var c in Countries)
+					{
+						<option value="@c.ToString()">@c.ToString()</option>
+					}
+				</InputSelect><br />
+				<button class="mt-3" type="submit">Change country</button>
+			</EditForm>
 	</div>
-
-	<div class="col-6">
-		<h2>Change country</h2>
-		<EditForm OnSubmit="ChangeCountry">
-			<InputSelect @bind-Value="Country">
-				@foreach (var c in Countries)
-				{
-					<option value="@c.ToString()">@c.ToString()</option>
-				}
-			</InputSelect>
-		</EditForm>
-	</div>
+	<div class="col-6"></div>
 </div>
 
 
 @code {
-
-	// create some kind of Model Container for passwords
-		// or do regular form
 	private AuthenticationState? authState;
 	private List<string> Countries { get; set; } = new();
 	private string? Username;
-	private string? CurrentPassword;
-	private string? NewPassword;
-	private string? Country;
+
+	private UserPasswordsModel Passwords { get; set; } = new();
+	private UserCountryModel Country { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		authState = await authStateProvider.GetAuthenticationStateAsync();
-		var user = authState.User.Identity;
-		Username = user!.Name;
-
+		authState = await authStateProvider.
+			GetAuthenticationStateAsync();
+		Username = authState.User.Identity!.Name;
 
 		foreach (var type in Enum.GetNames(typeof(CountryEnum)))
 		{
 			Countries.Add(type);
 		}
 	}
-	private void ChangePassword()
-	{
-		service.ChangePasswordAsync(Username!, CurrentPassword!, NewPassword!);
+
+	private async Task ChangePassword()
+	{		
+		await service.
+			PutAppUserAsync(Username!, Passwords.CurrentPassword!, Passwords.NewPassword!);
 	}
-	private void ChangeCountry()
+
+	private async Task ChangeCountry()
 	{
-		service.PutAppUserAsync(Username!, Country!);
+		await service.
+			PutAppUserAsync(Username!, Country.NewCountry!);
 	}
 }
