@@ -25,59 +25,51 @@
 			<em class="text-danger">@errorMessage</em>
 		}
 	</div>
-	<hr style="margin: 30px 30px 60px 30px;"/>
-        
+	<hr style="margin: 30px 30px 60px 30px;"/>        
     </div>
 	<div class="row" style="margin: 30px;">
-        <div class="col-8" style="background-color: white; padding: 30px; ">
-            
+        <div class="col-8" style="background-color: white; padding: 30px; ">            
 			<div class="row">
-
                 <h3 style="font-size: 2rem;">Your booked events</h3>
 				<hr style="margin: 30px 0 20px 0"/>
 
 				@if (groupedList is null || groupedList.Count == 0)
 				{
 					<p>No events booked yet...</p>
-					<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> 
-						to get tickets for your next event</p>
+					<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> to get tickets for your next event</p>
 				}
 				else
-				{	@*VAD SOM PRINTAS OM MAN HAR BOKAT EVENT*@
+				{	
+					@*VAD SOM PRINTAS OM MAN HAR BOKAT EVENT*@
 					@foreach (var group in groupedList)
 					{
-
 						<div class="col-3 d-flex align-items-center d-flex justify-content-center">
-								<img src=/images/Other/RättTicket.png style="height: 120px; width: 120px; align-content: center; "  />
+
+							<img src=/images/Other/RÃ¤ttTicket.png style="height: 120px; width: 120px; align-content: center; "  />
+						</div>
+						<div class="col-6 text-start d-flex align-items-center">	
+							<div>
+								<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @group.First().Name </h3>
+								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @group.First().Date.ToString("yyyy-MM-dd")</p>
+								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @group.Count() st  </p>
+
 							</div>
-						<div class="col-6 text-start ">
-							<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @group.First().Name </h3>
-							<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @group.First().Date </p>
-							<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @group.Count() st  </p>
-							</div>
+						</div>
 						<div class="col-3 d-flex align-items-center d-flex justify-content-start" style="padding:5px;">
 							<img src=/images/Other/Qkod.jpg style="height: 150px; width: 150px; align-content: center;" />
 						</div>
-						
-						@*<img src=@group.First().ImageUrl style="max-width:250px;"/>*@
-					
-						<hr style="margin: 20px 0 20px 0;" />	
-						
-					}
-					
+					@*<img src=@group.First().ImageUrl style="max-width:250px;"/>*@					
+					<hr style="margin: 20px 0 20px 0;" />							
+					}					
 				}
 			</div>
 		</div>
-		@*PRINTA POPULÄRA EVENT*@
-
+		@*PRINTA POPULÃ„RA EVENT*@
 		<div class="col-4" style="background-color: #E0F2FF; padding: 0px 30px 30px 30px;  ">
 			<div class="row">
-
-				<h3 style="color: #305076; margin-bottom: 30px; font-size: 25px; font-family: Verdana;">Popular events</h3>
-				
+				<h3 style="color: #305076; margin-bottom: 30px; font-size: 25px; font-family: Verdana;">Popular events</h3>				
 				<div class="col-1"></div>
-				<div class="col-10 text-center">
-					
+				<div class="col-10 text-center">					
 					@if (PopularEvents is null)
 					{
 						<div class="spinner-border"></div>
@@ -86,25 +78,22 @@
 					{
 						@foreach (var e in PopularEvents)
 						{
-
-							<div >
+							<div>
 								<a href="eventDetails/@e.Id" Event="@e">
 									<img src="@e.ImageUrl" style="width: 300px; height: 200px;" />
 								</a>
-								<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>
+								@*<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>*@
 								<hr style="background-color: transparent;"/>
 							</div>										
 						}
-						
 					}
-					
 				</div>
 				<div class="col-1"></div>
 			</div>
 		</div>
 	</div>
 </div>
-<BlazoredToasts/>
+@*<BlazoredToasts/>*@
 
 <style>
 	.card-title {
@@ -142,8 +131,6 @@
 	}
 </style>
 
-
-
 @code {
 
 	private List<EventModel>? PopularEvents;
@@ -158,26 +145,32 @@
 		authState = await authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
-		if (user.Identity!.IsAuthenticated)
+		if(user != null)
 		{
-			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
-			await GetUserEvents();
-			PopularEvents = await service.GetEventsAsync();
+			if(!user.IsInRole("Admin"))
+			{
+				if (user.Identity!.IsAuthenticated)
+				{
+					_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+					await GetUserEvents();
+					PopularEvents = await service.GetEventsAsync();
+				}
+			}
 		}
 	}
 
 	private async Task GetUserEvents()
 	{
 		// this is to get and sort events from cookie
-		var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
-		if (cookie is null)
-		{
-			groupedList = null;
-		}
-		else /*if (cookie.UserEvents != null)*/
-		{
-			groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
-		}
+		//var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
+		//if (cookie is null)
+		//{
+		//	groupedList = null;
+		//}
+		//else /*if (cookie.UserEvents != null)*/
+		//{
+		//	groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
+		//}
 	}
 
 	//protected override void OnParametersSet()
@@ -193,12 +186,10 @@
 	private void HandleSearchWord()
 	{
 		errorMessage = null!;
-
 		if(searchWord != null)
 		{
 			navManager.NavigateTo($"/allevents/{searchWord}");
 		}
-
 		else
 		{
 			errorMessage = "Please enter a search word before pressing the button...";

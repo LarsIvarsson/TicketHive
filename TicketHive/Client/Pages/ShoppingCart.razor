@@ -30,18 +30,10 @@
                                 <td>@c.Event.Name</td>
                                 <td>@c.Event.Price.ToString()</td>
                                 <td>
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.DecreaceQuantity(c))">
-                                                <span class="fa fa-minus">-</span>
-                                            </button>
-                                        </span>
-                                        <input class="form-control" type="number" value="@c.Quantity"  />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.IncreaceQuantity(c))">
-                                                <span class="fa fa-plus">+</span>
-                                            </button>
-                                        </span>
+                                    <div class="quantity-container">
+                                        <button class="btn-quantity btn-quantity-hover-minus" @onclick="(() => cartService.DecreaceQuantity(c))">-</button>
+                                        <input type="text" value="@c.Quantity" readonly>
+                                        <button class="btn-quantity btn-quantity-hover-plus" @onclick="(() => cartService.IncreaceQuantity(c))">+</button>
                                     </div>
                                 </td>
                                  @*<td>@c.Event.Price * @c.Quantity</td>*@
@@ -63,8 +55,11 @@
                 <div class="card-body">
                     <h5 class="card-title">Order Summary</h5>
                     <hr />
-                    <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
-                    @*<button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>*@
+                    @if (shoppingCart != null)
+                    {
+                        <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
+                    }                    
+                    <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout(shoppingCart))">Checkout</button>
                 </div>
             </div>
         </div>
@@ -86,6 +81,11 @@
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         signedInUser = authState.User.Identity.Name;
 
+        shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
+    }
+
+    private async Task Checkout(List<CartItemsModel> shoppingCart)
+    {
+               
     }
 }
-

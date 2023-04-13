@@ -1,4 +1,4 @@
-﻿@page "/eventDetails/{id:int}"
+@page "/eventDetails/{id:int}"
 @using TicketHive.Client.Managers;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IAppService service;
@@ -20,11 +20,9 @@
 	</div>
 }
 else
-
 {	
 	<div class="container">
 		@if(_Event.IsSoldOut == true)
-
 		{	
 			<div class="card shadow-lg mx-auto" style="width:400px;">
 				<img class="card-img-top" style="opacity: 0.5" src="@_Event.ImageUrl" alt="Card image">
@@ -56,21 +54,36 @@ else
 						<li class="list-group-item">Date: <strong>@_Event.Date.ToString("yyyy-MM-dd")</strong></li>
 					</ul>
 					<div class="text-center">
-						<label for="ticket-input">Tickets: </label>
-						<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity" />
+						@*<label for="ticket-input">Tickets: </label>
+						<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity" />*@
+
 						<input class="btn btn-primary" type="submit" value="Add to cart" @onclick=AddToShoppingCart />
 					</div>
 				</div>
 			</div>
 		}
-		</div>
+	</div>
+}	
 
-}
+
+
+
+	<style>
+		.fullyBooked{
+			position: relative;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(24, 83, 122, 0.6);
+			opacity: 0;
+			transition: height linear 0.4s, opacity linear 0.2s;
+		}
+	</style>
+
 
 @code {
 	[Parameter]
 	public int id { get; set; }
-	public int Quantity { get; set; }
+	//public int Quantity { get; set; } = 1;
 	public EventModel? _Event { get; set; }
 	public UserModel? _User { get; set; }
 	private AuthenticationState? authState;
@@ -109,19 +122,16 @@ else
 		//// Reads cookie in local storage (if there is any) with current username
 		//UserModel? cookieUser = await localStorage
 		//	.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
-
 		//// if cookie is found we use that object as our user
 		//if (cookieUser != null)
 		//{
 		//	_User = cookieUser;
 		//}
-
 		//// adds event to users event list "selected number of times"
 		//for (int i = 0; i < Quantity; i++)
 		//{
 		//	_User!.UserEvents!.Add(_Event!);
 		//}
-
 		//// finally converts object with updated event list to cookie and saves to local storage
 		//await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);	
 	}
