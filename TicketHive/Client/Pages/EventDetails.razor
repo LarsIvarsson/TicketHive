@@ -6,6 +6,8 @@
 @inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
 @inject ILocalStorageService localStorage
+@inject ICartService cartService
+@*@inject IToastService ToastService*@
 
 <button type="button" class="btn btn-secondary btn-rounded oi oi-arrow-circle-left" @onclick='() => navigation.NavigateTo("/allevents")'></button>
 
@@ -49,16 +51,6 @@ else
 		
 	</div>
 
-	<style>
-		.fullyBooked{
-			position: relative;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(24, 83, 122, 0.6);
-			opacity: 0;
-			transition: height linear 0.4s, opacity linear 0.2s;
-		}
-	</style>
 }
 
 
@@ -97,23 +89,28 @@ else
 
 	private async Task AddToShoppingCart()
 	{
-		// Reads cookie in local storage (if there is any) with current username
-		UserModel? cookieUser = await localStorage
-			.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
+		authState = await authStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
 
-		// if cookie is found we use that object as our user
-		if (cookieUser != null)
-		{
-			_User = cookieUser;
-		}
+		await cartService.AddToCartAsync(user.Identity.Name, _Event);
 
-		// adds event to users event list "selected number of times"
-		for (int i = 0; i < Quantity; i++)
-		{
-			_User!.UserEvents!.Add(_Event!);
-		}
+		//// Reads cookie in local storage (if there is any) with current username
+		//UserModel? cookieUser = await localStorage
+		//	.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
 
-		// finally converts object with updated event list to cookie and saves to local storage
-		await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);
+		//// if cookie is found we use that object as our user
+		//if (cookieUser != null)
+		//{
+		//	_User = cookieUser;
+		//}
+
+		//// adds event to users event list "selected number of times"
+		//for (int i = 0; i < Quantity; i++)
+		//{
+		//	_User!.UserEvents!.Add(_Event!);
+		//}
+
+		//// finally converts object with updated event list to cookie and saves to local storage
+		//await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);	
 	}
 }
