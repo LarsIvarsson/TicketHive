@@ -20,11 +20,9 @@
 	</div>
 }
 else
-
 {	
 	<div class="container">
 		@if(_Event.IsSoldOut == true)
-
 		{	
 			<div class="card shadow-lg mx-auto" style="width:400px;">
 				<img class="card-img-top" style="opacity: 0.5" src="@_Event.ImageUrl" alt="Card image">
@@ -63,10 +61,9 @@ else
 				</div>
 			</div>
 		}
-
-		
-	}	
 	</div>
+}	
+
 
 
 
@@ -81,7 +78,6 @@ else
 		}
 	</style>
 
-}
 
 @code {
 	[Parameter]
