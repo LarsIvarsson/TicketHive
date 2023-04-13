@@ -68,8 +68,12 @@
                                 <div class="seperator"></div>
                                 <p class="place" style="opacity: 0.5;">@e.Venue</p>
                                 <p class="price" style="opacity: 0.5;">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
-                                <div class="additional-info" style="opacity: 0.5;">
-                                    <p class="info">
+                                <div class="additional-info text-center" style="opacity: 0.5;">
+                                    <p>
+                                        <i class="fa-sharp fa-solid fa-fire align-items-center"></i>
+                                        @e.Type
+                                    </p>
+                                    <p class="info" style="font-size: 10px;">
                                         <i class="fas fa-map-marker-alt"></i>
                                         Norra Bulltofta 6C
                                     </p>
@@ -102,7 +106,11 @@
                                 <div class="seperator"></div>
                                 <p class="place">@e.Venue</p>         
                                 <p class="price">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
-                                <div class="additional-info">
+                                <div class="additional-info text-center">
+                                    <p>
+                                        <i class="fa-sharp fa-solid fa-fire align-items-center"></i>
+                                        @e.Type
+                                    </p>
                                     <p class="info">
                                         <i class="fas fa-map-marker-alt"></i>
                                         Norra Bulltofta 6C
@@ -111,6 +119,7 @@
                                         <i class="far fa-calendar-alt"></i>
                                         @e.Date.ToString("yyyy-MM-dd")
                                     </p>
+                                   
                                 </div>
                             </div>                           
                             <button class="action">
@@ -290,7 +299,7 @@
         width: 20%;
         height: 6px;
         background: #17537a;
-        margin-bottom: 16px;
+        margin-bottom: 8px;
     }
 
     .additional-info {
