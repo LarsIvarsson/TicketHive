@@ -160,15 +160,15 @@
 	private async Task GetUserEvents()
 	{
 		// this is to get and sort events from cookie
-		var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
-		if (cookie is null)
-		{
-			groupedList = null;
-		}
-		else /*if (cookie.UserEvents != null)*/
-		{
-			groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
-		}
+		//var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
+		//if (cookie is null)
+		//{
+		//	groupedList = null;
+		//}
+		//else /*if (cookie.UserEvents != null)*/
+		//{
+		//	groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
+		//}
 	}
 
 	//protected override void OnParametersSet()

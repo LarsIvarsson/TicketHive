@@ -1,49 +1,62 @@
 ﻿@page "/confirmation"
 @inject IAppService service
+@inject ICartService cartService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider authStateProvider
 @attribute [Authorize]
 
-<h3>Confirmation Page</h3>
-<em>This page will display a summary/receipt when shopping cart has been checked out</em>
 
-@if (BookedEvents is null)
+
+<h2>Your booked events</h2>
+<em>Congratulations on buying awesome tickets!</em>
+<hr />
+
+@if (shoppingCart is null)
 {
 	<p>Confirmation is loading...</p>
 }
 else
-{
-	<h3>Your booked events</h3><hr />
-	@foreach (var group in BookedEvents)
+{	
+	@foreach (var item in shoppingCart)
 	{
-		<p>Event: @group.First().Name</p>
-		<p>Qty: @group.Count()</p>
+		<p>Event: @item.Event.Name</p>
+		<p>Qty: @item.Quantity</p>
+		<p>Date: @item.Event.Date.ToString("yyyy-MM-dd")</p>
+		<hr />		
+		@*<p>Event: @group.First().Name</p>
+		<p>Qty: @group.Count()</p>*@
 	}
 }
 
 @code {
-	private UserModel? _User { get; set; }
-	private List<IGrouping<int, EventModel>>? BookedEvents;
+	//private UserModel? _User { get; set; }
+	private List<CartItemsModel>? shoppingCart;
+	//private List<IGrouping<int, EventModel>>? BookedEvents;
 	private AuthenticationState? authState;
+	private string? signedInUser;
 
 	protected override async Task OnInitializedAsync()
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();
-		var user = authState.User;
+		signedInUser = authState.User.Identity!.Name;
 
-		if (user.Identity!.IsAuthenticated)
-		{
-			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
-		}
+		shoppingCart = await cartService.GetShoppingCartAsync(signedInUser!);
+		
+
+		//if (user.Identity!.IsAuthenticated)
+		//{
+		//	_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+		//}
 	}
 
 	protected override void OnParametersSet()
 	{
-		if (_User != null)
-		{
-			if (_User.UserEvents != null)
-			{
-				BookedEvents = _User.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
-			}
+		//if (_User != null)
+		//{
+		//	if (_User.UserEvents != null)
+		//	{
+		//		BookedEvents = _User.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
+		//	}
 		}
 	}
-}
+
