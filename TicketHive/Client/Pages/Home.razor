@@ -9,10 +9,10 @@
 	<button type="button" class="btn btn-danger btn-rounded" @onclick='() => navManager.NavigateTo("/admin")'>Go to Admin view</button>
 </AuthorizeView>
 
-<div class="text-center">
-	<h3 class="card-title">Home Page</h3>
+<div class="text-center padding: 30px;" style="margin: 0px 0px 0px 70px;">
+	<h1 class="card-title" style="text-align: center; ">Home Page</h1>
 	
-	
+	@*SEARCH*@
 	<div class="search">
 		<input class="search-Input" 
 			placeholder="Search event..." 
@@ -25,49 +25,82 @@
 			<em class="text-danger">@errorMessage</em>
 		}
 	</div>
-	<hr />
+	<hr style="margin: 30px 30px 60px 30px;"/>
+        
     </div>
-	<div class="row">
-		<div class="col-6">
-			<h3>Your booked events</h3>
+	<div class="row" style="margin: 30px;">
+        <div class="col-8" style="background-color: white; padding: 30px; ">
+            
+			<div class="row">
 
+                <h3 style="font-size: 2rem;">Your booked events</h3>
+				<hr style="margin: 30px 0 20px 0"/>
 
-			@if (groupedList is null || groupedList.Count == 0)
-			{
-				<p>No events booked yet...</p>
-				<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> 
-					to get tickets for your next event</p>
-			}
-			else
-			{
-				@foreach (var group in groupedList)
+				@if (groupedList is null || groupedList.Count == 0)
 				{
-					<img src=@group.First().ImageUrl style="max-width:250px;"/>
-					<p>@group.Count() ticket(s) for event: @group.First().Name</p>
-					<hr />			
+					<p>No events booked yet...</p>
+					<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> 
+						to get tickets for your next event</p>
 				}
-			}
+				else
+				{	@*VAD SOM PRINTAS OM MAN HAR BOKAT EVENT*@
+					@foreach (var group in groupedList)
+					{
+
+						<div class="col-3 d-flex align-items-center d-flex justify-content-center">
+								<img src=/images/Other/RättTicket.png style="height: 120px; width: 120px; align-content: center; "  />
+							</div>
+						<div class="col-6 text-start  ">
+							<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @group.First().Name </h3>
+							<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @group.First().Date </p>
+							<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @group.Count() st  </p>
+							</div>
+						<div class="col-3 d-flex align-items-center d-flex justify-content-start" style="padding:5px;">
+							<img src=/images/Other/Qkod.jpg style="height: 150px; width: 150px; align-content: center;" />
+						</div>
+						
+						@*<img src=@group.First().ImageUrl style="max-width:250px;"/>*@
+					
+						<hr style="margin: 20px 0 20px 0;" />	
+						
+					}
+					
+				}
+			</div>
 		</div>
-		<div class="col-6">
-			<h3>Popular events</h3>
-			@if (PopularEvents is null)
-			{
-				<div class="spinner-border"></div>
-			}
-			else
-			{
-				@foreach (var e in PopularEvents)
-				{
+		@*PRINTA POPULÄRA EVENT*@
 
-					<div>
-						<a href="eventDetails/@e.Id" Event="@e">
-							<img src="@e.ImageUrl" style="max-width:250px;" />
-						</a>
-						<p>@e.Name</p>
-						<hr />
-					</div>										
-				}
-			}
+		<div class="col-4" style="background-color: #E0F2FF; padding: 0px 30px 30px 30px;  ">
+			<div class="row">
+
+				<h3 style="color: #305076; margin-bottom: 30px; font-size: 25px; font-family: Verdana;">Popular events</h3>
+				
+				<div class="col-1"></div>
+				<div class="col-10 text-center">
+					
+					@if (PopularEvents is null)
+					{
+						<div class="spinner-border"></div>
+					}
+					else
+					{
+						@foreach (var e in PopularEvents)
+						{
+
+							<div >
+								<a href="eventDetails/@e.Id" Event="@e">
+									<img src="@e.ImageUrl" style="width: 300px; height: 200px;" />
+								</a>
+								<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>
+								<hr style="background-color: transparent;"/>
+							</div>										
+						}
+						
+					}
+					
+				</div>
+				<div class="col-1"></div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -79,7 +112,7 @@
 		color: #305076;
 		margin-bottom: 0.5rem;
 		text-transform: uppercase;
-		text-align: center;
+		text-align: start;
 	}
 
 	.search-Input {
