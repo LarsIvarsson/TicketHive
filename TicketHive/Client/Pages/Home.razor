@@ -104,7 +104,7 @@
 		</div>
 	</div>
 </div>
-<BlazoredToasts/>
+@*<BlazoredToasts/>*@
 
 <style>
 	.card-title {
@@ -158,11 +158,17 @@
 		authState = await authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
-		if (user.Identity!.IsAuthenticated)
+		if(user != null)
 		{
-			_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
-			await GetUserEvents();
-			PopularEvents = await service.GetEventsAsync();
+			if(!user.IsInRole("Admin"))
+			{
+				if (user.Identity!.IsAuthenticated)
+				{
+					_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+					await GetUserEvents();
+					PopularEvents = await service.GetEventsAsync();
+				}
+			}
 		}
 	}
 
