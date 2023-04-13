@@ -71,9 +71,10 @@
                                     </p>
                                     <p class="info">
                                         <i class="far fa-calendar-alt"></i>
-                                        @e.Date
+                                        @e.Date.ToString("yyyy-MM-dd")
                                     </p>
                                 </div>
+
                             </div>
                             <button class="action" style="width: 80%;  opacity: 1.0;">
                                 <a style="text-decoration: none; color: red; font-weight: bold; opacity: 1.0;" href="eventDetails/@e.Id" Event="@e">FULLY BOOKED</a>
