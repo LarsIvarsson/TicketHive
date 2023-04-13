@@ -8,11 +8,11 @@ namespace TicketHive.Client.Services
     public class CartService : ICartService
     {
         private readonly ILocalStorageService localStorage;
-
+        private List<CartItemsModel>? shoppingCart;
         public CartService(ILocalStorageService localStorage)
         {
             this.localStorage = localStorage;
-            //shoppingCart = new List<CartItemsModel>();//
+            shoppingCart = new List<CartItemsModel>();//
 
         }
 
@@ -57,26 +57,33 @@ namespace TicketHive.Client.Services
 
         public async Task IncreaceQuantity(CartItemsModel item)
         {
-            //item.Quantity++;
-            //await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+            item.Quantity++;
+            await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+
         }
 
         public async Task DecreaceQuantity(CartItemsModel item)
         {
-            //if (item.Quantity > 1)
-            //{
-            //    item.Quantity--;
-            //    await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
-            //}
-            //else
-            //{
-            //    await RemoveFromCartAsync(item);
-            //}
+            if (item.Quantity > 1)
+            {
+                item.Quantity--;
+                await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+            }
+            else if(item.Quantity == 1)
+            {
+                await RemoveFromCartAsync(item);
+            }
         }
         public async Task RemoveFromCartAsync(CartItemsModel removeEvent)
         {
+            shoppingCart.Remove(removeEvent);
+            await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+
+            //shoppingCart = await localStorage.GetItemAsync<List<CartItemsModel>>("shoppingCartCookies");
             //shoppingCart.Remove(removeEvent);
             //await localStorage.SetItemAsync<List<CartItemsModel>>("shoppingCartCookies", shoppingCart);
+
+
         }
 
     }

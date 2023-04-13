@@ -26,6 +26,8 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 		[Required(ErrorMessage = "Please choose country")]
 		public string? Country { get; set; }
+		public List<string>? Errors { get; set; }
+		public List<string> Countries { get; set; } = new();
 
 		public RegisterModel(SignInManager<ApplicationUser> signInManager, IUserRepo repo)
 		{
@@ -35,24 +37,39 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 		public void OnGet()
 		{
-
-		}
+			foreach(var type in Enum.GetNames(typeof(CountryEnum)))
+			{
+                Countries.Add(type);
+            }
+        }
 
 		public async Task<IActionResult> OnPost()
 		{
 			if (ModelState.IsValid)
 			{
+				// try to create ApplicationUser
 				var registerResult = await signInManager.UserManager.
 					CreateAsync(new ApplicationUser() { UserName = Username!, Country = Country! }, Password!);
-				await repo.PostUserAsync(new UserModel() { Username = Username! });
+
 				if (registerResult.Succeeded)
 				{
+					// if AppUser was created, create UserModel with same Username
+					await repo.PostUserAsync(new UserModel() { Username = Username! });
+
+					// try to sign in with created AppUser
 					var signInResult = await signInManager.
 						PasswordSignInAsync(Username!, Password!, false, false);
 
 					if (signInResult.Succeeded)
 					{
 						return Redirect("~/home");
+					}
+				}
+				else
+				{
+					foreach (var e in registerResult.Errors)
+					{
+						Errors.Add(e.Description.ToString());
 					}
 				}
 			}

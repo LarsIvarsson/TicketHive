@@ -47,7 +47,7 @@
             <h2 class="text-center mb-3">Event list</h2>
                 @if(events == null)
                 {
-                    <h3>Fetching data from database...</h3>
+                    <div class="spinner-border"></div>
                 }
             <ul class="list-group">
                 @foreach (var happening in events!)
@@ -61,6 +61,7 @@
                     </li>
                 }
             </ul>
+            <hr />
         </div>
     </div>
 </div>
@@ -79,16 +80,8 @@
     {
         await GetEvents();
 
-        // TO-DO: Hitta inloggad användares Country för att kunna visa rätt valuta
         authState = await authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-
-        //if (user.Identity!.IsAuthenticated)
-        //{
-        //    //userCountry = await appService.GetUserCountryByUsernameAsync(user.Identity.Name!);
-
-        //}
-        
 
         @foreach(var type in Enum.GetNames(typeof(CategoryEnum)))
         {

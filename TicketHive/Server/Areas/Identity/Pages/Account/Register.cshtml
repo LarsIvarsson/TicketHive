@@ -10,28 +10,38 @@
 		
 		<div class="m-3">
 			<label for="input-username">Username: </label>
-			<input id="input-username" asp-for="Username" type="text" placeholder="Username" />
-			<span asp-validation-for="Username"></span>
+			<input id="input-username" asp-for="Username" type="text" placeholder="Username" />			
 		</div>
+		<span class="text-danger" asp-validation-for="Username"></span>
+		<span class="text-danger">
+			@if (Model.Errors != null)
+			{
+				@foreach (var e in Model.Errors)
+				{
+					@e
+				}
+			}
+		</span>
 		<div class ="m-3">
 			<label for="input-password">Password: </label>
-			<input id="input-password" asp-for="Password" type="password" placeholder="Password" />
-			<span asp-validation-for="Password"></span>
+			<input id="input-password" asp-for="Password" type="password" placeholder="Password" />			
 		</div>
+		<span class="text-danger" asp-validation-for="Password"></span>
 		<div class="m-3">
 			<label for="input-verify">Verify: </label>
-			<input id="input-verify" asp-for="PasswordVerify" type="password" placeholder="Verify" />
-			<span asp-validation-for="PasswordVerify"></span>
+			<input id="input-verify" asp-for="PasswordVerify" type="password" placeholder="Verify" />			
 		</div>
+		<span class="text-danger" asp-validation-for="PasswordVerify"></span>
 
 		<div class="m-3">
 		<label for="select-country">Country: </label>
 			<select id="select-country" asp-for="Country">
-				<option value="Sweden">Sweden</option>
-				<option value="Germany">Germany</option>
-				<option value="Great Britain">Great Britain</option>
-				<span asp-validation-for="Country"></span>
+				@foreach(var type in Model.Countries)
+				{
+					<option value="@type.ToString()">@type.ToString()</option>
+				}				
 			</select>
+			<span class="text-danger" asp-validation-for="Country"></span>
 		</div>
 
 		<div class="m-3">
