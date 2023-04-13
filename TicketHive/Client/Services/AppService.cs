@@ -90,6 +90,7 @@ namespace TicketHive.Client.Services
 			words.Add(Country);
 			var jsonList = JsonConvert.SerializeObject(words);
 			await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", jsonList);
+			words.Clear();
 		}
 		public async Task ChangePasswordAsync(string AppUsername, string currentPassword, string newPassword)
 		{
@@ -97,6 +98,7 @@ namespace TicketHive.Client.Services
 			words.Add(newPassword);
 			var jsonList = JsonConvert.SerializeObject(words);
 			await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", jsonList);
+			words.Clear();
 		}
 	}
 }
