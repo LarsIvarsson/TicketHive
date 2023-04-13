@@ -4,16 +4,15 @@ namespace TicketHive.Client.Services
 {
     public interface ICartService
     {
-        Task Cookie();
+        Task<List<CartItemsModel>> GetShoppingCartAsync(string userName);
 
-        List<CartItemsModel> GetShoppingCartItem();
-
-        Task AddToCartAsync(EventModel addEvent);
+        Task AddToCartAsync(string userName, EventModel addEvent);
 
         Task RemoveFromCartAsync(CartItemsModel removeEvent);
 
         Task IncreaceQuantity(CartItemsModel item);
 
         Task DecreaceQuantity(CartItemsModel item);
+
     }
 }
