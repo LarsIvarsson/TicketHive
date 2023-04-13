@@ -2,10 +2,10 @@
 
 namespace TicketHive.Shared.Models
 {
-	public class UserCountryModel
-	{
-		public string Username { get; set; } = null!;
-		[Required(ErrorMessage = "Please choose a country")]
-		public string Country { get; set; } = null!;
-	}
+    public class UserCountryModel
+    {
+        public string Username { get; set; } = null!;
+        [Required(ErrorMessage = "Please choose a country")]
+        public string NewCountry { get; set; } = null!;
+    }
 }
