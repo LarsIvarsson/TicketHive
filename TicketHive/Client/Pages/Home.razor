@@ -44,13 +44,15 @@
 					@foreach (var group in groupedList)
 					{
 						<div class="col-3 d-flex align-items-center d-flex justify-content-center">
-							<img src=/images/Other/RättTicket.png style="height: 120px; width: 120px; align-content: center; "  />
+
+							<img src=/images/Other/RÃ¤ttTicket.png style="height: 120px; width: 120px; align-content: center; "  />
 						</div>
 						<div class="col-6 text-start d-flex align-items-center">	
 							<div>
 								<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @group.First().Name </h3>
 								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @group.First().Date.ToString("yyyy-MM-dd")</p>
 								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @group.Count() st  </p>
+
 							</div>
 						</div>
 						<div class="col-3 d-flex align-items-center d-flex justify-content-start" style="padding:5px;">
@@ -62,7 +64,7 @@
 				}
 			</div>
 		</div>
-		@*PRINTA POPULÄRA EVENT*@
+		@*PRINTA POPULÃ„RA EVENT*@
 		<div class="col-4" style="background-color: #E0F2FF; padding: 0px 30px 30px 30px;  ">
 			<div class="row">
 				<h3 style="color: #305076; margin-bottom: 30px; font-size: 25px; font-family: Verdana;">Popular events</h3>				
