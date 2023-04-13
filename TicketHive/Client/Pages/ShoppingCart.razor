@@ -30,18 +30,10 @@
                                 <td>@c.Event.Name</td>
                                 <td>@c.Event.Price.ToString()</td>
                                 <td>
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.DecreaceQuantity(c))">
-                                                <span class="fa fa-minus">-</span>
-                                            </button>
-                                        </span>
-                                        <input class="form-control" type="number" value="@c.Quantity"  />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-light" type="button" @onclick="(() => cartService.IncreaceQuantity(c))">
-                                                <span class="fa fa-plus">+</span>
-                                            </button>
-                                        </span>
+                                    <div class="quantity-container">
+                                        <button class="btn-quantity btn-quantity-hover-minus" @onclick="(() => cartService.DecreaceQuantity(c))">-</button>
+                                        <input type="text" value="@c.Quantity" readonly>
+                                        <button class="btn-quantity btn-quantity-hover-plus" @onclick="(() => cartService.IncreaceQuantity(c))">+</button>
                                     </div>
                                 </td>
                                  @*<td>@c.Event.Price * @c.Quantity</td>*@
@@ -87,5 +79,12 @@
         signedInUser = authState.User.Identity.Name;
 
     }
+
+    private async Task Checkout(List<CartItemsModel> shoppingCart)
+    {
+      
+       
+    }
+
 }
 
