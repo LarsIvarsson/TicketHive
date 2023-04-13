@@ -51,7 +51,7 @@
             @foreach (var e in fEvents!)
             {
                 @*if (e.IsSoldOut == false)*@
-                @if(e.Price == 800)
+                @if(e.IsSoldOut == true)
                 {
                     <div class="item-container" >
                         <div class="img-container" style="opacity: 0.5;">

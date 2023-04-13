@@ -11,17 +11,17 @@
 
 @if (_Event == null)
 {
-	<div class="spinner-border"></div>
+	<div class="row d-flex justify-content-center">
+		<div class="col-2">
+			<div class="spinner-border"></div>
+		</div>
+	</div>
 }
 else
-{
-	<div class="text-center">
-
-        <h3>Event Details for @_Event.Name</h3>
-		@*@if(_Event.IsSoldOut == true)*@
-		@if(_Event.Price == 800)
+{	
+	<div class="container">
+		@if(_Event.IsSoldOut == true)
 		{	
-			
 			<img src="@_Event.ImageUrl" style="max-width:400px; opacity: 0.5;" />
 			<hr style="color:transparent; background-color:transparent"/>
 			<button class="action" style="width: 400px; height: 40px; opacity: 1.0; text-align: center; margin-bottom: 20px; color: red; font-weight: bold;">FULLY BOOKED</button>
@@ -31,23 +31,35 @@ else
 			<label for="ticket-input">Tickets </label>
 			<input class="m-3" id="ticket-input" type="number" min="0" max="0" style="opacity: 0.5" />
 			<input class="btn btn-primary" type="submit" value="Add to cart" style="opacity: 0.5" />
-			
-			
 		}
 		else
 		{
-			<img src="@_Event.ImageUrl" style="max-width:400px;" />
+@*			<img src="@_Event.ImageUrl" style="max-width:400px;" />
 			<hr style="color:transparent; background-color:transparent" />
 			<p>Price: @Math.Round((_Event.Price*userRate), 2) @CurrencyManager.Currency</p>
 			<p>Venue: @_Event.Venue</p>
 
 			<label for="ticket-input">Tickets </label>
 			<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity"/>
-			<input class="btn btn-primary" type="submit" value="Add to cart" @onclick=AddToShoppingCart/>
+			<input class="btn btn-primary" type="submit" value="Add to cart" @onclick=AddToShoppingCart/>*@
+			<div class="card shadow-lg mx-auto" style="width:400px">
+				<img class="card-img-top" src="@_Event.ImageUrl" alt="Card image">
+				<div class="card-body">
+					<h4 class="card-title text-center"><strong>@_Event.Name</strong></h4>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Price: <strong>@Math.Round((_Event.Price*userRate), 2) @CurrencyManager.Currency</strong></li>
+						<li class="list-group-item">Venue: <strong>@_Event.Venue</strong></li>
+						<li class="list-group-item">Date: <strong>@_Event.Date.ToString("yyyy-MM-dd")</strong></li>
+					</ul>
+					<div class="text-center">
+						<label for="ticket-input">Tickets: </label>
+						<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity" />
+						<input class="btn btn-primary" type="submit" value="Add to cart" @onclick=AddToShoppingCart />
+					</div>
+				</div>
+			</div>
 		}
-		
-		
-	</div>
+		</div>
 
 	<style>
 		.fullyBooked{
@@ -60,8 +72,6 @@ else
 		}
 	</style>
 }
-
-
 
 @code {
 	[Parameter]
