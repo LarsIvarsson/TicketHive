@@ -5,6 +5,8 @@
 @inject AuthenticationStateProvider authStateProvider;
 @attribute [Authorize]
 @inject ILocalStorageService localStorage
+@inject ICartService cartService
+@*@inject IToastService ToastService*@
 
 @if (_Event == null)
 {
@@ -22,6 +24,7 @@ else
 		<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity"/>
 		<input class="btn btn-primary" type="submit" value="Add to cart" @onclick=AddToShoppingCart/>
 	</div>
+
 }
 
 
@@ -51,23 +54,28 @@ else
 
 	private async Task AddToShoppingCart()
 	{
-		// Reads cookie in local storage (if there is any) with current username
-		UserModel? cookieUser = await localStorage
-			.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
+		authState = await authStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
 
-		// if cookie is found we use that object as our user
-		if (cookieUser != null)
-		{
-			_User = cookieUser;
-		}
+		await cartService.AddToCartAsync(user.Identity.Name, _Event);
 
-		// adds event to users event list "selected number of times"
-		for (int i = 0; i < Quantity; i++)
-		{
-			_User!.UserEvents!.Add(_Event!);
-		}
+		//// Reads cookie in local storage (if there is any) with current username
+		//UserModel? cookieUser = await localStorage
+		//	.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
 
-		// finally converts object with updated event list to cookie and saves to local storage
-		await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);
+		//// if cookie is found we use that object as our user
+		//if (cookieUser != null)
+		//{
+		//	_User = cookieUser;
+		//}
+
+		//// adds event to users event list "selected number of times"
+		//for (int i = 0; i < Quantity; i++)
+		//{
+		//	_User!.UserEvents!.Add(_Event!);
+		//}
+
+		//// finally converts object with updated event list to cookie and saves to local storage
+		//await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);	
 	}
 }
