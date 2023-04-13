@@ -34,38 +34,30 @@ namespace TicketHive.Server.Controllers
 			}
 			return NotFound();
 		}
-		// PUT api/<AppUsersController>/5
-		[HttpPut("{AppUsername}")]
-		public async Task<IActionResult> PutAppUserAsync(string AppUsername, [FromBody] string Country)
-		{
-			var result = await repo.PutAppUserAsync(AppUsername, Country);
-			if (result)
-			{
-				return Ok();
-			}
-			return BadRequest();
-		}
 
 		[HttpPut("{AppUsername}")]
 		public async Task<IActionResult> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
 		{
-			List<string>? passwords = JsonConvert.DeserializeObject<List<string>>(jsonList);
-
-			if (passwords != null)
+			bool result;
+			List<string>? words = JsonConvert.DeserializeObject<List<string>>(jsonList);
+			if (words != null)
 			{
-				var result = await repo.ChangePasswordAsync(AppUsername, passwords[0], passwords[1]);
+				if (words.Count() > 1)
+				{
+					result = await repo.ChangePasswordAsync(AppUsername, words[0], words[1]);
+					if (result)
+					{
+						return Ok();
+					}
+				}
+				result = await repo.PutAppUserAsync(AppUsername, words[0]);
 				if (result)
 				{
 					return Ok();
 				}
 			}
-
 			return BadRequest();
 		}
-
-
-
-
 
 		// GET: api/<AppUsersController>
 		[HttpGet]

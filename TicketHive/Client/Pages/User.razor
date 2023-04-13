@@ -9,56 +9,55 @@
 	<div class="col-6">
 		<h2>Change password</h2>	
 	
-		<EditForm OnSubmit="ChangePassword">
-			<InputText typeof="password" @bind-Value="CurrentPassword"></InputText>
-			<InputText typeof="password" @bind-Value="NewPassword"></InputText>			
+		<EditForm Model="Settings" OnSubmit="ChangePassword">
+			<label>Current password</label>
+			<InputText @bind-Value="Settings.CurrentPassword"></InputText>
+			<label>New password</label>
+			<InputText @bind-Value="Settings.NewPassword"></InputText>			
 			<button type="submit">Change password</button>
 		</EditForm>
 	</div>
 
 	<div class="col-6">
 		<h2>Change country</h2>
-		<EditForm OnSubmit="ChangeCountry">
-			<InputSelect @bind-Value="Country">
+		<EditForm Model="Settings" OnSubmit="ChangeCountry">
+			<InputSelect @bind-Value="Settings.Country">
 				@foreach (var c in Countries)
 				{
 					<option value="@c.ToString()">@c.ToString()</option>
 				}
 			</InputSelect>
+			<button type="submit">Change country</button>
 		</EditForm>
 	</div>
 </div>
 
 
 @code {
-
-	// create some kind of Model Container for passwords
-		// or do regular form
 	private AuthenticationState? authState;
 	private List<string> Countries { get; set; } = new();
-	private string? Username;
-	private string? CurrentPassword;
-	private string? NewPassword;
-	private string? Country;
+
+	private UserSettingsModel Settings { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User.Identity;
-		Username = user!.Name;
-
+		Settings.Username = user!.Name;
 
 		foreach (var type in Enum.GetNames(typeof(CountryEnum)))
 		{
 			Countries.Add(type);
 		}
 	}
+
 	private void ChangePassword()
 	{
-		service.ChangePasswordAsync(Username!, CurrentPassword!, NewPassword!);
+		service.ChangePasswordAsync(Settings.Username!, Settings.CurrentPassword!, Settings.NewPassword!);
 	}
+
 	private void ChangeCountry()
 	{
-		service.PutAppUserAsync(Username!, Country!);
+		service.PutAppUserAsync(Settings.Username!, Settings.Country!);
 	}
 }
