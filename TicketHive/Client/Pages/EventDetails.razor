@@ -7,9 +7,11 @@
 @attribute [Authorize]
 @inject ILocalStorageService localStorage
 
+<button type="button" class="btn btn-secondary btn-rounded oi oi-arrow-circle-left" @onclick='() => navigation.NavigateTo("/allevents")'></button>
+
 @if (_Event == null)
 {
-	<p>Loading event...</p>
+	<div class="spinner-border"></div>
 }
 else
 {
@@ -20,7 +22,7 @@ else
 		@*@if(_Event.Price == 800)*@
 		{	
 			
-			<img src="@_Event.ImageUrl" style="max-width:400px; opacity: 0.5; " />
+			<img src="@_Event.ImageUrl" style="max-width:400px; opacity: 0.5;" />
 			<hr style="color:transparent; background-color:transparent"/>
 			<button class="action" style="width: 400px; height: 40px; opacity: 1.0; text-align: center; margin-bottom: 20px; color: red; font-weight: bold;">FULLY BOOKED</button>
 			<p>Price: @Math.Round((_Event.Price*userRate), 2) @CurrencyManager.Currency</p>
@@ -36,7 +38,7 @@ else
 		{
 			<img src="@_Event.ImageUrl" style="max-width:400px;" />
 			<hr style="color:transparent; background-color:transparent" />
-			<p>Price: @_Event.Price</p>
+			<p>Price: @Math.Round((_Event.Price*userRate), 2) @CurrencyManager.Currency</p>
 			<p>Venue: @_Event.Venue</p>
 
 			<label for="ticket-input">Tickets </label>
