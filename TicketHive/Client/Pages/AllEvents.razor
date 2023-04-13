@@ -1,4 +1,5 @@
-@page "/allEvents"
+@page "/allevents"
+@page "/allevents/{searchWord}"
 @using TicketHive.Client.Managers;
 @inject IAppService service;
 @inject AuthenticationStateProvider authStateProvider;
@@ -19,58 +20,105 @@
 <h3 class="card-title">All Events</h3>
 
 <div class="search-Items">
-    <input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEventsDynamic" />
-    <hr />
-@*    EJ KLAR*@
-    <select class="filter-Input" name="filtrera">
-        <option value="">Filtrera Event</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+    <input class="search-Input" 
+    placeholder="Search event..." 
+    style="text-align:center;" 
+    type="text" 
+    @oninput="SearchEventsDynamic" />
+
+    <hr style="margin-bottom: 40px;" />
+
+
+    <select class="filter-Input" placeholder="Filter events:" @onchange="SortEvents">
+
+
+        <option style="background: #E0F2FF" value="All Events: ">All Events</option>
+        <option style="background: #E0F2FF" value="Low to high price">Low to high price</option>
+        <option style="background: #E0F2FF" value="High to low price">High to low price</option>
+        <option style="background: #E0F2FF" value="Closest date">Closest date</option>
+        <option style="background: #E0F2FF" value="Furthest date">Furthest date</option>
     </select>
 </div>
-
+<hr  />
 
 <body>
     <div class="container">
         @if(Events == null)
         {
-            <p>Loading events...</p>
+            <div class="spinner-border"></div>
         }
         else
         {
-            @foreach (var e in Events)
+            
+            @foreach (var e in fEvents!)
             {
-                <div class="item-container">          
-                    <div class="img-container">
-                        <img src="@e.ImageUrl" alt="Event Image" style="height: 300px"/>
-                    </div>
-                    <div class="body-container">                   
-                        <div class="overlay"></div>
-                        <div class="event-info">                       
-                            <p class="title">@e.Name</p>
-                            <div class="seperator"></div>
-                            <p class="place">@e.Venue</p>
-                           
-                            <!-- TO-DO: Fixa så att det går att hämta andra valutor än SEK (async await verkar inte funka här) -->
-                            <p class="price">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
+                @*if (e.IsSoldOut == false)*@
+                @if(e.Price == 800)
+                {
+                    <div class="item-container" >
+                        <div class="img-container" style="opacity: 0.5;">
+                            <img src="@e.ImageUrl" alt="Event Image" style="height: 300px" />
+                        </div>
+                        <div class="body-container">
+                            <div class="overlay" style="opacity: 0.5;"></div>
+                            <div class="event-info" >
+                                <p class="title" style="opacity: 0.5;">@e.Name</p>
+                                <div class="seperator"></div>
+                                <p class="place" style="opacity: 0.5;">@e.Venue</p>
+                                <p class="price" style="opacity: 0.5;">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
+                                <div class="additional-info" style="opacity: 0.5;">
+                                    <p class="info">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Norra Bulltofta 6C
+                                    </p>
+                                    <p class="info">
+                                        <i class="far fa-calendar-alt"></i>
+                                        @e.Date.ToString("yyyy-MM-dd")
+                                    </p>
+                                </div>
 
-                            <div class="additional-info">
-                                <p class="info">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Norra Bulltofta 6C
-                                </p>
-                                <p class="info">
-                                    <i class="far fa-calendar-alt"></i>
-                                    @e.Date
-                                </p>
                             </div>
-                        </div>                           
+                            <button class="action" style="width: 80%;  opacity: 1.0;">
+                                <a style="text-decoration: none; color: red; font-weight: bold; opacity: 1.0;" href="eventDetails/@e.Id" Event="@e">FULLY BOOKED</a>
+                            </button>
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+
+
+                    <div class="item-container">          
+                        <div class="img-container">
+                            <img src="@e.ImageUrl" alt="Event Image" style="height: 300px"/>
+                        </div>
+                        <div class="body-container">                   
+                            <div class="overlay"></div>
+                            <div class="event-info">                       
+                                <p class="title">@e.Name</p>
+                                <div class="seperator"></div>
+                                <p class="place">@e.Venue</p>         
+                                <p class="price">@Math.Round((e.Price*userRate), 2) @CurrencyManager.Currency</p>
+                                <div class="additional-info">
+                                    <p class="info">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Norra Bulltofta 6C
+                                    </p>
+                                    <p class="info">
+                                        <i class="far fa-calendar-alt"></i>
+                                        @e.Date
+                                    </p>
+                                </div>
+                            </div>                           
                             <button class="action">
                                 <a style="text-decoration: none; color: #fff" href="eventDetails/@e.Id" Event="@e">Book Now</a>
                             </button>                                         
-                    </div>   
-                </div>
+                        </div>  
+
+                    </div>
+                }
+
             }
         }
     </div>
@@ -95,17 +143,19 @@
         font-size: 16px;
         color: #777;
         justify-content:center;
+        
+        
     }
 
     .card-title {
         font-size: 3.5rem;
-        color: #fbe89c;
-        margin-bottom: 1rem;
+        color: #305076;
+        margin-bottom: 0.5rem;
         text-transform: uppercase;
         text-align: center;
     }
 
- /*   SEARCH*/
+ /*   SEARCH/FILTER*/
 
     .search-Items {
         margin-bottom: 1rem;
@@ -113,21 +163,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 24px;
-       
+        margin: 5px;
+        
     }
 
     .search-Input {
         background-color: transparent;
         border-radius: 10px;
-        color: #fbe89c;
-        height: 35px;
-        margin: 24px;
-        width: 225px;
-        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
-        border: 1px solid #000;
+        height: 30px;
+        margin: 20px;
+        width: 200px;
+        /*box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
+        border: 1px solid #18537a;
         position: relative;
-        color: lightgray;
+        color: #305076;
         padding-left: 10px;
         
     }
@@ -135,15 +184,14 @@
     .filter-Input {
         background-color: transparent;
         border-radius: 10px;
-        color: #fbe89c;
+        color: #305076;
         padding-left: 10px;
-        height: 35px;
+        height: 30px;
         margin: 20px;
-        width: 225px;
-        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
-        border: 1px solid #000;
+        width: 200px;
+       /* box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
+        border: 1px solid #18537a;
         position: relative;
-        
     }
 
   /*  CARDS */
@@ -165,6 +213,7 @@
         background-color: #fff;
         box-shadow: 0 0 30px 5px rgba(0, 0, 0, 0.15);
         cursor: pointer;
+        border: 0.5px solid lightgrey;
     }
 
     .img-container,
@@ -174,6 +223,7 @@
         left: 0;
         width: 100%;
         height: 100%;
+        
     }
 
     .img-container img{
@@ -307,6 +357,9 @@
     private List<EventModel>? fEvents;
     private string? userCountry { get; set; }
     private decimal userRate { get; set; }
+    private string sort = string.Empty;
+    [Parameter]
+    public string? searchWord { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -325,15 +378,68 @@
         }
 
         //search
-        //fEvents = await EventsRepo.GetEventsAsync;
+        fEvents = await service.GetEventsAsync();
 
-        fEvents = Events; 
-       
+        fEvents = Events;
+
+
     }
-    private void SerarchEventsDynamic(ChangeEventArgs e)
+
+    protected override void OnParametersSet()
+    {
+        if(searchWord != null)
         {
-        //SerarchEventsDynamic = Events!.Where(p => p.Name!.ToLower().Contains(e.Value!.ToString()!.ToLower())).ToList();
-        fEvents = Events.Where(ev => ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())).ToList();
+            string? filterWord = searchWord;
+            SearchEventsByHomePage(filterWord!);
+            StateHasChanged();
         }
+    }
+
+    private void SearchEventsByHomePage(string filterWord)
+    {
+        fEvents = Events.Where(ev =>
+            ev.Name!.ToLower().Contains(filterWord.ToLower())
+            || ev.Type!.ToString().ToLower().Contains(filterWord.ToLower())
+            || ev.Venue!.ToLower().Contains(filterWord.ToLower())
+        ).ToList();
+    }
+
+    private void SearchEventsDynamic(ChangeEventArgs e)
+    {
+
+        fEvents = Events.Where(ev =>
+            ev.Name!.ToLower().Contains(e.Value.ToString().ToLower())
+            || ev.Type!.ToString().ToLower().Contains(e.Value.ToString().ToLower())
+            || ev.Venue!.ToLower().Contains(e.Value.ToString().ToLower())
+        ).ToList();
+    }
+
+    private void SortEvents(ChangeEventArgs e)
+    {
+        sort = e.Value.ToString();
+
+        if (sort == "Low to high price")
+        {
+            fEvents = Events?.OrderBy(e => e.Price).ToList();
+        }
+        else if (sort == "High to low price")
+        {
+            fEvents = Events?.OrderByDescending(e => e.Price).ToList();
+        }
+        else if (sort == "Closest date")
+        {
+            fEvents = Events?.OrderBy(e => e.Date).ToList();
+        }
+        else if (sort == "Furthest date")
+        {
+            fEvents = Events?.OrderByDescending(e => e.Date).ToList();
+        }
+        else if (sort == "All Events")
+        {
+            fEvents = Events?.ToList();
+        }
+
+
+    }
 
 }

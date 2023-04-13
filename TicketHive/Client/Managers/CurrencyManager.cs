@@ -31,7 +31,7 @@ namespace TicketHive.Client.Managers
                 return 1;
             }
 
-            else if(country == "Great Britain")
+            else if(country == "Great_Britain")
             {
                 Currency = "£";
                 if (Rates == null || RatesRecieved.Date.AddDays(1) < DateTime.Now)

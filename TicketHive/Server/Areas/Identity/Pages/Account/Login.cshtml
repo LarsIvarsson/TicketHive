@@ -12,14 +12,22 @@
 		</div>
 		<div class="m-3">
 			<label for="input-password">Password: </label>
-			<input id="input-password" asp-for="Password" type="password" placeholder="Password" />
+			<input id="input-password" asp-for="Password" type="password" placeholder="Password" />			
 		</div>
+		<span class="text-danger">
+			@if (Model.Error != null)
+			{
+				@Model.Error
+			}
+		</span>
 		<div class="m-3">
 			<input class="btn btn-primary" type="submit" value="Login" />
 		</div>
 		<div class="m-3">
-			<span class="text-danger" asp-validation-for="Username"></span>
-			<span class="text-danger" asp-validation-for="Password"></span>
+			<span class="text-danger" asp-validation-for="Username"></span>			
+		</div>
+		<div class="m-3">
+			<span class="text-danger" asp-validation-for="Password"></span>			
 		</div>
 	</form>
 </div>

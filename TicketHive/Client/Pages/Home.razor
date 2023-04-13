@@ -2,14 +2,29 @@
 @inject IAppService service
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider authStateProvider;
+@inject NavigationManager navManager;
 @attribute [Authorize]
 
+<AuthorizeView Roles="Admin">
+	<button type="button" class="btn btn-danger btn-rounded" @onclick='() => navManager.NavigateTo("/admin")'>Go to Admin view</button>
+</AuthorizeView>
+
 <div class="text-center">
-	<h2>Home</h2> <hr />
+	<h3 class="card-title">Home Page</h3>
+	
 	
 	<div class="search">
-	<input class="search-Input" placeholder="Search event.." style="text-align: center content-align: center" type="text" @oninput="SerarchEvents" />
-	<button class="searchButton">Sök</button>
+		<input class="search-Input" 
+			placeholder="Search event..." 
+			style="text-align:center;" 
+			type="text" @bind-value="searchWord" />
+		<button class="searchButton text-center" @onclick="HandleSearchWord">Search</button>
+	<div>
+		@if (searchWord == null && errorMessage != null)
+		{
+			<em class="text-danger">@errorMessage</em>
+		}
+	</div>
 	<hr />
     </div>
 	<div class="row">
@@ -27,6 +42,7 @@
 			{
 				@foreach (var group in groupedList)
 				{
+					<img src=@group.First().ImageUrl style="max-width:250px;"/>
 					<p>@group.Count() ticket(s) for event: @group.First().Name</p>
 					<hr />			
 				}
@@ -36,13 +52,13 @@
 			<h3>Popular events</h3>
 			@if (PopularEvents is null)
 			{
-				<p>Loading popular events...</p>
+				<div class="spinner-border"></div>
 			}
 			else
 			{
 				@foreach (var e in PopularEvents)
 				{
-					// from popular events do not show already booked events
+
 					<div>
 						<a href="eventDetails/@e.Id" Event="@e">
 							<img src="@e.ImageUrl" style="max-width:250px;" />
@@ -58,32 +74,37 @@
 <BlazoredToasts/>
 
 <style>
+	.card-title {
+		font-size: 3.5rem;
+		color: #305076;
+		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+		text-align: center;
+	}
 
 	.search-Input {
 		background-color: transparent;
 		border-radius: 10px;
-		color: #fbe89c;
-		height: 35px;
-		margin: 5px;
-		width: 225px;
-		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
-		border: 1px solid #000;
+		height: 30px;
+		margin: 20px 5px 20px 20px;
+		width: 200px;
+		/*box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
+		border: 1px solid #18537a;
 		position: relative;
-		color: lightgray;
+		color: #305076;
 		padding-left: 10px;
 	}
 
 	.searchButton{
-		background-color: transparent;
+		background-color: #D0E1ED;
 		border-radius: 10px;
-		color: #fbe89c;
-		height: 35px;
-		margin: 5px;
-		width: 50px;
-		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.15);
-		border: 1px solid #000;
+		height: 30px;
+		margin: 20px 20px 20px 5px;
+		width: 80px;
+		/*box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
+		border: 1px solid #18537a;
 		position: relative;
-		color: #fff;
+		color: #305076;
 		padding-left: 10px;
 	}
 </style>
@@ -92,11 +113,12 @@
 
 @code {
 
-	//private List<EventModel>? UserEvents;
 	private List<EventModel>? PopularEvents;
 	private List<IGrouping<int, EventModel>>? groupedList;
 	private UserModel? _User { get; set; }
 	private AuthenticationState? authState;
+	private string? searchWord { get; set; }
+	private string? errorMessage { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -135,8 +157,18 @@
 	//	UserEvents = _User!.UserEvents;
 	//}
 
-	private void SerarchEvents(ChangeEventArgs e)
+	private void HandleSearchWord()
 	{
-		
+		errorMessage = null!;
+
+		if(searchWord != null)
+		{
+			navManager.NavigateTo($"/allevents/{searchWord}");
+		}
+
+		else
+		{
+			errorMessage = "Please enter a search word before pressing the button...";
+		}
 	}
 }
