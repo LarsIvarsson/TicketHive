@@ -7,6 +7,7 @@ namespace TicketHive.Client.Services
 	public class AppService : IAppService
 	{
 		private readonly HttpClient httpClient;
+		private List<string> words = new();
 		public AppService(HttpClient httpClient)
 		{
 			this.httpClient = httpClient;
@@ -21,7 +22,6 @@ namespace TicketHive.Client.Services
 			{
 				return result;
 			}
-
 			return null;
 		}
 		public async Task<EventModel?> GetEventByIdAsync(int id)
@@ -32,7 +32,6 @@ namespace TicketHive.Client.Services
 			{
 				return result;
 			}
-
 			return null;
 		}
 		public async Task PostEventAsync(EventModel model)
@@ -57,7 +56,6 @@ namespace TicketHive.Client.Services
 			{
 				return result;
 			}
-
 			return null;
 		}
 		public async Task<UserModel?> GetUserByUsernameAsync(string UserName)
@@ -68,7 +66,6 @@ namespace TicketHive.Client.Services
 			{
 				return result;
 			}
-
 			return null;
 		}
 		public async Task PutUserAsync(int id, UserModel model)
@@ -90,15 +87,15 @@ namespace TicketHive.Client.Services
 		}
 		public async Task PutAppUserAsync(string AppUsername, string Country)
 		{
-			await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", Country);
+			words.Add(Country);
+			var jsonList = JsonConvert.SerializeObject(words);
+			await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", jsonList);
 		}
 		public async Task ChangePasswordAsync(string AppUsername, string currentPassword, string newPassword)
 		{
-			List<string> passwords = new();
-			passwords.Add(currentPassword);
-			passwords.Add(newPassword);
-			var jsonList = JsonConvert.SerializeObject(passwords);
-
+			words.Add(currentPassword);
+			words.Add(newPassword);
+			var jsonList = JsonConvert.SerializeObject(words);
 			await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", jsonList);
 		}
 	}

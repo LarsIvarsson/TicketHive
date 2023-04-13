@@ -1,8 +1,20 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+@font-face {
+    font-family: 'poppins-regular';
+    src: url('../fonts/poppins-regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'roboto-regular';
+    src: url('../fonts/roboto-regular.ttf') format('truetype');
+}
+
+*{
+    font-family:poppins-regular;
+}
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
     background-color: #E0F2FF !important;
 }
 
