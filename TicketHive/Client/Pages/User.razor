@@ -3,47 +3,51 @@
 @inject AuthenticationStateProvider authStateProvider
 @attribute [Authorize]
 
-<h1>User settings</h1>
+@*<h1>User settings</h1>
 <hr />
 <div class="row">
 	<div class="col-6">
 		<h2>Change password</h2>	
-	
 		<EditForm Model="Settings" OnSubmit="ChangePassword">
-			<label>Current password</label>
 			<InputText @bind-Value="Settings.CurrentPassword"></InputText>
-			<label>New password</label>
-			<InputText @bind-Value="Settings.NewPassword"></InputText>			
+			<InputText @bind-Value="Settings.NewPassword"></InputText>
 			<button type="submit">Change password</button>
 		</EditForm>
 	</div>
-
 	<div class="col-6">
 		<h2>Change country</h2>
-		<EditForm Model="Settings" OnSubmit="ChangeCountry">
-			<InputSelect @bind-Value="Settings.Country">
-				@foreach (var c in Countries)
-				{
-					<option value="@c.ToString()">@c.ToString()</option>
-				}
-			</InputSelect>
-			<button type="submit">Change country</button>
-		</EditForm>
+		<div>
+			<EditForm Model="Settings" OnSubmit="ChangeCountry">
+				<InputSelect @bind-Value="Settings.Country">
+					@foreach (var c in Countries)
+					{
+						<option value="@c.ToString()">@c.ToString()</option>
+					}
+				</InputSelect>
+				<button type="submit">Change country</button>
+			</EditForm>
+		</div>
+		<div>
+			<button type="submit" @onclick="ChangeCountry">Change country</button>
+		</div>
 	</div>
-</div>
+</div>*@
 
 
 @code {
 	private AuthenticationState? authState;
 	private List<string> Countries { get; set; } = new();
+	private string? errorMessage;
 
-	private UserSettingsModel Settings { get; set; } = new();
+	private UserPasswordsModel Passwords { get; set; } = new();
+	private UserCountryModel Country { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User.Identity;
-		Settings.Username = user!.Name;
+		Passwords.Username = user!.Name;
+		Country.Username = user!.Name;
 
 		foreach (var type in Enum.GetNames(typeof(CountryEnum)))
 		{
@@ -51,13 +55,23 @@
 		}
 	}
 
-	private void ChangePassword()
-	{
-		service.ChangePasswordAsync(Settings.Username!, Settings.CurrentPassword!, Settings.NewPassword!);
-	}
+	//private void ChangePassword()
+	//{
+	//	if (Settings.CurrentPassword is null || Settings.NewPassword is null)
+	//	{
+	//		errorMessage = "Please enter both current and new password";
+	//		return;
+	//	}			
+	//	service.ChangePasswordAsync(Settings.Username!, Settings.CurrentPassword!, Settings.NewPassword!);
+	//}
 
-	private void ChangeCountry()
-	{
-		service.PutAppUserAsync(Settings.Username!, Settings.Country!);
-	}
+	//private void ChangeCountry()
+	//{
+	//	if (string.IsNullOrWhiteSpace(Settings.Country))
+	//	{
+	//		errorMessage = "Please choose a country";
+	//		return;
+	//	}
+	//	service.PutAppUserAsync(Settings.Username!, Settings.Country!);
+	//}
 }
