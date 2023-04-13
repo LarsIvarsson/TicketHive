@@ -47,7 +47,7 @@
             <h2 class="text-center mb-3">Event list</h2>
                 @if(events == null)
                 {
-                    <h3>Fetching data from database...</h3>
+                    <div class="spinner-border"></div>
                 }
             <ul class="list-group">
                 @foreach (var happening in events!)
