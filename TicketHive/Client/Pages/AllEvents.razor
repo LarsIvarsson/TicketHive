@@ -28,9 +28,11 @@
 
     <hr style="margin-bottom: 40px;" />
 
-    <select class="filter-Input" @onchange="SortEvents">
 
-        <option style="background: #E0F2FF" value="Filtrera Event: ">Filtrera Event: </option>
+    <select class="filter-Input" placeholder="Filter events:" @onchange="SortEvents">
+
+
+        <option style="background: #E0F2FF" value="All Events: ">All Events</option>
         <option style="background: #E0F2FF" value="Low to high price">Low to high price</option>
         <option style="background: #E0F2FF" value="High to low price">High to low price</option>
         <option style="background: #E0F2FF" value="Closest date">Closest date</option>
@@ -431,7 +433,7 @@
         {
             fEvents = Events?.OrderByDescending(e => e.Date).ToList();
         }
-        else if (sort == "Filtrera Event: ")
+        else if (sort == "All Events")
         {
             fEvents = Events?.ToList();
         }
