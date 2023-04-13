@@ -37,11 +37,8 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 
 		public void OnGet()
 		{
-			foreach(var type in Enum.GetNames(typeof(CountryEnum)))
-			{
-                Countries.Add(type);
-            }
-        }
+			PopulateCountries();
+		}
 
 		public async Task<IActionResult> OnPost()
 		{
@@ -73,7 +70,15 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 					}
 				}
 			}
+			PopulateCountries();
 			return Page();
+		}
+		private void PopulateCountries()
+		{
+			foreach (var type in Enum.GetNames(typeof(CountryEnum)))
+			{
+				Countries.Add(type);
+			}
 		}
 	}
 }
