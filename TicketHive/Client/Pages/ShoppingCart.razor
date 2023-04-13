@@ -59,7 +59,7 @@
                     {
                         <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
                     }                    
-                    @*<button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>*@
+                    <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout(shoppingCart))">Checkout</button>
                 </div>
             </div>
         </div>
@@ -86,9 +86,6 @@
 
     private async Task Checkout(List<CartItemsModel> shoppingCart)
     {
-      
-       
+               
     }
-
 }
-
