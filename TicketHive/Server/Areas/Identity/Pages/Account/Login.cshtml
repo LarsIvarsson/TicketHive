@@ -2,7 +2,7 @@
 @model TicketHive.Server.Areas.Identity.Pages.Account.LoginModel
 @{
 }
-
+<body style="background-color:#E0F2FF;">
 <div class="card border-dark text-center">
 	<h2>Login</h2>
 	<form method="post">
@@ -13,13 +13,7 @@
 		<div class="m-3">
 			<label for="input-password">Password: </label>
 			<input id="input-password" asp-for="Password" type="password" placeholder="Password" />			
-		</div>
-		<span class="text-danger">
-			@if (Model.Error != null)
-			{
-				@Model.Error
-			}
-		</span>
+		</div>		
 		<div class="m-3">
 			<input class="btn btn-primary" type="submit" value="Login" />
 		</div>
@@ -29,5 +23,12 @@
 		<div class="m-3">
 			<span class="text-danger" asp-validation-for="Password"></span>			
 		</div>
+		<span class="text-danger">
+			@if (Model.Error != null)
+			{
+				@Model.Error
+			}
+		</span>
 	</form>
 </div>
+</body>

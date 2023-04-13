@@ -55,7 +55,10 @@
                 <div class="card-body">
                     <h5 class="card-title">Order Summary</h5>
                     <hr />
-                    <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
+                    @if (shoppingCart != null)
+                    {
+                        <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
+                    }                    
                     @*<button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>*@
                 </div>
             </div>
@@ -78,6 +81,7 @@
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         signedInUser = authState.User.Identity.Name;
 
+        shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
 
     private async Task Checkout(List<CartItemsModel> shoppingCart)
