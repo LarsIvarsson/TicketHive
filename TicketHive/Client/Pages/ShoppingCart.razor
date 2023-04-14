@@ -1,12 +1,14 @@
 @page "/shopping-cart"
-@inject IAppService services
+@inject IAppService service
 @attribute [Authorize]
 @inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navigation
 @inject ICartService cartService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <h1>Shopping Cart</h1>
 <br />
+<button type="button" class="btn btn-secondary btn-rounded oi oi-arrow-circle-left" @onclick='() => navigation.NavigateTo("/allevents")'></button>
 
 <div class="container">
     <div class="row">
@@ -31,13 +33,13 @@
                                 <td>@c.Event.Price.ToString()</td>
                                 <td>
                                     <div class="quantity-container">
-                                        <button class="btn-quantity btn-quantity-hover-minus" @onclick="(() => cartService.DecreaceQuantity(c))">-</button>
+                                        <button class="btn-quantity btn-quantity-hover-minus" @onclick="async () => await DecreaceQuantity(c)">-</button>
                                         <input type="text" value="@c.Quantity" readonly>
-                                        <button class="btn-quantity btn-quantity-hover-plus" @onclick="(() => cartService.IncreaceQuantity(c))">+</button>
+                                        <button class="btn-quantity btn-quantity-hover-plus" @onclick="async () => await IncreaceQuantity(c)">+</button>
                                     </div>
                                 </td>
                                  @*<td>@c.Event.Price * @c.Quantity</td>*@
-                                <td><button class="btn btn-danger" @onclick="(() => cartService.RemoveFromCartAsync(c))">Remove</button></td>
+                                <td><button class="btn btn-danger" @onclick="async () => await RemoveItem(c)">Remove</button></td>
                             </tr>
                         }
                     }
@@ -59,19 +61,26 @@
                     {
                         <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
                     }                    
-                    <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout(shoppingCart))">Checkout</button>
+                    <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
 @code
 {
     private List<CartItemsModel>? shoppingCart;
     private List<IGrouping<int, EventModel>>? groupedList;
     private AuthenticationState? authState;
     private string signedInUser;
+    private string response;
+    private UserModel? _User;
 
     protected override async Task OnInitializedAsync()
     {
@@ -83,8 +92,44 @@
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
 
-    private async Task Checkout(List<CartItemsModel> shoppingCart)
+    private async Task Checkout()
     {
-               
+        // Get user
+        // populate User EventList with EventModels * quantity
+        // Update user
+        // Check response
+        _User = await service.GetUserByUsernameAsync(signedInUser);
+        if (shoppingCart != null && _User != null)
+        {         
+            foreach (var item in shoppingCart)
+            {
+                for (int i = 0; i < item.Quantity; i++)
+                {
+                    _User.UserEvents!.Add(item.Event);
+                }
+            }
+
+            await service.PutUserAsync(_User.Id, _User);
+            // check response?
+            navigation.NavigateTo("/confirmation");
+        }
+    }
+
+    private async Task DecreaceQuantity(CartItemsModel item)
+    {
+        await cartService.DecreaceQuantity(signedInUser, item);
+        shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
+    }
+
+    private async Task IncreaceQuantity(CartItemsModel item)
+    {
+        await cartService.IncreaceQuantity(signedInUser, item);
+        shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
+    }
+
+    private async Task RemoveItem(CartItemsModel item)
+    {
+        await cartService.RemoveFromCartAsync(signedInUser, item);
+        shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
 }

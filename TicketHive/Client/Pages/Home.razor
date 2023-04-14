@@ -1,5 +1,6 @@
 @page "/home"
 @inject IAppService service
+@inject ICartService cartService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider authStateProvider;
 @inject NavigationManager navManager;
@@ -33,7 +34,7 @@
                 <h3 style="font-size: 2rem;">Your booked events</h3>
 				<hr style="margin: 30px 0 20px 0"/>
 
-				@if (groupedList is null || groupedList.Count == 0)
+				@if (shoppingCart is null || shoppingCart.Count == 0)
 				{
 					<p>No events booked yet...</p>
 					<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> to get tickets for your next event</p>
@@ -41,16 +42,18 @@
 				else
 				{	
 					@*VAD SOM PRINTAS OM MAN HAR BOKAT EVENT*@
-					@foreach (var group in groupedList)
+					@foreach (var item in shoppingCart)
 					{
 						<div class="col-3 d-flex align-items-center d-flex justify-content-center">
-							<img src=/images/Other/RättTicket.png style="height: 120px; width: 120px; align-content: center; "  />
+
+							<img src=/images/Other/RÃ¤ttTicket.png style="height: 120px; width: 120px; align-content: center; "  />
 						</div>
 						<div class="col-6 text-start d-flex align-items-center">	
 							<div>
-								<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @group.First().Name </h3>
-								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @group.First().Date.ToString("yyyy-MM-dd")</p>
-								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @group.Count() st  </p>
+								<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @item.Event.Name </h3>
+								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @item.Event.Date.ToString("yyyy-MM-dd")</p>
+								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @item.Quantity </p>
+
 							</div>
 						</div>
 						<div class="col-3 d-flex align-items-center d-flex justify-content-start" style="padding:5px;">
@@ -62,7 +65,7 @@
 				}
 			</div>
 		</div>
-		@*PRINTA POPULÄRA EVENT*@
+		@*PRINTA POPULÃ„RA EVENT*@
 		<div class="col-4" style="background-color: #E0F2FF; padding: 0px 30px 30px 30px;  ">
 			<div class="row">
 				<h3 style="color: #305076; margin-bottom: 30px; font-size: 25px; font-family: Verdana;">Popular events</h3>				
@@ -135,6 +138,8 @@
 @code {
 	private List<EventModel>? PopularEvents;
 	private List<IGrouping<int, EventModel>>? groupedList;
+	private List<CartItemsModel>? shoppingCart;
+
 	private UserModel? _User { get; set; }
 	private AuthenticationState? authState;
 	private string? searchWord { get; set; }
@@ -145,26 +150,39 @@
 		authState = await authStateProvider.GetAuthenticationStateAsync();
 		var user = authState.User;
 
+
+
 		if(user != null)
 		{
 			if (user.Identity!.IsAuthenticated)
 			{
+<<<<<<< HEAD
 				_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
 				await GetUserEvents();
 				PopularEvents = await service.GetEventsAsync();	
+=======
+				if (user.Identity!.IsAuthenticated)
+				{
+					_User = await service.GetUserByUsernameAsync(user.Identity.Name!);	
+					shoppingCart = await cartService.GetShoppingCartAsync(_User!.Username);
+					//groupedList = shoppingCart.GroupBy(e => e.EventId).Select(grp => grp).ToList();
+					//await GetUserEvents();
+					PopularEvents = await service.GetEventsAsync();
+				}
+>>>>>>> master
 			}
 		}
 	}
 
 	private async Task GetUserEvents()
 	{
-		// this is to get and sort events from cookie
+		//// this is to get and sort events from cookie
 		//var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
 		//if (cookie is null)
 		//{
 		//	groupedList = null;
 		//}
-		//else /*if (cookie.UserEvents != null)*/
+		//else if (cookie.UserEvents != null)
 		//{
 		//	groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
 		//}

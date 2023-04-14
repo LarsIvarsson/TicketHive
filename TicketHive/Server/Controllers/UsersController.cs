@@ -61,12 +61,12 @@ namespace TicketHive.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserAsync(int id, [FromBody] UserModel model)
+        public async Task<ActionResult<string?>> PutUserAsync(int id, [FromBody] UserModel model)
         {
             var result = await repo.PutUserAsync(id, model);
             if (result)
             {
-                return Ok();
+                return Ok("Event(s) added!");
             }
 
             else
