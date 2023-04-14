@@ -47,6 +47,7 @@
 		authState = await authStateProvider.
 			GetAuthenticationStateAsync();
 		Username = authState.User.Identity!.Name;
+		Country.NewCountry = await service.GetUserCountryByUsernameAsync(Username);
 
 		foreach (var type in Enum.GetNames(typeof(CountryEnum)))
 		{

@@ -62,6 +62,7 @@ namespace TicketHive.Client.Services
 				itemToUpdate.Quantity++;
 				await localStorage.SetItemAsync<List<CartItemsModel>>(userName, shoppingCart);
 			}
+
 		}
 
 		public async Task DecreaceQuantity(string userName, CartItemsModel item)
