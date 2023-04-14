@@ -5,9 +5,5 @@
         public int Id { get; set; }
         public string Username { get; set; } = null!;
         public List<EventModel>? UserEvents { get; set; } = new();
-
-
-        //[JsonIgnore]
-        //public List<CartItemsModel> CartItems { get; set; }
     }
 }
