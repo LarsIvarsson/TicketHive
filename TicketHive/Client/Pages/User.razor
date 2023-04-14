@@ -14,6 +14,10 @@
 			<button class="mt-3" type="submit">Change password</button>
 			<DataAnnotationsValidator />
 			<ValidationSummary />
+			@if (PasswordsMessage != null)
+			{
+				<p class="text-danger mt-2">@PasswordsMessage</p>
+			}
 		</EditForm>
 	</div>	
 	<div class="col-3 text-center m-5">
@@ -29,6 +33,10 @@
 			<DataAnnotationsValidator />
 			<ValidationSummary />
 			</EditForm>
+		@if (CountryMessage != null)
+		{
+			<p class="text-danger mt-2">@CountryMessage</p>
+		}
 	</div>
 	<div class="col-6"></div>
 </div>
@@ -38,6 +46,8 @@
 	private AuthenticationState? authState;
 	private List<string> Countries { get; set; } = new();
 	private string? Username;
+	private string? CountryMessage = null;
+	private string? PasswordsMessage = null;
 
 	private UserPasswordsModel Passwords { get; set; } = new();
 	private UserCountryModel Country { get; set; } = new();
@@ -57,13 +67,17 @@
 
 	private async Task ChangePassword()
 	{		
-		await service.
+		PasswordsMessage = await service.
 			PutAppUserAsync(Username!, Passwords.CurrentPassword!, Passwords.NewPassword!);
+		Passwords = new();
+		Country = new();
 	}
 
 	private async Task ChangeCountry()
 	{
-		await service.
-			PutAppUserAsync(Username!, Country.NewCountry!);
+		CountryMessage = await service.
+			PutAppUserCountryAsync(Username!, Country.NewCountry!);
+		Passwords = new();
+		Country = new();
 	}
 }

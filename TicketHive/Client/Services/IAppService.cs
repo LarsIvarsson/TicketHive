@@ -13,7 +13,7 @@ namespace TicketHive.Client.Services
 		Task<UserModel?> GetUserByUsernameAsync(string UserName);
 		Task PutUserAsync(int id, UserModel model);
 		Task<string?> GetUserCountryByUsernameAsync(string AppUsername);
-		Task PutAppUserAsync(string AppUsername, string Country);
-		Task PutAppUserAsync(string AppUsername, string currentPassword, string newPassword);
+		Task<string?> PutAppUserCountryAsync(string AppUsername, string Country);
+		Task<string?> PutAppUserAsync(string AppUsername, string currentPassword, string newPassword);
 	}
 }
