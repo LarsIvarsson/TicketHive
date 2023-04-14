@@ -31,6 +31,7 @@ namespace TicketHive.Server.Repo
 				await context.SaveChangesAsync();
 				return true;
 			}
+
 			catch
 			{
 				return false;
@@ -39,12 +40,14 @@ namespace TicketHive.Server.Repo
 		public async Task<bool> PutUserAsync(int id, UserModel model)
 		{
 			UserModel? userToUpdate = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
 			if (userToUpdate != null)
 			{
 				userToUpdate.UserEvents = model.UserEvents;
 				await context.SaveChangesAsync();
 				return true;
 			}
+
 			else
 			{
 				return false;

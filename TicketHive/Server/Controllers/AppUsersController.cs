@@ -11,10 +11,12 @@ namespace TicketHive.Server.Controllers
     public class AppUsersController : ControllerBase
     {
         private readonly IAppUserRepo repo;
+
         public AppUsersController(IAppUserRepo repo)
         {
             this.repo = repo;
         }
+
         [HttpGet("{AppUsername}")]
         public async Task<ActionResult<string?>> GetUserCountryByUsernameAsync(string AppUsername)
         {
@@ -31,11 +33,13 @@ namespace TicketHive.Server.Controllers
             }
             return NotFound();
         }
+
         [HttpPut("{AppUsername}")]
         public async Task<IActionResult> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
         {
             bool result;
             List<string>? words = JsonConvert.DeserializeObject<List<string>>(jsonList);
+
             if (words != null)
             {
                 if (words.Count() > 1)
@@ -46,28 +50,16 @@ namespace TicketHive.Server.Controllers
                         return Ok();
                     }
                 }
+
                 result = await repo.PutAppUserAsync(AppUsername, words[0]);
+
                 if (result)
                 {
                     return Ok();
                 }
             }
-            return BadRequest();
-        }
 
-        // ==== not implemented (yet) ====
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return BadRequest();
         }
     }
 }

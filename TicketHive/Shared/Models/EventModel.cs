@@ -17,7 +17,6 @@ namespace TicketHive.Shared.Models
         public int Price { get; set; }
         [Required]
         public int Capacity { get; set; }
-        
         public bool IsSoldOut { get; set; }
 		public List<UserModel>? EventUsers { get; set; } = new();
 		public string? ImageUrl { get; set; }

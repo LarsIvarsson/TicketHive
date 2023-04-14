@@ -8,6 +8,7 @@ namespace TicketHive.Client.Services
     {
         private readonly HttpClient httpClient;
         private List<string> words = new();
+
         public AppService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
@@ -24,6 +25,7 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task<EventModel?> GetEventByIdAsync(int id)
         {
             var result = await httpClient.GetFromJsonAsync<EventModel>($"api/events/{id}");
@@ -34,14 +36,17 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task PostEventAsync(EventModel model)
         {
             await httpClient.PostAsJsonAsync("api/events", model);
         }
+
         public async Task PutEventAsync(int id, EventModel model)
         {
             await httpClient.PutAsJsonAsync($"api/events/{id}", model);
         }
+
         public async Task DeleteEventAsync(int id)
         {
             await httpClient.DeleteAsync($"api/events/{id}");
@@ -58,6 +63,7 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task<UserModel?> GetUserByUsernameAsync(string UserName)
         {
             var result = await httpClient.GetFromJsonAsync<UserModel>($"api/users/{UserName}");
@@ -68,6 +74,7 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task PutUserAsync(int id, UserModel model)
         {
             await httpClient.PutAsJsonAsync($"api/users/{id}", model);
@@ -85,6 +92,7 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task PutAppUserAsync(string AppUsername, string Country)
         {
             words.Add(Country);
@@ -92,6 +100,7 @@ namespace TicketHive.Client.Services
             await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", jsonList);
             words.Clear();
         }
+
         public async Task PutAppUserAsync(string AppUsername, string currentPassword, string newPassword)
         {
             words.Add(currentPassword);
