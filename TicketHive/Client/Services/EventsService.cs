@@ -12,6 +12,7 @@ namespace TicketHive.Client.Services
         {
             this.httpClient = httpClient;
         }
+
         public async Task<bool> AddEventAsync(EventModel eventToAdd)
         {
             var result = await httpClient.PostAsJsonAsync("api/events", eventToAdd);
@@ -21,7 +22,6 @@ namespace TicketHive.Client.Services
                 return true;
             }
             return false;
-
         }
 
         public async Task<bool> AddEventToUserAsync(string username, int eventId)

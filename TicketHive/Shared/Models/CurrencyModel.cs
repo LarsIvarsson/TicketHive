@@ -33,7 +33,4 @@ namespace TicketHive.Shared.Models
         [JsonProperty("rates")]
         public Rates Rates { get; set; }
     }
-
-
-
 }

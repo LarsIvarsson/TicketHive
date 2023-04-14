@@ -6,8 +6,14 @@
         public string Username { get; set; } = null!;
         public List<EventModel>? UserEvents { get; set; } = new();
 
+<<<<<<< HEAD
+		//[JsonIgnore]
+		//public List<CartItemsModel> CartItems { get; set; }
+	}
+=======
 
         //[JsonIgnore]
         //public List<CartItemsModel> CartItems { get; set; }
     }
+>>>>>>> master
 }

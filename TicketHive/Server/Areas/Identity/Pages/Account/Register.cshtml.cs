@@ -18,14 +18,17 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 		[Required(ErrorMessage = "Username is required")]
 		[MinLength(5, ErrorMessage = "Username is too short")]
 		public string? Username { get; set; }
+
 		[Required(ErrorMessage = "Password is required")]
 		[MinLength(5, ErrorMessage = "Password is too short")]
 		public string? Password { get; set; }
+
 		[Required, Compare(nameof(Password), ErrorMessage = "Passwords not matching")]
 		public string? PasswordVerify { get; set; }
 
 		[Required(ErrorMessage = "Please choose country")]
 		public string? Country { get; set; }
+
 		public List<string>? Errors { get; set; }
 		public List<string> Countries { get; set; } = new();
 
@@ -62,6 +65,7 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 						return Redirect("~/home");
 					}
 				}
+
 				else
 				{
 					foreach (var e in registerResult.Errors)
@@ -70,9 +74,11 @@ namespace TicketHive.Server.Areas.Identity.Pages.Account
 					}
 				}
 			}
+
 			PopulateCountries();
 			return Page();
 		}
+
 		private void PopulateCountries()
 		{
 			foreach (var type in Enum.GetNames(typeof(CountryEnum)))
