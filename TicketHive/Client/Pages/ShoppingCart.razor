@@ -1,5 +1,5 @@
 @page "/shopping-cart"
-@inject IAppService services
+@inject IAppService service
 @attribute [Authorize]
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navigation
@@ -75,6 +75,7 @@
     private List<IGrouping<int, EventModel>>? groupedList;
     private AuthenticationState? authState;
     private string signedInUser;
+    private UserModel? _User;
 
     protected override async Task OnInitializedAsync()
     {
@@ -88,7 +89,24 @@
 
     private async Task Checkout()
     {
-        navigation.NavigateTo("/confirmation");
+        // Get user
+        // populate User EventList with EventModels * quantity
+        // Update user
+        // Check response
+        _User = await service.GetUserByUsernameAsync(signedInUser);
+        if (shoppingCart != null && _User != null)
+        {         
+            foreach (var item in shoppingCart)
+            {
+                for (int i = 0; i < item.Quantity; i++)
+                {
+                    _User.UserEvents!.Add(item.Event);
+                }
+            }
+            await service.PutUserAsync(_User.Id, _User);
+            // check response?
+            navigation.NavigateTo("/confirmation");
+        }
     }
 
     private async Task DecreaceQuantity(CartItemsModel item)
