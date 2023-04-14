@@ -11,4 +11,3 @@ namespace TicketHive.Shared.Models
 		public string NewPassword { get; set; } = null!;
 	}
 }
-

@@ -10,10 +10,12 @@ namespace TicketHive.Server.Controllers
     public class EventsController : ControllerBase
     {
         private readonly IEventsRepo repo;
+
         public EventsController(IEventsRepo repo)
         {
             this.repo = repo;
         }
+
         [HttpGet]
         public async Task<ActionResult<List<EventModel>?>> GetEventsAsync()
         {
@@ -22,11 +24,13 @@ namespace TicketHive.Server.Controllers
             {
                 return Ok(result);
             }
+
             else
             {
                 return BadRequest();
             }
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<EventModel?>> GetEventById(int id)
         {
@@ -35,11 +39,13 @@ namespace TicketHive.Server.Controllers
             {
                 return Ok(result);
             }
+
             else
             {
                 return NotFound();
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EventModel model)
         {
@@ -48,11 +54,13 @@ namespace TicketHive.Server.Controllers
             {
                 return Ok();
             }
+
             else
             {
                 return BadRequest();
             }
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] EventModel model)
         {
@@ -61,11 +69,13 @@ namespace TicketHive.Server.Controllers
             {
                 return Ok();
             }
+
             else
             {
                 return BadRequest();
             }
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -74,6 +84,7 @@ namespace TicketHive.Server.Controllers
             {
                 return Ok();
             }
+
             else
             {
                 return BadRequest();

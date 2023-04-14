@@ -29,8 +29,8 @@
 	<hr style="margin: 30px 30px 60px 30px;"/>        
     </div>
 	<div class="row" style="margin: 30px;">
-        <div class="col-8" style="background-color: white; padding: 30px; ">            
-			<div class="row">
+        <div class="col-8">            
+			<div class="row" style="background-color: white; padding: 30px;" >
                 <h3 style="font-size: 2rem;">Your booked events</h3>
 				<hr style="margin: 30px 0 20px 0"/>
 
@@ -70,7 +70,7 @@
 			<div class="row">
 				<h3 style="color: #305076; margin-bottom: 30px; font-size: 25px; font-family: Verdana;">Popular events</h3>				
 				<div class="col-1"></div>
-				<div class="col-10 text-center">					
+				<div class="col-10 text-center">	
 					@if (PopularEvents is null)
 					{
 						<div class="spinner-border"></div>
@@ -79,13 +79,16 @@
 					{
 						@foreach (var e in PopularEvents)
 						{
-							<div>
-								<a href="eventDetails/@e.Id" Event="@e">
-									<img src="@e.ImageUrl" style="width: 300px; height: 200px;" />
-								</a>
-								@*<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>*@
-								<hr style="background-color: transparent;"/>
-							</div>										
+							@if(e.Id > 5 && e.Id <= 10)
+							{
+								<div>
+									<a href="eventDetails/@e.Id" Event="@e">
+										<img src="@e.ImageUrl" style="width: 300px; height: 200px;" />
+									</a>
+									@*<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>*@
+									<hr style="background-color: transparent;" />
+								</div>
+							}
 						}
 					}
 				</div>
@@ -133,7 +136,6 @@
 </style>
 
 @code {
-
 	private List<EventModel>? PopularEvents;
 	private List<IGrouping<int, EventModel>>? groupedList;
 	private List<CartItemsModel>? shoppingCart;
@@ -152,8 +154,13 @@
 
 		if(user != null)
 		{
-			if(!user.IsInRole("Admin"))
+			if (user.Identity!.IsAuthenticated)
 			{
+<<<<<<< HEAD
+				_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+				await GetUserEvents();
+				PopularEvents = await service.GetEventsAsync();	
+=======
 				if (user.Identity!.IsAuthenticated)
 				{
 					_User = await service.GetUserByUsernameAsync(user.Identity.Name!);	
@@ -162,6 +169,7 @@
 					//await GetUserEvents();
 					PopularEvents = await service.GetEventsAsync();
 				}
+>>>>>>> master
 			}
 		}
 	}

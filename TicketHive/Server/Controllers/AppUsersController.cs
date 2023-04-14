@@ -6,6 +6,23 @@ using TicketHive.Server.Repo;
 
 namespace TicketHive.Server.Controllers
 {
+<<<<<<< HEAD
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AppUsersController : ControllerBase
+    {
+        private readonly IAppUserRepo repo;
+
+        public AppUsersController(IAppUserRepo repo)
+        {
+            this.repo = repo;
+        }
+
+        [HttpGet("{AppUsername}")]
+        public async Task<ActionResult<string?>> GetUserCountryByUsernameAsync(string AppUsername)
+        {
+            var result = await repo.GetUserByUsernameAsync(AppUsername);
+=======
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AppUsersController : ControllerBase
@@ -19,11 +36,50 @@ namespace TicketHive.Server.Controllers
 		public async Task<ActionResult<string?>> GetUserCountryByUsernameAsync(string AppUsername)
 		{
 			var result = await repo.GetUserByUsernameAsync(AppUsername);
+>>>>>>> master
 
 			if (result != null)
 			{
 				string country = result.Country;
 
+<<<<<<< HEAD
+                if (country != null)
+                {
+                    return Ok(country);
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPut("{AppUsername}")]
+        public async Task<IActionResult> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
+        {
+            bool result;
+            List<string>? words = JsonConvert.DeserializeObject<List<string>>(jsonList);
+
+            if (words != null)
+            {
+                if (words.Count() > 1)
+                {
+                    result = await repo.ChangePasswordAsync(AppUsername, words[0], words[1]);
+                    if (result)
+                    {
+                        return Ok();
+                    }
+                }
+
+                result = await repo.PutAppUserAsync(AppUsername, words[0]);
+
+                if (result)
+                {
+                    return Ok();
+                }
+            }
+
+            return BadRequest();
+        }
+    }
+=======
 				if (country != null)
 				{
 					return Ok(country);
@@ -71,4 +127,5 @@ namespace TicketHive.Server.Controllers
 		{
 		}
 	}
+>>>>>>> master
 }

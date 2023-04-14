@@ -6,7 +6,6 @@ namespace TicketHive.Client.Managers
     public class CurrencyManager
     {
         private readonly ICurrencyService currencyService;
-
         public static string? Currency { get; set; }
         public static Rates? Rates { get; set; } 
         public static DateTime RatesRecieved { get; set; }

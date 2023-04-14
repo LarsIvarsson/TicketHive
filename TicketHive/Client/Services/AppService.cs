@@ -7,6 +7,11 @@ namespace TicketHive.Client.Services
     public class AppService : IAppService
     {
         private readonly HttpClient httpClient;
+<<<<<<< HEAD
+        private List<string> words = new();
+
+=======
+>>>>>>> master
         public AppService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
@@ -23,6 +28,7 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task<EventModel?> GetEventByIdAsync(int id)
         {
             var result = await httpClient.GetFromJsonAsync<EventModel>($"api/events/{id}");
@@ -33,14 +39,17 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task PostEventAsync(EventModel model)
         {
             await httpClient.PostAsJsonAsync("api/events", model);
         }
+
         public async Task PutEventAsync(int id, EventModel model)
         {
             await httpClient.PutAsJsonAsync($"api/events/{id}", model);
         }
+
         public async Task DeleteEventAsync(int id)
         {
             await httpClient.DeleteAsync($"api/events/{id}");
@@ -57,6 +66,7 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+
         public async Task<UserModel?> GetUserByUsernameAsync(string UserName)
         {
             var result = await httpClient.GetFromJsonAsync<UserModel>($"api/users/{UserName}");
@@ -67,7 +77,12 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+<<<<<<< HEAD
+
+        public async Task PutUserAsync(int id, UserModel model)
+=======
         public async Task<string?> PutUserAsync(int id, UserModel model)
+>>>>>>> master
         {
             var response = await httpClient.PutAsJsonAsync($"api/users/{id}", model);
             if (response.IsSuccessStatusCode)
@@ -90,7 +105,12 @@ namespace TicketHive.Client.Services
             }
             return null;
         }
+<<<<<<< HEAD
+
+        public async Task PutAppUserAsync(string AppUsername, string Country)
+=======
         public async Task<string?> PutAppUserCountryAsync(string AppUsername, string Country)
+>>>>>>> master
         {
             List<string> words = new();
             words.Add(Country);
@@ -107,7 +127,12 @@ namespace TicketHive.Client.Services
             words.Clear();
             return null;
         }
+<<<<<<< HEAD
+
+        public async Task PutAppUserAsync(string AppUsername, string currentPassword, string newPassword)
+=======
         public async Task<string?> PutAppUserAsync(string AppUsername, string currentPassword, string newPassword)
+>>>>>>> master
         {
             List<string> words = new();
             words.Add(currentPassword);

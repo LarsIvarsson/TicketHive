@@ -19,6 +19,7 @@
 		</div>
 	</div>
 }
+
 else
 {	
 	<div class="container">
@@ -57,16 +58,13 @@ else
 						@*<label for="ticket-input">Tickets: </label>
 						<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity" />*@
 
-						<input class="btn btn-primary" type="submit" value="Add to cart" @onclick=AddToShoppingCart />
+						<input class="btn btn-primary mt-1" type="submit" value="Add to cart" @onclick=AddToShoppingCart />
 					</div>
 				</div>
 			</div>
 		}
 	</div>
 }	
-
-
-
 
 	<style>
 		.fullyBooked{
@@ -78,7 +76,6 @@ else
 			transition: height linear 0.4s, opacity linear 0.2s;
 		}
 	</style>
-
 
 @code {
 	[Parameter]
