@@ -43,7 +43,21 @@ namespace TicketHive.Server.Repo
                 {
                     userToUpdate.UserEvents.Add(e);
                 }
+
+                // HÄR VILL VI UPPMÄRKSAMMA ENTITY FRAMEWORK ATT ÄNDRINGAR GJORTS
+
+                // alternativ 1
+                context.Update(userToUpdate);
+                // alternativ 2
+                // context.Entry(userToUpdate).State = EntityState.Modified;
+
+                // HÄR VILL VI SPARA ÄNDRINGARNA I CONTEXT
+
+                // alternativ 1
+                // context.SaveChanges();
+                // alternativ 2
                 await context.SaveChangesAsync();
+
                 return true;
             }
             else
