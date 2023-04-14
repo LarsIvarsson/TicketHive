@@ -31,8 +31,9 @@ namespace TicketHive.Server.Controllers
 			}
 			return NotFound();
 		}
+
 		[HttpPut("{AppUsername}")]
-		public async Task<IActionResult> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
+		public async Task<ActionResult<string?>> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
 		{
 			bool result;
 			List<string>? words = JsonConvert.DeserializeObject<List<string>>(jsonList);

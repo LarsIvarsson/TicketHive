@@ -7,7 +7,6 @@ namespace TicketHive.Client.Services
 	public class AppService : IAppService
 	{
 		private readonly HttpClient httpClient;
-		private List<string> words = new();
 		public AppService(HttpClient httpClient)
 		{
 			this.httpClient = httpClient;
@@ -85,20 +84,26 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
-		public async Task PutAppUserAsync(string AppUsername, string Country)
+		public async Task<string?> PutAppUserCountryAsync(string AppUsername, string Country)
 		{
+			List<string> words = new();
 			words.Add(Country);
 			var jsonList = JsonConvert.SerializeObject(words);
 			var result = await httpClient.PutAsJsonAsync($"api/appusers/{AppUsername}", jsonList);
 			if (result.IsSuccessStatusCode)
 			{
 				var response = await result.Content.ReadAsStringAsync();
-				return response;
+				if (response != null)
+				{
+					return response;
+				}
 			}
 			words.Clear();
+			return null;
 		}
-		public async Task PutAppUserAsync(string AppUsername, string currentPassword, string newPassword)
+		public async Task<string?> PutAppUserAsync(string AppUsername, string currentPassword, string newPassword)
 		{
+			List<string> words = new();
 			words.Add(currentPassword);
 			words.Add(newPassword);
 			var jsonList = JsonConvert.SerializeObject(words);
@@ -106,8 +111,13 @@ namespace TicketHive.Client.Services
 			if (result.IsSuccessStatusCode)
 			{
 				var response = await result.Content.ReadAsStringAsync();
+				if (response != null)
+				{
+					return response;
+				}
 			}
 			words.Clear();
+			return null;
 		}
 	}
 }
