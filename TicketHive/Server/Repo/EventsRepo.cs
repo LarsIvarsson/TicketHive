@@ -29,21 +29,24 @@ namespace TicketHive.Server.Repo
 		public async Task<List<EventModel>?> GetEventsAsync()
 		{
 			return await context.Events.Include(e => e.EventUsers).ToListAsync();
+
+			/*.Include(e => e.EventUsers)*/
 		}
 
 		public async Task<EventModel?> GetEventByIdAsync(int id)
 		{
 			return await context.Events.Include(e => e.EventUsers).FirstOrDefaultAsync(e => e.Id == id);
+			// Include(e => e.EventUsers).
 		}
 
 		public async Task<bool> PostEventAsync(EventModel model)
 		{
 			try
 			{
-				if(model.ImageUrl == null)
+				if (model.ImageUrl == null)
 				{
-                    model.ImageUrl = SetImageUrl();
-                }
+					model.ImageUrl = SetImageUrl();
+				}
 
 				await context.Events.AddAsync(model);
 				await context.SaveChangesAsync();

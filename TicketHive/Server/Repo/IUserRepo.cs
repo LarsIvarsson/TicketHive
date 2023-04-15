@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using TicketHive.Server.Models;
-using TicketHive.Shared.Models;
+﻿using TicketHive.Shared.Models;
 
 namespace TicketHive.Server.Repo
 {
@@ -8,7 +6,9 @@ namespace TicketHive.Server.Repo
 	{
 		Task<List<UserModel>?> GetUsersAsync();
 		Task<UserModel?> GetUserByUsernameAsync(string UserName);
-        Task<bool> PostUserAsync(UserModel model);
+		Task<UserModel?> GetUserByUsernameIncludeEventsAsync(string UserName);
+
+		Task<bool> PostUserAsync(UserModel model);
 		Task<bool> PutUserAsync(int id, UserModel model);
 	}
 }

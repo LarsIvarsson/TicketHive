@@ -42,26 +42,25 @@
 				else
 				{	
 					@*VAD SOM PRINTAS OM MAN HAR BOKAT EVENT*@
-					@foreach (var item in shoppingCart)
+					@foreach (var group in groupedList)
 					{
 						<div class="col-3 d-flex align-items-center d-flex justify-content-center">
 
-							<img src=/images/Other/RättTicket.png style="height: 120px; width: 120px; align-content: center; "  />
+							<img src=/images/Other/RättTicket.png style="height: 120px; width: 120px; align-content: center; " />
 						</div>
-						<div class="col-6 text-start d-flex align-items-center">	
+						<div class="col-6 text-start d-flex align-items-center">
 							<div>
-								<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @item.Event.Name </h3>
-								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @item.Event.Date.ToString("yyyy-MM-dd")</p>
-								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @item.Quantity </p>
+								<h3 style="font-size: 25px; font-family: Verdana; margin-bottom: 10px;">Event: @group.First().Name </h3>
+								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">When: @group.First().Date.ToString("yyyy-MM-dd")</p>
+								<p style="font-size: 17px; font-family: Verdana; margin-bottom: 10px;">Tickets: @group.Count() </p>
 
 							</div>
 						</div>
 						<div class="col-3 d-flex align-items-center d-flex justify-content-start" style="padding:5px;">
 							<img src=/images/Other/Qkod.jpg style="height: 150px; width: 150px; align-content: center;" />
 						</div>
-					@*<img src=@group.First().ImageUrl style="max-width:250px;"/>*@					
-					<hr style="margin: 20px 0 20px 0;" />							
-					}					
+						<hr style="margin: 20px 0 20px 0;" />
+					}
 				}
 			</div>
 		</div>
@@ -152,43 +151,31 @@
 
 		if(user != null)
 		{
-			if(!user.IsInRole("Admin"))
+			//if(!user.IsInRole("Admin"))
+			//{
+			if (user.Identity!.IsAuthenticated)
 			{
-				if (user.Identity!.IsAuthenticated)
-				{
-					_User = await service.GetUserByUsernameAsync(user.Identity.Name!);	
-					shoppingCart = await cartService.GetShoppingCartAsync(_User!.Username);
-					//groupedList = shoppingCart.GroupBy(e => e.EventId).Select(grp => grp).ToList();
-					//await GetUserEvents();
-					PopularEvents = await service.GetEventsAsync();
-				}
+				_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+				// _User = await service.GetUserByUsernameIncludeEventsAsync(user.Identity.Name!);
+				groupedList = _User!.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
+				PopularEvents = await service.GetEventsAsync();			
 			}
+			//}
 		}
+	}
+
+
+	protected async override Task OnParametersSetAsync()
+	{
+		await GetUserEvents();
 	}
 
 	private async Task GetUserEvents()
 	{
-		//// this is to get and sort events from cookie
-		//var cookie = await localStorage.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
-		//if (cookie is null)
-		//{
-		//	groupedList = null;
-		//}
-		//else if (cookie.UserEvents != null)
-		//{
-		//	groupedList = cookie.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
-		//}
+		var user = authState.User;
+		_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
+		groupedList = _User!.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
 	}
-
-	//protected override void OnParametersSet()
-	//{
-	//	GetUserEvents();
-	//}
-
-	//private void GetUserEvents()
-	//{
-	//	UserEvents = _User!.UserEvents;
-	//}
 
 	private void HandleSearchWord()
 	{
