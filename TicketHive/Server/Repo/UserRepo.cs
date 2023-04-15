@@ -1,4 +1,8 @@
-﻿namespace TicketHive.Server.Repo
+﻿using Microsoft.EntityFrameworkCore;
+using TicketHive.Server.Data;
+using TicketHive.Shared.Models;
+
+namespace TicketHive.Server.Repo
 {
 	public class UserRepo : IUserRepo
 	{
@@ -63,4 +67,3 @@
 		}
 	}
 }
->>>>>>> master

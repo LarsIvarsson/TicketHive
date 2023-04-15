@@ -1,3 +1,7 @@
+using Newtonsoft.Json;
+using System.Net.Http.Json;
+using TicketHive.Shared.Models;
+
 namespace TicketHive.Client.Services
 {
 	public class AppService : IAppService

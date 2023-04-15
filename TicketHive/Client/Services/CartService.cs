@@ -1,4 +1,7 @@
-﻿namespace TicketHive.Client.Services
+﻿using Blazored.LocalStorage;
+using TicketHive.Shared.Models;
+
+namespace TicketHive.Client.Services
 {
 	public class CartService : ICartService
 	{
@@ -94,4 +97,3 @@
 	}
 }
 
->>>>>>> master
