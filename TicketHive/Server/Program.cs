@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using TicketHive.Server.Data;
 using TicketHive.Server.Models;
 using TicketHive.Server.Repo;
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<EventsDbContext>(options =>
 	options.UseSqlServer(eventsDbString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDefaultIdentity<ApplicationUser>()
 	.AddRoles<IdentityRole>()
