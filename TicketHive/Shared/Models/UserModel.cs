@@ -1,4 +1,4 @@
-﻿namespace TicketHive.Shared.Models
+namespace TicketHive.Shared.Models
 {
     public class UserModel
     {

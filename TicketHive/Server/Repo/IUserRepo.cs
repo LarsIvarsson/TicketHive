@@ -12,5 +12,3 @@ namespace TicketHive.Server.Repo
 		Task<bool> PutUserAsync(int id, UserModel model);
 	}
 }
-
-

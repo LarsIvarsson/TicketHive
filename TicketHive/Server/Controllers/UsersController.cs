@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TicketHive.Server.Repo;
-using TicketHive.Shared.Models;
-
-namespace TicketHive.Server.Controllers
+﻿namespace TicketHive.Server.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]

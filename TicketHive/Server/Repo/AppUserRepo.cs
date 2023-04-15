@@ -30,6 +30,7 @@ namespace TicketHive.Server.Repo
 				await context.SaveChangesAsync();
 				return true;
 			}
+
 			return false;
 		}
 
@@ -45,6 +46,7 @@ namespace TicketHive.Server.Repo
 					return true;
 				}
 			}
+
 			return false;
 		}
 	}

@@ -101,7 +101,6 @@ app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthorization();
 
-
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");

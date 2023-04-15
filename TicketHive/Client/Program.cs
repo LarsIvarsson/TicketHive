@@ -24,10 +24,7 @@ builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<CurrencyManager>();
 builder.Services.AddApiAuthorization();
 
-
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ICartService, CartService>();
-
-
 
 await builder.Build().RunAsync();
