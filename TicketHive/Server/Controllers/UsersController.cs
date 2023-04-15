@@ -1,4 +1,8 @@
-﻿namespace TicketHive.Server.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using TicketHive.Server.Repo;
+using TicketHive.Shared.Models;
+
+namespace TicketHive.Server.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
@@ -48,10 +52,6 @@
 				return NotFound();
 			}
 		}
-
-
-
-
 
 		[HttpPost]
 		public async Task<IActionResult> PostUserAsync([FromBody] UserModel model)
