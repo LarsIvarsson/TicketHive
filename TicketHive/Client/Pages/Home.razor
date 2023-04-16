@@ -176,6 +176,9 @@
 		groupedList = _User!.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
 	}
 
+	/// <summary>
+	/// search event and redirect to AllEvents-page 
+	/// </summary>
 	private void HandleSearchWord()
 	{
 		errorMessage = null!;

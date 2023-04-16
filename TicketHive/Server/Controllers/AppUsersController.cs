@@ -14,6 +14,10 @@ namespace TicketHive.Server.Controllers
 			this.repo = repo;
 		}
 		[HttpGet("{AppUsername}")]
+
+		/// <summary>
+		/// Retrieves the country of a user by username asynchronously from the repository and returns it as an HTTP ActionResult.
+		/// </summary>
 		public async Task<ActionResult<string?>> GetUserCountryByUsernameAsync(string AppUsername)
 		{
 			var result = await repo.GetUserByUsernameAsync(AppUsername);
@@ -30,7 +34,13 @@ namespace TicketHive.Server.Controllers
 			return NotFound();
 		}
 
+		/// <summary>
+		/// Changes the password or country of a user by username asynchronously in the repository and returns an HTTP ActionResult.
+		/// </summary>
+	
 		[HttpPut("{AppUsername}")]
+
+		
 		public async Task<ActionResult<string?>> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
 		{
 			bool result;

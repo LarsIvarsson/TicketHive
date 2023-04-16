@@ -87,6 +87,11 @@ else
 	private string? userCountry { get; set; }
 	private decimal userRate { get; set; }
 
+	/// <summary>
+	/// Override method called when the component is initialized asynchronously.
+	/// Retrieves the authentication state, user details, and user's country and currency rate information
+	/// for authenticated users.
+	/// </summary>
 	protected override async Task OnInitializedAsync()
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();
@@ -104,11 +109,17 @@ else
 		}
 	}
 
+	/// <summary>
+	/// Retrieves an event by ID from the service.
+	/// </summary>
 	protected override async Task OnParametersSetAsync()
 	{
 		_Event = await service.GetEventByIdAsync(id);		
 	}
 
+	/// <summary>
+	/// Adds the current event to the shopping cart for the authenticated user asynchronously.
+	/// </summary>
 	private async Task AddToShoppingCart()
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();

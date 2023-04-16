@@ -30,6 +30,11 @@ else
 	private AuthenticationState? authState;
 	private string? signedInUser;
 
+	/// <summary>
+	/// Override method called when the component is initialized asynchronously.
+	/// Retrieves the authentication state, signed-in user name, and shopping cart details.
+	/// Empties the shopping cart for the signed-in user.
+	/// </summary>
 	protected override async Task OnInitializedAsync()
 	{
 		authState = await authStateProvider.GetAuthenticationStateAsync();

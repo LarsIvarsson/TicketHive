@@ -39,6 +39,10 @@ namespace TicketHive.Server.Controllers
 				return NotFound();
 			}
 		}
+
+		/// <summary>
+		/// Gets a user by username including their associated events asynchronously from the repository.
+		/// </summary>
 		[HttpGet("{UserName}/include")]
 		public async Task<ActionResult<UserModel?>> GetUserByUsernameIncludeEventsAsync(string UserName)
 		{
@@ -52,7 +56,9 @@ namespace TicketHive.Server.Controllers
 				return NotFound();
 			}
 		}
-
+		/// <summary>
+		/// Creates a new user asynchronously in the repository.
+		/// </summary>
 		[HttpPost]
 		public async Task<IActionResult> PostUserAsync([FromBody] UserModel model)
 		{
@@ -66,6 +72,10 @@ namespace TicketHive.Server.Controllers
 				return BadRequest();
 			}
 		}
+
+		/// <summary>
+		/// Updates an existing user by ID asynchronously in the repository.
+		/// </summary>
 		[HttpPut("{id}")]
 		public async Task<ActionResult<string?>> PutUserAsync(int id, [FromBody] UserModel model)
 		{

@@ -45,8 +45,10 @@ namespace TicketHive.Server.Controllers
                 return NotFound();
             }
         }
-
-        [HttpPost]
+		/// <summary>
+		/// Creates a new event asynchronously in the repository.
+		/// </summary>
+		[HttpPost]
         public async Task<IActionResult> Post([FromBody] EventModel model)
         {
             var result = await repo.PostEventAsync(model);
@@ -61,7 +63,10 @@ namespace TicketHive.Server.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+		/// <summary>
+		/// Updates an existing event by ID asynchronously in the repository.
+		/// </summary>
+		[HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] EventModel model)
         {
             var result = await repo.PutEventAsync(id, model);

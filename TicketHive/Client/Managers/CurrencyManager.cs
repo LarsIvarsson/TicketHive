@@ -10,18 +10,25 @@ namespace TicketHive.Client.Managers
         public static Rates? Rates { get; set; } 
         public static DateTime RatesRecieved { get; set; }
 
+        
         public CurrencyManager(ICurrencyService currencyService)
         {
             this.currencyService = currencyService;
         }
 
+        /// <summary>
+        /// Retrieves the list of available currencies.
+        /// </summary>
         public async Task<Root?> GetCurrencies()
         {
             Root? currency = await currencyService.GetCurrenciesAsync();
 
             return currency;
         }
-
+        
+        /// <summary>
+        /// Retrieves the currencie for the specified country.
+        /// </summary>
         public static async Task<decimal> GetRate(string country)
         {
             if(country == "Sweden")
