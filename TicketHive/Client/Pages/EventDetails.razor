@@ -35,10 +35,8 @@ else
 						<li class="list-group-item">Venue: <strong>@_Event.Venue</strong></li>
 						<li class="list-group-item">Date: <strong>@_Event.Date.ToString("yyyy-MM-dd")</strong></li>
 					</ul>
-					<div class="text-center">
-						<label for="ticket-input">Tickets: </label>
-						<input class="m-3" id="ticket-input" type="number" min="0" max="0" style="opacity:0.5" disabled/>
-						<input class="btn btn-primary" type="submit" value="Add to cart" style="opacity:0.5" disabled/>
+					<div class="text-center">				
+						<input class="btn btn-primary mt-1" type="submit" value="Add to cart" disabled />
 					</div>
 				</div>
 			</div>
@@ -55,9 +53,6 @@ else
 						<li class="list-group-item">Date: <strong>@_Event.Date.ToString("yyyy-MM-dd")</strong></li>
 					</ul>
 					<div class="text-center">
-						@*<label for="ticket-input">Tickets: </label>
-						<input class="m-3" id="ticket-input" type="number" min="0" max="10" @bind-value="Quantity" />*@
-
 						<input class="btn btn-primary mt-1" type="submit" value="Add to cart" @onclick=AddToShoppingCart />
 					</div>
 				</div>
@@ -127,20 +122,6 @@ else
 
 		await cartService.AddToCartAsync(user.Identity.Name, _Event);
 
-		//// Reads cookie in local storage (if there is any) with current username
-		//UserModel? cookieUser = await localStorage
-		//	.GetItemAsync<UserModel>(authState?.User.Identity?.Name);
-		//// if cookie is found we use that object as our user
-		//if (cookieUser != null)
-		//{
-		//	_User = cookieUser;
-		//}
-		//// adds event to users event list "selected number of times"
-		//for (int i = 0; i < Quantity; i++)
-		//{
-		//	_User!.UserEvents!.Add(_Event!);
-		//}
-		//// finally converts object with updated event list to cookie and saves to local storage
-		//await localStorage.SetItemAsync(authState?.User.Identity?.Name, _User);	
+		navigation.NavigateTo("/shopping-cart");
 	}
 }
