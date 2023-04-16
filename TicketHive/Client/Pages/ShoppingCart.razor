@@ -10,7 +10,7 @@
 <h1>Shopping Cart</h1>
 <br />
 <button type="button" class="btn btn-secondary btn-rounded oi oi-arrow-circle-left" @onclick='() => navigation.NavigateTo("/allevents")'></button>
-
+@*--- TABELL ---*@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -20,11 +20,12 @@
                         <th>Event</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        @*<th>Total</th>*@
+                       
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
+                @*    --- LADDA TABELLEN MED TILLAGDA EVENT ---*@
                     @if (shoppingCart != null && shoppingCart.Any())
                     {
                         @foreach (var c in shoppingCart)
@@ -39,7 +40,7 @@
                                         <button class="btn-quantity btn-quantity-hover-plus" @onclick="async () => await IncreaceQuantity(c)">+</button>
                                     </div>
                                 </td>
-                                 @*<td>@c.Event.Price * @c.Quantity</td>*@
+                            
                                 <td><button class="btn btn-danger" @onclick="async () => await RemoveItem(c)">Remove</button></td>
                             </tr>
                         }
@@ -53,6 +54,8 @@
                 </tbody>
             </table>
         </div>
+
+       @* --- TOTAL-PRICE RUTAN ---*@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
