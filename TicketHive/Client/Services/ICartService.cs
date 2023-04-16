@@ -15,5 +15,6 @@ namespace TicketHive.Client.Services
 
 		Task DecreaceQuantity(string userName, CartItemsModel item);
 
+		Task EmptyShoppingCartAsync(string UserName);
 	}
 }

@@ -19,6 +19,11 @@ namespace TicketHive.Server.Data
 				Id = 1,
 				Username = "user"
 			});
+			modelBuilder.Entity<UserModel>().HasData(new UserModel()
+			{
+				Id = 2,
+				Username = "admin"
+			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
 			{
 				Id = 1,

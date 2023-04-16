@@ -21,16 +21,12 @@ else
 		<p>Event: @item.Event.Name</p>
 		<p>Qty: @item.Quantity</p>
 		<p>Date: @item.Event.Date.ToString("yyyy-MM-dd")</p>
-		<hr />		
-		@*<p>Event: @group.First().Name</p>
-		<p>Qty: @group.Count()</p>*@
+		<hr />
 	}
 }
 
 @code {
-	//private UserModel? _User { get; set; }
 	private List<CartItemsModel>? shoppingCart;
-	//private List<IGrouping<int, EventModel>>? BookedEvents;
 	private AuthenticationState? authState;
 	private string? signedInUser;
 
@@ -39,21 +35,10 @@ else
 		authState = await authStateProvider.GetAuthenticationStateAsync();
 		signedInUser = authState.User.Identity!.Name;
 
-		shoppingCart = await cartService.GetShoppingCartAsync(signedInUser!);
-		
-		//if (user.Identity!.IsAuthenticated)
-		//{
-		//	_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
-		//}
-	}
-
-	protected override void OnParametersSet()
-	{
-		//if (_User != null)
-		//{
-		//	if (_User.UserEvents != null)
-		//	{
-		//		BookedEvents = _User.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
-		//	}
+		if (signedInUser != null)
+		{
+			shoppingCart = await cartService.GetShoppingCartAsync(signedInUser!);
+			await cartService.EmptyShoppingCartAsync(signedInUser);
+		}		
 	}
 }

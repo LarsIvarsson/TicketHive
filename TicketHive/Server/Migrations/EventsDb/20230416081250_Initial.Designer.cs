@@ -12,8 +12,8 @@ using TicketHive.Server.Data;
 namespace TicketHive.Server.Migrations.EventsDb
 {
     [DbContext(typeof(EventsDbContext))]
-    [Migration("20230404132254_IndexTesting")]
-    partial class IndexTesting
+    [Migration("20230416081250_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 1,
                             Capacity = 3000,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img1.avif",
+                            ImageUrl = "/images/event/img1.jpg",
                             IsSoldOut = false,
                             Name = "Justin Bieber",
                             Price = 800,
@@ -96,7 +96,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 2,
                             Capacity = 22000,
                             Date = new DateTime(2023, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img2.avif",
+                            ImageUrl = "/images/event/img2.jpg",
                             IsSoldOut = false,
                             Name = "Malmö FF - IFK Göteborg",
                             Price = 230,
@@ -108,7 +108,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 3,
                             Capacity = 550,
                             Date = new DateTime(2023, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img3.avif",
+                            ImageUrl = "/images/event/img3.jpg",
                             IsSoldOut = false,
                             Name = "Johan Glans Tour",
                             Price = 400,
@@ -120,7 +120,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 4,
                             Capacity = 13000,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img4.avif",
+                            ImageUrl = "/images/event/img4.jpg",
                             IsSoldOut = false,
                             Name = "Big Slap",
                             Price = 700,
@@ -132,7 +132,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 5,
                             Capacity = 60,
                             Date = new DateTime(2023, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img5.avif",
+                            ImageUrl = "/images/event/img5.jpg",
                             IsSoldOut = false,
                             Name = "Doris & Knäckebröderna",
                             Price = 100,
@@ -144,7 +144,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 6,
                             Capacity = 26000,
                             Date = new DateTime(2023, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img6.avif",
+                            ImageUrl = "/images/event/img6.jpg",
                             IsSoldOut = false,
                             Name = "Tom Jones",
                             Price = 800,
@@ -156,7 +156,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 7,
                             Capacity = 34,
                             Date = new DateTime(2023, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img7.avif",
+                            ImageUrl = "/images/event/img7.jpg",
                             IsSoldOut = false,
                             Name = "World Padel Tour",
                             Price = 40,
@@ -168,9 +168,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 8,
                             Capacity = 26000,
                             Date = new DateTime(2023, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img8.avif",
+                            ImageUrl = "/images/event/img8.jpg",
                             IsSoldOut = false,
-                            Name = "Flashback Forever Live Pod",
+                            Name = "Flashback Forever Live",
                             Price = 200,
                             Type = 3,
                             Venue = "Globen"
@@ -180,7 +180,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 9,
                             Capacity = 300,
                             Date = new DateTime(2023, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img9.avif",
+                            ImageUrl = "/images/event/img9.jpg",
                             IsSoldOut = false,
                             Name = "Babblarna The Musical",
                             Price = 120,
@@ -192,7 +192,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Id = 10,
                             Capacity = 12000,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "/images/event/img10.avif",
+                            ImageUrl = "/images/event/img10.jpg",
                             IsSoldOut = false,
                             Name = "Sweden Rock",
                             Price = 500,
@@ -222,6 +222,11 @@ namespace TicketHive.Server.Migrations.EventsDb
                         {
                             Id = 1,
                             Username = "user"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Username = "admin"
                         });
                 });
 

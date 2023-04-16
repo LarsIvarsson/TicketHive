@@ -54,14 +54,14 @@ namespace TicketHive.Server.Migrations.EventsDb
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSoldOut")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TicketsSold")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -82,9 +82,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 3000,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img1.jpg",
+                            IsSoldOut = false,
                             Name = "Justin Bieber",
                             Price = 800,
-                            TicketsSold = 0,
                             Type = 1,
                             Venue = "Malmö Arena"
                         },
@@ -94,9 +94,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 22000,
                             Date = new DateTime(2023, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img2.jpg",
+                            IsSoldOut = false,
                             Name = "Malmö FF - IFK Göteborg",
                             Price = 230,
-                            TicketsSold = 0,
                             Type = 0,
                             Venue = "Eleda Stadion"
                         },
@@ -106,9 +106,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 550,
                             Date = new DateTime(2023, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img3.jpg",
+                            IsSoldOut = false,
                             Name = "Johan Glans Tour",
                             Price = 400,
-                            TicketsSold = 0,
                             Type = 3,
                             Venue = "Palladium"
                         },
@@ -118,9 +118,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 13000,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img4.jpg",
+                            IsSoldOut = false,
                             Name = "Big Slap",
                             Price = 700,
-                            TicketsSold = 0,
                             Type = 2,
                             Venue = "Pildammsparken"
                         },
@@ -130,9 +130,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 60,
                             Date = new DateTime(2023, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img5.jpg",
+                            IsSoldOut = false,
                             Name = "Doris & Knäckebröderna",
                             Price = 100,
-                            TicketsSold = 0,
                             Type = 4,
                             Venue = "Stadsbiblioteket Malmö"
                         },
@@ -142,9 +142,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 26000,
                             Date = new DateTime(2023, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img6.jpg",
+                            IsSoldOut = false,
                             Name = "Tom Jones",
                             Price = 800,
-                            TicketsSold = 0,
                             Type = 1,
                             Venue = "Parken Copenhagen"
                         },
@@ -154,9 +154,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 34,
                             Date = new DateTime(2023, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img7.jpg",
+                            IsSoldOut = false,
                             Name = "World Padel Tour",
                             Price = 40,
-                            TicketsSold = 0,
                             Type = 0,
                             Venue = "Helsingborg"
                         },
@@ -166,9 +166,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 26000,
                             Date = new DateTime(2023, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img8.jpg",
+                            IsSoldOut = false,
                             Name = "Flashback Forever Live",
                             Price = 200,
-                            TicketsSold = 0,
                             Type = 3,
                             Venue = "Globen"
                         },
@@ -178,9 +178,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 300,
                             Date = new DateTime(2023, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img9.jpg",
+                            IsSoldOut = false,
                             Name = "Babblarna The Musical",
                             Price = 120,
-                            TicketsSold = 0,
                             Type = 4,
                             Venue = "Malmö Live"
                         },
@@ -190,9 +190,9 @@ namespace TicketHive.Server.Migrations.EventsDb
                             Capacity = 12000,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img10.jpg",
+                            IsSoldOut = false,
                             Name = "Sweden Rock",
                             Price = 500,
-                            TicketsSold = 0,
                             Type = 2,
                             Venue = "Norje"
                         });
@@ -219,6 +219,11 @@ namespace TicketHive.Server.Migrations.EventsDb
                         {
                             Id = 1,
                             Username = "user"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Username = "admin"
                         });
                 });
 

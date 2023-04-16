@@ -94,6 +94,13 @@ namespace TicketHive.Client.Services
 				await localStorage.SetItemAsync<List<CartItemsModel>>(userName, shoppingCart);
 			}
 		}
+
+		public async Task EmptyShoppingCartAsync(string UserName)
+		{
+			shoppingCart = await GetShoppingCartAsync(UserName);
+			shoppingCart.Clear();
+			await localStorage.SetItemAsync<List<CartItemsModel>>(UserName, shoppingCart);
+		}
 	}
 }
 
