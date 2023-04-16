@@ -37,10 +37,10 @@ namespace TicketHive.Server.Controllers
 		/// <summary>
 		/// Changes the password or country of a user by username asynchronously in the repository and returns an HTTP ActionResult.
 		/// </summary>
-	
+
 		[HttpPut("{AppUsername}")]
 
-		
+
 		public async Task<ActionResult<string?>> ChangePasswordAsync(string AppUsername, [FromBody] string jsonList)
 		{
 			bool result;
@@ -54,6 +54,7 @@ namespace TicketHive.Server.Controllers
 					{
 						return Ok("Password was changed successfully!");
 					}
+					return BadRequest("Something went wrong...");
 				}
 				result = await repo.PutAppUserAsync(AppUsername, words[0]);
 				if (result)

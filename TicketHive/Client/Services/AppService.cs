@@ -14,7 +14,7 @@ namespace TicketHive.Client.Services
 
 		// =========== EventModel Calls ==========
 
-		
+
 		public async Task<List<EventModel>?> GetEventsAsync()
 		{
 			var result = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
@@ -25,7 +25,7 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
-	
+
 		public async Task<EventModel?> GetEventByIdAsync(int id)
 		{
 			var result = await httpClient.GetFromJsonAsync<EventModel>($"api/events/{id}");
@@ -36,7 +36,7 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
-		
+
 		public async Task PostEventAsync(EventModel model)
 		{
 			await httpClient.PostAsJsonAsync("api/events", model);
@@ -165,7 +165,7 @@ namespace TicketHive.Client.Services
 				}
 			}
 			words.Clear();
-			return null;
+			return await result.Content.ReadAsStringAsync();
 		}
 	}
 }
