@@ -32,7 +32,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-07-04"),
 				Venue = "Malmö Arena",
 				Price = 800,
-				Capacity = 3000,
+				Capacity = 10,
 				ImageUrl = "/images/event/img1.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -43,7 +43,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-06-06"),
 				Venue = "Eleda Stadion",
 				Price = 230,
-				Capacity = 22000,
+				Capacity = 10,
 				ImageUrl = "/images/event/img2.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -54,7 +54,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-08-12"),
 				Venue = "Palladium",
 				Price = 400,
-				Capacity = 550,
+				Capacity = 10,
 				ImageUrl = "/images/event/img3.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -65,7 +65,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-07-04"),
 				Venue = "Pildammsparken",
 				Price = 700,
-				Capacity = 13000,
+				Capacity = 10,
 				ImageUrl = "/images/event/img4.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -76,7 +76,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-05-04"),
 				Venue = "Stadsbiblioteket Malmö",
 				Price = 100,
-				Capacity = 60,
+				Capacity = 10,
 				ImageUrl = "/images/event/img5.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -87,7 +87,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-09-04"),
 				Venue = "Parken Copenhagen",
 				Price = 800,
-				Capacity = 26000,
+				Capacity = 10,
 				ImageUrl = "/images/event/img6.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -98,7 +98,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-10-04"),
 				Venue = "Helsingborg",
 				Price = 40,
-				Capacity = 34,
+				Capacity = 10,
 				ImageUrl = "/images/event/img7.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -109,7 +109,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-04-30"),
 				Venue = "Globen",
 				Price = 200,
-				Capacity = 26000,
+				Capacity = 10,
 				ImageUrl = "/images/event/img8.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -120,7 +120,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-05-14"),
 				Venue = "Malmö Live",
 				Price = 120,
-				Capacity = 300,
+				Capacity = 10,
 				ImageUrl = "/images/event/img9.jpg"
 			});
 			modelBuilder.Entity<EventModel>().HasData(new EventModel()
@@ -131,7 +131,7 @@ namespace TicketHive.Server.Data
 				Date = DateTime.Parse("2023-07-04"),
 				Venue = "Norje",
 				Price = 500,
-				Capacity = 12000,
+				Capacity = 10,
 				ImageUrl = "/images/event/img10.jpg"
 			});
 		}
