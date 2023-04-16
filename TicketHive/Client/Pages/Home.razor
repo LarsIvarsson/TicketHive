@@ -79,12 +79,24 @@
 					{
 						@foreach (var e in PopularEvents)
 						{
-							@if(e.Id > 5 && e.Id <= 10)
+							@if(e.Id > 5 && e.Id <= 10 && !e.IsSoldOut)
 							{
-								<div>
+								<div class="container">
 									<a href="eventDetails/@e.Id" Event="@e">
 										<img src="@e.ImageUrl" style="width: 300px; height: 200px;" />
 									</a>
+									@*<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>*@
+									<hr style="background-color: transparent;" />
+								</div>
+							}
+
+							else if (e.Id > 5 && e.Id <= 10 && e.IsSoldOut)
+							{
+								<div class="container">
+									<img src="@e.ImageUrl" style="width: 300px; height: 200px; opacity:0.2;" />
+									<button class="btn" style="width: 80%;  opacity: 1.0;">
+										<a style="text-decoration: none; color: red; font-weight: bold; opacity: 1.0;" href="eventDetails/@e.Id" Event="@e">FULLY BOOKED</a>
+									</button>
 									@*<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>*@
 									<hr style="background-color: transparent;" />
 								</div>
@@ -133,6 +145,35 @@
 		position: relative;
 		color: #305076;
 		padding-left: 10px;
+	}
+
+	.container {
+		position: relative;
+		width: 110%;
+	}
+
+	.container img {
+		width: 100%;
+		height: auto;
+	}
+
+	.container .btn {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		background-color: transparent;
+		color: white;
+		font-size: 16px;
+		padding: 12px 24px;
+		border: none;
+		cursor: pointer;
+		border-radius: 5px;
+	}
+
+	.container .btn:hover {
+		background-color: #305076;
 	}
 </style>
 
