@@ -29,7 +29,7 @@ namespace TicketHive.Server.Repo
 
 		public async Task<List<EventModel>?> GetEventsAsync()
 		{
-			return await context.Events.Include(e => e.EventUsers).ToListAsync();
+			return await context.Events.ToListAsync();
 
 			/*.Include(e => e.EventUsers)*/
 		}

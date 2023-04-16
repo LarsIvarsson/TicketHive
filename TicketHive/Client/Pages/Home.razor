@@ -35,7 +35,7 @@
                 <h3 style="font-size: 2rem;">Your booked events</h3>
 				<hr style="margin: 30px 0 20px 0"/>
 
-				@if (shoppingCart is null || shoppingCart.Count == 0)
+				@if (groupedList is null || groupedList.Count() == 0)
 				{
 					<p>No events booked yet...</p>
 					<p>Go to <a href="allEvents" style="text-decoration: none;">All events</a> to get tickets for your next event</p>
@@ -156,7 +156,6 @@
 			if (user.Identity!.IsAuthenticated)
 			{
 				_User = await service.GetUserByUsernameAsync(user.Identity.Name!);
-				// _User = await service.GetUserByUsernameIncludeEventsAsync(user.Identity.Name!);
 				groupedList = _User!.UserEvents.GroupBy(e => e.Id).Select(grp => grp).ToList();
 				PopularEvents = await service.GetEventsAsync();			
 			}		
