@@ -1,4 +1,5 @@
 @page "/shopping-cart"
+@using TicketHive.Client.Managers;
 @inject IAppService service
 @attribute [Authorize]
 @inject AuthenticationStateProvider authStateProvider
@@ -30,7 +31,7 @@
                         {
                             <tr>
                                 <td>@c.Event.Name</td>
-                                <td>@c.Event.Price.ToString()</td>
+                                <td>@Math.Round((c.Price*userRate), 2) @CurrencyManager.Currency</td>
                                 <td>
                                     <div class="quantity-container">
                                         <button class="btn-quantity btn-quantity-hover-minus" @onclick="async () => await DecreaceQuantity(c)">-</button>
@@ -59,7 +60,7 @@
                     <hr />
                     @if (shoppingCart != null)
                     {
-                        <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
+                        <h4>Subtotal: @Math.Round(@shoppingCart.Sum(c => c.Event.Price * c.Quantity*userRate), 2) @CurrencyManager.Currency </h4>
                     }                    
                     <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>
                     @if (errorMsg != null)
@@ -81,11 +82,25 @@
     private UserModel? _User;
     private string? errorMsg;
     private bool isValidated = true;
+    private int Quantity;
+    private string? userCountry { get; set; }
+    private decimal userRate { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await authStateProvider.GetAuthenticationStateAsync();
         signedInUser = authState.User.Identity.Name;
+
+        if (authState.User!.Identity.IsAuthenticated)
+        {
+            userCountry = await service.GetUserCountryByUsernameAsync(authState.User.Identity.Name!);
+
+            if (userCountry != null)
+            {
+                userRate = await CurrencyManager.GetRate(userCountry);
+            }
+        }
 
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
