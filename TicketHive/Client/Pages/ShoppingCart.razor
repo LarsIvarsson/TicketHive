@@ -115,8 +115,11 @@
     private async Task IncreaceQuantity(CartItemsModel item)
     {
         if ((item.Event.Capacity - item.Event.TicketsSold) > item.Quantity)
-        await cartService.IncreaceQuantity(signedInUser, item);
-        shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
+        {
+            await cartService.IncreaceQuantity(signedInUser, item);
+            shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
+        }
+        
     }
 
     private async Task RemoveItem(CartItemsModel item)
