@@ -34,7 +34,7 @@
                                 <td>
                                     <div class="quantity-container">
                                         <button class="btn-quantity btn-quantity-hover-minus" @onclick="async () => await DecreaceQuantity(c)">-</button>
-                                        <input type="text" value="@c.Quantity" readonly>
+                                        <input type="text" @bind-value="@c.Quantity" readonly>
                                         <button class="btn-quantity btn-quantity-hover-plus" @onclick="async () => await IncreaceQuantity(c)">+</button>
                                     </div>
                                 </td>
@@ -75,6 +75,7 @@
     private AuthenticationState? authState;
     private string signedInUser;
     private UserModel? _User;
+    private int Quantity;
 
     protected override async Task OnInitializedAsync()
     {
@@ -113,6 +114,7 @@
 
     private async Task IncreaceQuantity(CartItemsModel item)
     {
+        if ((item.Event.Capacity - item.Event.TicketsSold) > item.Quantity)
         await cartService.IncreaceQuantity(signedInUser, item);
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
@@ -122,4 +124,11 @@
         await cartService.RemoveFromCartAsync(signedInUser, item);
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
+
+    //"Quantity" value=
+
 }
+
+
+
+    
