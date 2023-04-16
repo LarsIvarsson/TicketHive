@@ -62,6 +62,10 @@
                         <h4>Subtotal: @shoppingCart.Sum(c => c.Event.Price * c.Quantity)</h4>
                     }                    
                     <button class="btn btn-success btn-lg btn-block" @onclick="(() => Checkout())">Checkout</button>
+                    @if (errorMsg != null)
+                    {
+                        <p class="mt-2 text-danger">@errorMsg</p>
+                    }
                 </div>
             </div>
         </div>
@@ -75,6 +79,8 @@
     private AuthenticationState? authState;
     private string signedInUser;
     private UserModel? _User;
+    private string? errorMsg;
+    private bool isValidated = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -86,24 +92,31 @@
 
     private async Task Checkout()
     {
-        // Gets the user, adds events to EventList, makes Put request
-        // check availability
-
+        // Gets the user, adds events to EventList, makes Put request        
         _User = await service.GetUserByUsernameAsync(signedInUser);
         if (shoppingCart != null && _User != null)
         {
             foreach (var item in shoppingCart)
             {
-                for (int i = 0; i < item.Quantity; i++)
+                int remainingTickets = item.Event.Capacity - item.Event.TicketsSold;
+                if (remainingTickets < item.Quantity)
                 {
-                    _User.UserEvents!.Add(item.Event);
+                    errorMsg = $"Sorry, only {remainingTickets} tickets left for {item.Event.Name}";
+                    return;
                 }
-                item.Event.TicketsSold = item.Quantity;
-                await service.PutEventAsync(item.EventId, item.Event);
+                if (isValidated)
+                {
+                    for (int i = 0; i < item.Quantity; i++)
+                    {
+                        _User.UserEvents!.Add(item.Event);
+                    }
+                    item.Event.TicketsSold = item.Quantity;
+                    await service.PutEventAsync(item.EventId, item.Event);
+                }
             }
             await service.PutUserAsync(_User.Id, _User);
             navigation.NavigateTo("/confirmation");
-        }        
+        }  
     }
 
     /// <summary>
@@ -114,6 +127,7 @@
         await cartService.DecreaceQuantity(signedInUser, item);
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
+
     /// <summary>
     /// Increace the quantity of an item in the shopping cart.
     /// </summary>
@@ -122,6 +136,7 @@
             await cartService.IncreaceQuantity(signedInUser, item);
             shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);        
     }
+
     /// <summary>
     /// remove event from shoppicart
     /// </summary>
