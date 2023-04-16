@@ -100,11 +100,12 @@
 
     private async Task Checkout()
     {
-        // put this in service/controller/repo?        
         // Gets the user, adds events to EventList, makes Put request
+        // check availability
+
         _User = await service.GetUserByUsernameAsync(signedInUser);
         if (shoppingCart != null && _User != null)
-        {         
+        {
             foreach (var item in shoppingCart)
             {
                 for (int i = 0; i < item.Quantity; i++)
@@ -114,9 +115,9 @@
                 item.Event.TicketsSold = item.Quantity;
                 await service.PutEventAsync(item.EventId, item.Event);
             }
-            await service.PutUserAsync(_User.Id, _User);            
+            await service.PutUserAsync(_User.Id, _User);
             navigation.NavigateTo("/confirmation");
-        }
+        }        
     }
 
     /// <summary>
@@ -132,12 +133,8 @@
     /// </summary>
     private async Task IncreaceQuantity(CartItemsModel item)
     {
-        if ((item.Event.Capacity - item.Event.TicketsSold) > item.Quantity)
-        {
             await cartService.IncreaceQuantity(signedInUser, item);
-            shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
-        }
-        
+            shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);        
     }
     /// <summary>
     /// remove event from shoppicart
@@ -147,9 +144,6 @@
         await cartService.RemoveFromCartAsync(signedInUser, item);
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
-
-    //"Quantity" value=
-
 }
 
 
