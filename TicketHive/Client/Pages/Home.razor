@@ -14,7 +14,7 @@
 <div class="text-center padding: 30px;" style="margin: 0px 0px 0px 70px;">
 	<h1 class="card-title" style="text-align: center; ">Home Page</h1>
 	
-	@*SEARCH*@
+	@*--- SEARCH ---*@
 	<div class="search">
 		<input class="search-Input" 
 			placeholder="Search event..." 
@@ -42,7 +42,7 @@
 				}
 				else
 				{	
-					@*VAD SOM PRINTAS OM MAN HAR BOKAT EVENT*@
+					@*--- VAD SOM PRINTAS OM MAN HAR BOKAT EVENT ---*@
 					@foreach (var group in groupedList)
 					{
 						<div class="col-3 d-flex align-items-center d-flex justify-content-center">
@@ -65,7 +65,7 @@
 				}
 			</div>
 		</div>
-		@*PRINTA POPULÄRA EVENT*@
+		@*--- PRINTA POPULÄRA EVENT ---*@
 		<div class="col-4" style="background-color: #E0F2FF; padding: 0px 30px 30px 30px;  ">
 			<div class="row">
 				<h3 style="color: #305076; margin-bottom: 30px; font-size: 25px; font-family: Verdana;">Popular events</h3>				
@@ -85,7 +85,7 @@
 									<a href="eventDetails/@e.Id" Event="@e">
 										<img src="@e.ImageUrl" style="width: 300px; height: 200px;" />
 									</a>
-									@*<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>*@
+									
 									<hr style="background-color: transparent;" />
 								</div>
 							}
@@ -97,7 +97,7 @@
 									<button class="btn" style="width: 80%;  opacity: 1.0;">
 										<a style="text-decoration: none; color: red; font-weight: bold; opacity: 1.0;" href="eventDetails/@e.Id" Event="@e">FULLY BOOKED</a>
 									</button>
-									@*<p style="margin-top: 10px; font-size: 15px; font-family: Verdana;">@e.Name</p>*@
+									
 									<hr style="background-color: transparent;" />
 								</div>
 							}
@@ -127,7 +127,6 @@
 		height: 30px;
 		margin: 20px 5px 20px 20px;
 		width: 200px;
-		/*box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
 		border: 1px solid #18537a;
 		position: relative;
 		color: #305076;
@@ -140,7 +139,6 @@
 		height: 30px;
 		margin: 20px 20px 20px 5px;
 		width: 80px;
-		/*box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
 		border: 1px solid #18537a;
 		position: relative;
 		color: #305076;
@@ -193,7 +191,7 @@
 		var user = authState.User;
 		if(user != null)
 		{
-			//if(!user.IsInRole("Admin"))			
+				
 			if (user.Identity!.IsAuthenticated)
 			{
 				_User = await service.GetUserByUsernameAsync(user.Identity.Name!);

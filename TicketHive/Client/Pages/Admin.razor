@@ -10,6 +10,8 @@
 <div class="container">
     <div class="row">
         <div class="col-5">
+
+@* --- SKAPA NYTT EVENT ---*@
 <EditForm Model="newEvent" OnValidSubmit="SubmitEvent" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator/> 
         <h2 class="text-center mb-3">New event</h2>
@@ -35,6 +37,7 @@
             <input type="submit" value="Add" />
         <hr />
     <ValidationSummary />
+  @* --- PRINTA ALLA EVENT ---*@
 </EditForm>
         </div>
         <div class="col-2">

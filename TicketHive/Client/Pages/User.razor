@@ -6,6 +6,8 @@
 <h1 class="ms-5">User settings</h1>
 <hr />
 <div class="row">
+
+	@*--- CHANGE PASSWORD ---*@
 	<div class="col-3 text-center m-5">
 		<h2>Change password</h2>	
 		<EditForm Model="Passwords" OnValidSubmit="ChangePassword">						
@@ -20,6 +22,8 @@
 			}
 		</EditForm>
 	</div>	
+
+	@*--- CHANGE COUNTRY ---*@
 	<div class="col-3 text-center m-5">
 		<h2>Change country</h2>		
 			<EditForm Model="Country" OnValidSubmit="ChangeCountry">				

@@ -14,6 +14,7 @@
 
 <h3 class="card-title">All Events</h3>
 
+@*--- SEARCH ---*@
 <div class="search-Items">
     <input class="search-Input" 
     placeholder="Search event..." 
@@ -23,6 +24,7 @@
 
     <hr style="margin-bottom: 40px;" />
 
+   @* --- FILTERFUNKTIONEN ---*@
     <select class="filter-Input" placeholder="Filter events:" @onchange="SortEvents">
         <option style="background: #E0F2FF" value="All Events: ">All Events</option>
         <option style="background: #E0F2FF" value="Low to high price">Low to high price</option>
@@ -33,6 +35,7 @@
 </div>
 <hr  />
 
+@*--- PRINTA ALLA EVENT + IsSoldOut ---*@
 <body>
     <div class="container">
         @if(Events == null)
@@ -44,7 +47,7 @@
             @foreach (var e in fEvents!)
             {
                 @if (e.IsSoldOut == true)
-                @*@if(e.Price == 800)*@
+         
 
                 {
                     <div class="item-container" >
@@ -162,7 +165,6 @@
         height: 30px;
         margin: 20px;
         width: 200px;
-        /*box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
         border: 1px solid #18537a;
         position: relative;
         color: #305076;
@@ -177,7 +179,6 @@
         height: 30px;
         margin: 20px;
         width: 200px;
-       /* box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.05);*/
         border: 1px solid #18537a;
         position: relative;
     }
