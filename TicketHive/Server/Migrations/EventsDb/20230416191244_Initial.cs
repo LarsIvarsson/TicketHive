@@ -25,7 +25,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                     Venue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
-                    IsSoldOut = table.Column<bool>(type: "bit", nullable: false),
+                    TicketsSold = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -72,19 +72,19 @@ namespace TicketHive.Server.Migrations.EventsDb
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "Id", "Capacity", "Date", "ImageUrl", "IsSoldOut", "Name", "Price", "Type", "Venue" },
+                columns: new[] { "Id", "Capacity", "Date", "ImageUrl", "Name", "Price", "TicketsSold", "Type", "Venue" },
                 values: new object[,]
                 {
-                    { 1, 3000, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img1.jpg", false, "Justin Bieber", 800, 1, "Malmö Arena" },
-                    { 2, 22000, new DateTime(2023, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img2.jpg", false, "Malmö FF - IFK Göteborg", 230, 0, "Eleda Stadion" },
-                    { 3, 550, new DateTime(2023, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img3.jpg", false, "Johan Glans Tour", 400, 3, "Palladium" },
-                    { 4, 13000, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img4.jpg", false, "Big Slap", 700, 2, "Pildammsparken" },
-                    { 5, 60, new DateTime(2023, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img5.jpg", false, "Doris & Knäckebröderna", 100, 4, "Stadsbiblioteket Malmö" },
-                    { 6, 26000, new DateTime(2023, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img6.jpg", false, "Tom Jones", 800, 1, "Parken Copenhagen" },
-                    { 7, 34, new DateTime(2023, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img7.jpg", false, "World Padel Tour", 40, 0, "Helsingborg" },
-                    { 8, 26000, new DateTime(2023, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img8.jpg", false, "Flashback Forever Live", 200, 3, "Globen" },
-                    { 9, 300, new DateTime(2023, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img9.jpg", false, "Babblarna The Musical", 120, 4, "Malmö Live" },
-                    { 10, 12000, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img10.jpg", false, "Sweden Rock", 500, 2, "Norje" }
+                    { 1, 10, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img1.jpg", "Justin Bieber", 800, 0, 1, "Malmö Arena" },
+                    { 2, 10, new DateTime(2023, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img2.jpg", "Malmö FF - IFK Göteborg", 230, 0, 0, "Eleda Stadion" },
+                    { 3, 10, new DateTime(2023, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img3.jpg", "Johan Glans Tour", 400, 0, 3, "Palladium" },
+                    { 4, 10, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img4.jpg", "Big Slap", 700, 0, 2, "Pildammsparken" },
+                    { 5, 10, new DateTime(2023, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img5.jpg", "Doris & Knäckebröderna", 100, 0, 4, "Stadsbiblioteket Malmö" },
+                    { 6, 10, new DateTime(2023, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img6.jpg", "Tom Jones", 800, 0, 1, "Parken Copenhagen" },
+                    { 7, 10, new DateTime(2023, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img7.jpg", "World Padel Tour", 40, 0, 0, "Helsingborg" },
+                    { 8, 10, new DateTime(2023, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img8.jpg", "Flashback Forever Live", 200, 0, 3, "Globen" },
+                    { 9, 10, new DateTime(2023, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img9.jpg", "Babblarna The Musical", 120, 0, 4, "Malmö Live" },
+                    { 10, 10, new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/event/img10.jpg", "Sweden Rock", 500, 0, 2, "Norje" }
                 });
 
             migrationBuilder.InsertData(

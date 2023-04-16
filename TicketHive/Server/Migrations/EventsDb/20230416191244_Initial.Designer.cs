@@ -12,8 +12,8 @@ using TicketHive.Server.Data;
 namespace TicketHive.Server.Migrations.EventsDb
 {
     [DbContext(typeof(EventsDbContext))]
-    [Migration("20230416132550_TicketsCounter")]
-    partial class TicketsCounter
+    [Migration("20230416191244_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,7 +82,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 1,
-                            Capacity = 3000,
+                            Capacity = 10,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img1.jpg",
                             Name = "Justin Bieber",
@@ -94,7 +94,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 2,
-                            Capacity = 22000,
+                            Capacity = 10,
                             Date = new DateTime(2023, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img2.jpg",
                             Name = "Malmö FF - IFK Göteborg",
@@ -106,7 +106,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 3,
-                            Capacity = 550,
+                            Capacity = 10,
                             Date = new DateTime(2023, 8, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img3.jpg",
                             Name = "Johan Glans Tour",
@@ -118,7 +118,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 4,
-                            Capacity = 13000,
+                            Capacity = 10,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img4.jpg",
                             Name = "Big Slap",
@@ -130,7 +130,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 5,
-                            Capacity = 60,
+                            Capacity = 10,
                             Date = new DateTime(2023, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img5.jpg",
                             Name = "Doris & Knäckebröderna",
@@ -142,7 +142,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 6,
-                            Capacity = 26000,
+                            Capacity = 10,
                             Date = new DateTime(2023, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img6.jpg",
                             Name = "Tom Jones",
@@ -154,7 +154,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 7,
-                            Capacity = 34,
+                            Capacity = 10,
                             Date = new DateTime(2023, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img7.jpg",
                             Name = "World Padel Tour",
@@ -166,7 +166,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 8,
-                            Capacity = 26000,
+                            Capacity = 10,
                             Date = new DateTime(2023, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img8.jpg",
                             Name = "Flashback Forever Live",
@@ -178,7 +178,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 9,
-                            Capacity = 300,
+                            Capacity = 10,
                             Date = new DateTime(2023, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img9.jpg",
                             Name = "Babblarna The Musical",
@@ -190,7 +190,7 @@ namespace TicketHive.Server.Migrations.EventsDb
                         new
                         {
                             Id = 10,
-                            Capacity = 12000,
+                            Capacity = 10,
                             Date = new DateTime(2023, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "/images/event/img10.jpg",
                             Name = "Sweden Rock",

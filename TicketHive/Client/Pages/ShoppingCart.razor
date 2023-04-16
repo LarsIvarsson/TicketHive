@@ -88,7 +88,6 @@
     private string signedInUser;
     private UserModel? _User;
     private string? errorMsg;
-    private bool isValidated = true;
     private int Quantity;
     private string? userCountry { get; set; }
     private decimal userRate { get; set; }
@@ -108,7 +107,6 @@
                 userRate = await CurrencyManager.GetRate(userCountry);
             }
         }
-
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
 
@@ -125,16 +123,13 @@
                 {
                     errorMsg = $"Sorry, only {remainingTickets} tickets left for {item.Event.Name}";
                     return;
-                }
-                if (isValidated)
+                }                
+                for (int i = 0; i < item.Quantity; i++)
                 {
-                    for (int i = 0; i < item.Quantity; i++)
-                    {
-                        _User.UserEvents!.Add(item.Event);
-                    }
-                    item.Event.TicketsSold = item.Quantity;
-                    await service.PutEventAsync(item.EventId, item.Event);
+                    _User.UserEvents!.Add(item.Event);
                 }
+                item.Event.TicketsSold = item.Quantity;
+                await service.PutEventAsync(item.EventId, item.Event);
             }
             await service.PutUserAsync(_User.Id, _User);
             navigation.NavigateTo("/confirmation");
@@ -155,8 +150,8 @@
     /// </summary>
     private async Task IncreaceQuantity(CartItemsModel item)
     {
-            await cartService.IncreaceQuantity(signedInUser, item);
-            shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);        
+        await cartService.IncreaceQuantity(signedInUser, item);
+        shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);        
     }
 
     /// <summary>
