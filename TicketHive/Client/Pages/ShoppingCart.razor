@@ -86,9 +86,7 @@
 
     private async Task Checkout()
     {
-        // put this in service/controller/repo?
-        // also update event property TicketsSold ( Event.TicketsSold += item.Quantity; )
-
+        // put this in service/controller/repo?        
         // Gets the user, adds events to EventList, makes Put request
         _User = await service.GetUserByUsernameAsync(signedInUser);
         if (shoppingCart != null && _User != null)
@@ -99,7 +97,17 @@
                 {
                     _User.UserEvents!.Add(item.Event);
                 }
+                // get event - update property TicketsSold ( Event.TicketsSold += item.Quantity; )
+
+                //EventModel soldEvent = new();
+                //soldEvent = item.Event;
+                //soldEvent.TicketsSold = item.Quantity;
+                //await service.PutEventAsync(soldEvent.Id, soldEvent);
+
+                item.Event.TicketsSold = item.Quantity;
+                await service.PutEventAsync(item.EventId, item.Event);
             }
+
             await service.PutUserAsync(_User.Id, _User);            
             navigation.NavigateTo("/confirmation");
         }
