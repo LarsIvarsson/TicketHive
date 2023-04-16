@@ -3,9 +3,12 @@
 @inject ICartService cartService
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navigation
 @attribute [Authorize]
 
 <h2>Your booked events</h2>
+<button type="button" class="btn btn-secondary btn-rounded oi oi-arrow-circle-left" @onclick='() => navigation.NavigateTo("/allevents")'></button>
+<hr/>
 <em>Congratulations on buying awesome tickets!</em>
 <hr />
 
