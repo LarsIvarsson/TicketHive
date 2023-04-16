@@ -343,6 +343,10 @@
     [Parameter]
     public string? searchWord { get; set; }
 
+    /// Override method called during component initialization.
+    /// Retrieves the authentication state of the user and sets the Events, userCountry, and userRate variables based on the retrieved values.
+    /// </summary>
+    /// <returns>A Task representing the asynchronous operation.</returns>
     protected override async Task OnInitializedAsync()
     {
         var authState = await authStateProvider.GetAuthenticationStateAsync();
@@ -365,6 +369,11 @@
         fEvents = Events;
     }
 
+    /// <summary>
+    /// Override method called when component parameters are set.
+    /// Searches for events based on the provided searchWord and updates the fEvents list accordingly.
+    /// </summary>
+
     protected override void OnParametersSet()
     {
         if(searchWord != null)
@@ -383,7 +392,10 @@
             || ev.Venue!.ToLower().Contains(filterWord.ToLower())
         ).ToList();
     }
-
+    /// <summary>
+    /// Search event by input danamic
+    /// </summary>
+    /// <param name="e"></param>
     private void SearchEventsDynamic(ChangeEventArgs e)
     {
         fEvents = Events.Where(ev =>
@@ -392,7 +404,10 @@
             || ev.Venue!.ToLower().Contains(e.Value.ToString().ToLower())
         ).ToList();
     }
-
+    /// <summary>
+    /// sort events by price/date
+    /// </summary>
+    /// <param name="e"></param>
     private void SortEvents(ChangeEventArgs e)
     {
         sort = e.Value.ToString();

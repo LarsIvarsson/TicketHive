@@ -13,6 +13,8 @@ namespace TicketHive.Client.Services
 		}
 
 		// =========== EventModel Calls ==========
+
+		
 		public async Task<List<EventModel>?> GetEventsAsync()
 		{
 			var result = await httpClient.GetFromJsonAsync<List<EventModel>>("api/events");
@@ -23,6 +25,7 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
+	
 		public async Task<EventModel?> GetEventByIdAsync(int id)
 		{
 			var result = await httpClient.GetFromJsonAsync<EventModel>($"api/events/{id}");
@@ -33,6 +36,7 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
+		
 		public async Task PostEventAsync(EventModel model)
 		{
 			await httpClient.PostAsJsonAsync("api/events", model);
@@ -47,6 +51,10 @@ namespace TicketHive.Client.Services
 		}
 
 		// =========== UserModel Calls ===========
+
+		/// <summary>
+		/// Retrieves a list of user models asynchronously from the API.
+		/// </summary>
 		public async Task<List<UserModel>?> GetUsersAsync()
 		{
 			var result = await httpClient.GetFromJsonAsync<List<UserModel>>("api/users");
@@ -57,6 +65,10 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
+
+		/// <summary>
+		/// Retrieves a user model asynchronously by username from the API.
+		/// </summary>
 		public async Task<UserModel?> GetUserByUsernameAsync(string UserName)
 		{
 			var result = await httpClient.GetFromJsonAsync<UserModel>($"api/users/{UserName}");
@@ -67,6 +79,9 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
+		/// <summary>
+		/// Retrieves a user model asynchronously by username from the API, including associated events.
+		/// </summary>
 		public async Task<UserModel?> GetUserByUsernameIncludeEventsAsync(string UserName)
 		{
 			var result = await httpClient.GetFromJsonAsync<UserModel>($"api/users/{UserName}/include");
@@ -77,6 +92,9 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
+		/// <summary>
+		/// Updates a user asynchronously by ID with the provided user model via HTTP PUT request to the API.
+		/// </summary>
 		public async Task<string?> PutUserAsync(int id, UserModel model)
 		{
 			var response = await httpClient.PutAsJsonAsync($"api/users/{id}", model);
@@ -89,6 +107,10 @@ namespace TicketHive.Client.Services
 		}
 
 		// ========== ApplicationUser Calls ============
+
+		/// <summary>
+		/// Retrieves the country of a user by username asynchronously via HTTP GET request to the API.
+		/// </summary>
 		public async Task<string?> GetUserCountryByUsernameAsync(string AppUsername)
 		{
 			var response = await httpClient.GetAsync($"api/appusers/{AppUsername}");
@@ -100,6 +122,11 @@ namespace TicketHive.Client.Services
 			}
 			return null;
 		}
+
+		/// <summary>
+		/// Updates the country of an app user by username asynchronously with the provided country string
+		/// via HTTP PUT request to the API.
+		/// </summary>
 		public async Task<string?> PutAppUserCountryAsync(string AppUsername, string Country)
 		{
 			List<string> words = new();
@@ -117,6 +144,11 @@ namespace TicketHive.Client.Services
 			words.Clear();
 			return null;
 		}
+
+		/// <summary>
+		/// Updates the password of an app user by username asynchronously with the provided current and new password
+		/// via HTTP PUT request to the API.
+		/// </summary>
 		public async Task<string?> PutAppUserAsync(string AppUsername, string currentPassword, string newPassword)
 		{
 			List<string> words = new();

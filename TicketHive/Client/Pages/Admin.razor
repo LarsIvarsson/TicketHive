@@ -75,6 +75,9 @@
     private string? userCountry { get; set; }
     private string? userCurrency { get; set; }
 
+    /// <summary>
+    /// Lifecycle method that is called when the component is initialized.
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         await GetEvents();
@@ -112,8 +115,10 @@
 
     private void HandleInvalidSubmit()
     {
-        
+
     }
+
+   
 
     private async Task RemoveEvent(int id)
     {

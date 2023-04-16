@@ -64,7 +64,10 @@
 			Countries.Add(type);
 		}
 	}
-
+	/// <summary>
+	/// Changes password
+	/// </summary>
+	/// <returns></returns>
 	private async Task ChangePassword()
 	{		
 		PasswordsMessage = await service.
@@ -72,7 +75,10 @@
 		Passwords = new();
 		Country = new();
 	}
-
+	/// <summary>
+	/// changes country
+	/// </summary>
+	/// <returns></returns>
 	private async Task ChangeCountry()
 	{
 		CountryMessage = await service.

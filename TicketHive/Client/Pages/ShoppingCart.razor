@@ -105,18 +105,25 @@
         }
     }
 
+    /// <summary>
+    /// Decreases the quantity of an item in the shopping cart.
+    /// </summary>
     private async Task DecreaceQuantity(CartItemsModel item)
     {
         await cartService.DecreaceQuantity(signedInUser, item);
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
-
+    /// <summary>
+    /// Increace the quantity of an item in the shopping cart.
+    /// </summary>
     private async Task IncreaceQuantity(CartItemsModel item)
     {
         await cartService.IncreaceQuantity(signedInUser, item);
         shoppingCart = await cartService.GetShoppingCartAsync(signedInUser);
     }
-
+    /// <summary>
+    /// remove event from shoppicart
+    /// </summary>
     private async Task RemoveItem(CartItemsModel item)
     {
         await cartService.RemoveFromCartAsync(signedInUser, item);

@@ -7,7 +7,10 @@ namespace TicketHive.Client.Services
 {
     public class CurrencyService : ICurrencyService
     {
-        public async Task<Root?> GetCurrenciesAsync()
+		/// <summary>
+		/// Retrieves the latest currency exchange rates asynchronously from the API.
+		/// </summary>
+		public async Task<Root?> GetCurrenciesAsync()
         {
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://api.apilayer.com/exchangerates_data/latest?symbols=EUR,GBP&base=SEK");
             requestMessage.Headers.Add("apikey", "w7ocDhWDa9ekbz4TbMH26wraRGSYHVGo");
