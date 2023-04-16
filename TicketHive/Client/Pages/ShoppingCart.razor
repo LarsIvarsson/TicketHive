@@ -20,8 +20,10 @@
                         <th>Event</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                       
-                        <th></th>
+
+                        <th>Total</th>
+                        
+
                     </tr>
                 </thead>
                 <tbody>
@@ -40,7 +42,9 @@
                                         <button class="btn-quantity btn-quantity-hover-plus" @onclick="async () => await IncreaceQuantity(c)">+</button>
                                     </div>
                                 </td>
-                            
+
+                                <td>@(c.Event.Price * c.Quantity)</td>
+
                                 <td><button class="btn btn-danger" @onclick="async () => await RemoveItem(c)">Remove</button></td>
                             </tr>
                         }
