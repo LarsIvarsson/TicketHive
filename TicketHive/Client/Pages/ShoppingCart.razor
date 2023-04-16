@@ -97,17 +97,9 @@
                 {
                     _User.UserEvents!.Add(item.Event);
                 }
-                // get event - update property TicketsSold ( Event.TicketsSold += item.Quantity; )
-
-                //EventModel soldEvent = new();
-                //soldEvent = item.Event;
-                //soldEvent.TicketsSold = item.Quantity;
-                //await service.PutEventAsync(soldEvent.Id, soldEvent);
-
                 item.Event.TicketsSold = item.Quantity;
                 await service.PutEventAsync(item.EventId, item.Event);
             }
-
             await service.PutUserAsync(_User.Id, _User);            
             navigation.NavigateTo("/confirmation");
         }
