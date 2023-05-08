@@ -10,15 +10,24 @@
 	@*--- CHANGE PASSWORD ---*@
 	<div class="col-3 text-center m-5">
 		<h2>Change password</h2>	
-		<EditForm Model="Passwords" OnValidSubmit="ChangePassword">						
+		<EditForm Model="Passwords" OnValidSubmit="ChangePassword">	
+			<label>Current password:</label>
 			<InputText class="mt-3" type="password" @bind-Value="Passwords.CurrentPassword"></InputText><br />
+			<label>New password:</label>
 			<InputText class="mt-3" type="password" @bind-Value="Passwords.NewPassword"></InputText><br />
 			<button class="mt-3" type="submit">Change password</button>
 			<DataAnnotationsValidator />
 			<ValidationSummary />
 			@if (PasswordsMessage != null)
 			{
-				<p class="text-danger mt-2">@PasswordsMessage</p>
+				@if (PasswordsMessage.Contains("wrong"))
+				{
+					<p class="text-danger mt-2">@PasswordsMessage</p>
+				}
+				else
+				{
+					<p class="text-success mt-2">@PasswordsMessage</p>
+				}
 			}
 		</EditForm>
 	</div>	
@@ -39,7 +48,14 @@
 			</EditForm>
 		@if (CountryMessage != null)
 		{
-			<p class="text-danger mt-2">@CountryMessage</p>
+			@if (CountryMessage.Contains("wrong"))
+			{
+				<p class="text-danger mt-2">@CountryMessage</p>
+			}
+			else
+			{
+				<p class="text-success mt-2">@CountryMessage</p>
+			}
 		}
 	</div>
 	<div class="col-6"></div>
