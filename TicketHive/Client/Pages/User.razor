@@ -8,7 +8,7 @@
 <div class="row">
 
 	@*--- CHANGE PASSWORD ---*@
-	<div class="col-3 text-center m-5">
+	<div class="col-4 text-center m-5">
 		<h2>Change password</h2>	
 		<EditForm Model="Passwords" OnValidSubmit="ChangePassword">	
 			<label>Current password:</label>
@@ -33,7 +33,7 @@
 	</div>	
 
 	@*--- CHANGE COUNTRY ---*@
-	<div class="col-3 text-center m-5">
+	<div class="col-4 text-center m-5">
 		<h2>Change country</h2>		
 			<EditForm Model="Country" OnValidSubmit="ChangeCountry">				
 				<InputSelect class="mt-3" @bind-Value="Country.NewCountry">
@@ -58,7 +58,7 @@
 			}
 		}
 	</div>
-	<div class="col-6"></div>
+	<div class="col-4"></div>
 </div>
 
 @code {
